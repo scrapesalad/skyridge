@@ -1,0 +1,154 @@
+  <!-- ======================================================================
+       ANALYTICS (Optional)
+       If you're using Google Analytics, replace PUT-YOUR-GOOGLE-ANALYTICS-ID-HERE
+       with your actual tracking ID (format: G-XXXXXXXXXX).
+       Get the ID from site.config.json → analytics.googleAnalytics.trackingId
+       If not using analytics, remove or comment out this section.
+       ====================================================================== -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=PUT-YOUR-GOOGLE-ANALYTICS-ID-HERE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'PUT-YOUR-GOOGLE-ANALYTICS-ID-HERE');
+  </script>
+  <meta charset="UTF-8" />
+  
+  <!-- ======================================================================
+       TITLE TAG (Required for SEO)
+       Format: "Site Name | Primary Service/Description"
+       Length: 50-60 characters (including spaces and pipe)
+       This appears in browser tabs and search results
+       ====================================================================== -->
+  <title>PUT SITE NAME HERE | PUT PRIMARY SERVICE HERE</title>
+  
+  <!-- ======================================================================
+       META DESCRIPTION (Required for SEO)
+       Length: 150-160 characters
+       Should be compelling and include keywords naturally
+       This appears in search engine results below the title
+       ====================================================================== -->
+  <meta name="description" content="PUT YOUR HOME PAGE DESCRIPTION HERE - This should be 150-160 characters and describe what your site/business does. Include your main keywords naturally." />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- ======================================================================
+       META KEYWORDS (Optional but helpful)
+       Add 5-10 relevant keywords separated by commas
+       ====================================================================== -->
+  <meta name="keywords" content="PUT KEYWORD 1 HERE, PUT KEYWORD 2 HERE, PUT KEYWORD 3 HERE" />
+  
+  <!-- ======================================================================
+       META AUTHOR (Optional)
+       ====================================================================== -->
+  <meta name="author" content="PUT YOUR SITE NAME OR COMPANY NAME HERE" />
+  
+  <!-- ======================================================================
+       META ROBOTS (Optional)
+       "index, follow" = Allow search engines to index and follow links
+       "noindex, nofollow" = Don't index this page
+       ====================================================================== -->
+  <meta name="robots" content="index, follow" />
+  
+  <!-- Brand UI on mobile / browser chrome -->
+  <meta name="theme-color" content="#C8A860" />
+  
+  <!-- ======================================================================
+       OPEN GRAPH TAGS (Recommended for Social Sharing)
+       These control how your page appears when shared on Facebook, LinkedIn, etc.
+       ====================================================================== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://PUT-YOUR-DOMAIN-HERE.com/" />
+  <meta property="og:title" content="PUT SITE NAME HERE | PUT PRIMARY SERVICE HERE" />
+  <meta property="og:description" content="PUT YOUR HOME PAGE DESCRIPTION HERE - Same as meta description above" />
+  <meta property="og:image" content="https://PUT-YOUR-DOMAIN-HERE.com/images/logo/heroimage.png" />
+  <meta property="og:site_name" content="PUT YOUR SITE NAME HERE" />
+  
+  <!-- ======================================================================
+       TWITTER CARD TAGS (Optional but recommended)
+       Controls how your page appears when shared on Twitter
+       ====================================================================== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://PUT-YOUR-DOMAIN-HERE.com/" />
+  <meta name="twitter:title" content="PUT SITE NAME HERE | PUT PRIMARY SERVICE HERE" />
+  <meta name="twitter:description" content="PUT YOUR HOME PAGE DESCRIPTION HERE" />
+  <meta name="twitter:image" content="https://PUT-YOUR-DOMAIN-HERE.com/images/logo/heroimage.png" />
+  
+  <!-- ======================================================================
+       CANONICAL URL (Required for SEO)
+       This tells search engines the preferred URL for this page.
+       For homepage, use: https://yourdomain.com/
+       ====================================================================== -->
+  <link rel="canonical" href="https://PUT-YOUR-DOMAIN-HERE.com/" />
+  
+  <!-- ======================================================================
+       STRUCTURED DATA (JSON-LD) - Highly Recommended for SEO
+       This helps search engines understand your business and website.
+       
+       WebSite Schema: Describes your website
+       Organization Schema: Describes your business/organization
+       ====================================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "PUT YOUR SITE NAME HERE",
+    "url": "https://PUT-YOUR-DOMAIN-HERE.com",
+    "description": "PUT YOUR SITE DESCRIPTION HERE",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://PUT-YOUR-DOMAIN-HERE.com/PUT-SEARCH-PAGE-PATH-HERE?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <!-- Organization / LocalBusiness Schema (choose type appropriate to niche) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "PUT YOUR BUSINESS NAME HERE",
+    "url": "https://PUT-YOUR-DOMAIN-HERE.com",
+    "logo": "https://PUT-YOUR-DOMAIN-HERE.com/images/logo/kingtutlogo.png",
+    "description": "PUT YOUR BUSINESS DESCRIPTION HERE",
+    "telephone": "PUT-YOUR-PHONE-NUMBER-HERE",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "PUT STREET ADDRESS HERE",
+      "addressLocality": "PUT CITY HERE",
+      "addressRegion": "PUT STATE/REGION HERE",
+      "postalCode": "PUT ZIP/POSTAL CODE HERE",
+      "addressCountry": "PUT COUNTRY HERE"
+    },
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "email": "PUT-YOUR-EMAIL-HERE@yourdomain.com",
+      "telephone": "PUT-YOUR-PHONE-NUMBER-HERE"
+    }],
+    "sameAs": [
+      "PUT-FACEBOOK-URL-HERE",
+      "PUT-INSTAGRAM-URL-HERE",
+      "PUT-LINKEDIN-URL-HERE"
+    ]
+  }
+  </script>
+  <!-- ======================================================================
+       FAVICONS (Required)
+       These are the favicon files for your site. All sizes are already set up.
+       ====================================================================== -->
+  <link rel="icon" type="image/x-icon" href="images/logo/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/logo/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/logo/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/logo/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="images/logo/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="images/logo/android-chrome-512x512.png" />
+  <link rel="manifest" href="images/logo/site.webmanifest" />
+  <!-- Optional: preconnect to font provider if using web fonts -->
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/design-tokens-override.css" />
+  <link rel="stylesheet" href="css/avada-enhancements.css" />
+

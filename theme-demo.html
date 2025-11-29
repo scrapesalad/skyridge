@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avada Theme Demo - King Tut Template</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/design-tokens-override.css" />
+  <link rel="stylesheet" href="css/avada-enhancements.css" />
+  <style>
+    .demo-section {
+      padding: 4rem 0;
+      border-bottom: 2px solid var(--color-border-light);
+    }
+    .demo-section:last-child {
+      border-bottom: none;
+    }
+    .color-swatch {
+      display: inline-block;
+      width: 100px;
+      height: 100px;
+      border-radius: var(--border-radius);
+      border: 2px solid var(--color-border);
+      margin: 0.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .color-label {
+      display: block;
+      text-align: center;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      font-weight: 600;
+    }
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .button-showcase {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+    .demo-card {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 2rem;
+    }
+    .gradient-preview {
+      height: 150px;
+      border-radius: var(--border-radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      box-shadow: var(--shadow-lg);
+    }
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .before-after > div {
+      padding: 2rem;
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .before {
+      background: #e6f2ff;
+      border: 3px solid #0066cc;
+    }
+    .after {
+      background: #FAF7F0;
+      border: 3px solid #C8A860;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+    .feature-list li {
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      background: var(--color-bg-section);
+      border-left: 4px solid var(--color-primary);
+      border-radius: var(--border-radius);
+    }
+    .feature-list li::before {
+      content: '✓';
+      color: var(--color-primary);
+      font-weight: bold;
+      margin-right: 1rem;
+      font-size: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .before-after {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <img src="images/logo/kingtutlogo.png" alt="King Tut" class="logo-img" />
+        </a>
+        <nav class="main-nav">
+          <a href="#colors">Colors</a>
+          <a href="#buttons">Buttons</a>
+          <a href="#cards">Cards</a>
+          <a href="#features">Features</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner" style="display: block; text-align: center;">
+        <h1>Avada-Inspired Theme Demo</h1>
+        <p class="hero-subtitle" style="font-size: 1.25rem; max-width: 800px; margin: 0 auto 2rem;">
+          Your King Tut template now features a premium design with colors matching your logo perfectly!
+        </p>
+        <div class="hero-ctas" style="justify-content: center;">
+          <a href="#colors" class="btn btn-primary">Explore Colors</a>
+          <a href="Start Here/AVADA-THEME-GUIDE.md" class="btn btn-secondary">Read Guide</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Before & After -->
+  <section class="demo-section" style="background: white;">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 3rem;">Before & After Comparison</h2>
+      
+      <div class="before-after">
+        <div class="before">
+          <h3 style="color: #0066cc; margin-bottom: 1rem;">❌ BEFORE</h3>
+          <p><strong>Primary:</strong> #0066cc (Blue)</p>
+          <p><strong>Secondary:</strong> #00a3a3 (Teal)</p>
+          <p><strong>Accent:</strong> #2d8659 (Green)</p>
+          <p><strong>Problem:</strong> Didn't match logo</p>
+          <div style="background: #0066cc; height: 60px; margin-top: 1rem; border-radius: 8px;"></div>
+        </div>
+        
+        <div class="after">
+          <h3 style="color: #C8A860; margin-bottom: 1rem;">✅ AFTER</h3>
+          <p><strong>Primary:</strong> #C8A860 (Gold)</p>
+          <p><strong>Secondary:</strong> #2B4F66 (Navy)</p>
+          <p><strong>Accent:</strong> #D4AF37 (Bright Gold)</p>
+          <p><strong>Result:</strong> Perfect logo match! ⭐</p>
+          <div style="background: linear-gradient(135deg, #C8A860 0%, #D4AF37 100%); height: 60px; margin-top: 1rem; border-radius: 8px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Palette -->
+  <section id="colors" class="demo-section" style="background: var(--color-bg-section);">
+    <div class="container">
+      <h2 style="text-align: center;">New Color Palette</h2>
+      <p class="section-intro">Colors extracted from your King Tut logo</p>
+      
+      <div class="color-grid">
+        <div style="text-align: center;">
+          <div class="color-swatch" style="background: #C8A860;"></div>
+          <span class="color-label">Primary Gold<br>#C8A860</span>
+        </div>
+        <div style="text-align: center;">
+          <div class="color-swatch" style="background: #2B4F66;"></div>
+          <span class="color-label">Secondary Navy<br>#2B4F66</span>
+        </div>
+        <div style="text-align: center;">
+          <div class="color-swatch" style="background: #D4AF37;"></div>
+          <span class="color-label">Accent Gold<br>#D4AF37</span>
+        </div>
+        <div style="text-align: center;">
+          <div class="color-swatch" style="background: #A68943;"></div>
+          <span class="color-label">Dark Gold<br>#A68943</span>
+        </div>
+        <div style="text-align: center;">
+          <div class="color-swatch" style="background: #1E3849;"></div>
+          <span class="color-label">Dark Navy<br>#1E3849</span>
+        </div>
+        <div style="text-align: center;">
+          <div class="color-swatch" style="background: #FAF7F0;"></div>
+          <span class="color-label">Warm Cream<br>#FAF7F0</span>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 3rem; margin-bottom: 1.5rem;">Premium Gradients</h3>
+      
+      <div class="gradient-preview" style="background: linear-gradient(135deg, #C8A860 0%, #D4AF37 100%);">
+        Gold Gradient
+      </div>
+      
+      <div class="gradient-preview" style="background: linear-gradient(135deg, #2B4F66 0%, #1E3849 100%);">
+        Navy Gradient
+      </div>
+      
+      <div class="gradient-preview" style="background: linear-gradient(135deg, #C8A860 0%, #A68943 100%);">
+        Rich Gold Gradient
+      </div>
+    </div>
+  </section>
+
+  <!-- Buttons -->
+  <section id="buttons" class="demo-section" style="background: white;">
+    <div class="container">
+      <h2 style="text-align: center;">Enhanced Buttons</h2>
+      <p class="section-intro">Avada-inspired button designs with ripple effects and animations</p>
+      
+      <h3>Primary Buttons (Gold)</h3>
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Get Started</a>
+        <a href="#" class="btn btn-primary">Book Now</a>
+        <a href="#" class="btn btn-primary">Learn More</a>
+      </div>
+
+      <h3>Secondary Buttons (Outline)</h3>
+      <div class="button-showcase">
+        <a href="#" class="btn btn-secondary">Contact Us</a>
+        <a href="#" class="btn btn-secondary">View Gallery</a>
+        <a href="#" class="btn btn-secondary">Read More</a>
+      </div>
+
+      <h3>Navy Outline Buttons</h3>
+      <div class="button-showcase">
+        <a href="#" class="btn btn-outline-navy">Our Services</a>
+        <a href="#" class="btn btn-outline-navy">About Us</a>
+        <a href="#" class="btn btn-outline-navy">Contact</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards -->
+  <section id="cards" class="demo-section" style="background: var(--color-bg-section);">
+    <div class="container">
+      <h2 style="text-align: center;">Premium Card Designs</h2>
+      <p class="section-intro">Hover over cards to see animations and effects</p>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>Enhanced Shadows</h3>
+          <p>Cards now feature gold-tinted shadows that enhance on hover</p>
+          <a href="#" class="service-link">Learn More</a>
+        </div>
+
+        <div class="service-card">
+          <h3>Smooth Animations</h3>
+          <p>8px lift animation with cubic-bezier easing for premium feel</p>
+          <a href="#" class="service-link">Learn More</a>
+        </div>
+
+        <div class="service-card">
+          <h3>Gold Accents</h3>
+          <p>Top border and color transitions match your brand perfectly</p>
+          <a href="#" class="service-link">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="demo-section" style="background: white;">
+    <div class="container">
+      <h2 style="text-align: center;">Avada-Inspired Features</h2>
+      <p class="section-intro">What makes your theme premium</p>
+      
+      <div class="demo-card">
+        <h3>✨ Premium Design Elements</h3>
+        <ul class="feature-list">
+          <li><strong>Logo-Matched Colors:</strong> Gold (#C8A860) and Navy (#2B4F66) from your logo</li>
+          <li><strong>Sophisticated Gradients:</strong> Multi-color backgrounds and button effects</li>
+          <li><strong>Enhanced Typography:</strong> Navy headings with gold decorative underlines</li>
+          <li><strong>Smooth Animations:</strong> Fade-in effects with staggered delays</li>
+          <li><strong>Interactive Hover States:</strong> Lift animations and color transitions</li>
+          <li><strong>Professional Shadows:</strong> Gold and navy tinted depth effects</li>
+        </ul>
+      </div>
+
+      <div class="demo-card">
+        <h3>🎨 Design System Benefits</h3>
+        <ul class="feature-list">
+          <li><strong>Complete Color Scale:</strong> 50-900 shades for each brand color</li>
+          <li><strong>Design Tokens:</strong> Centralized configuration in site.config.json</li>
+          <li><strong>Easy Customization:</strong> Change colors site-wide in one place</li>
+          <li><strong>Consistent Branding:</strong> Every element uses the same color system</li>
+          <li><strong>Responsive Design:</strong> Optimized for desktop, tablet, and mobile</li>
+          <li><strong>Performance Optimized:</strong> Efficient CSS and animations</li>
+        </ul>
+      </div>
+
+      <div class="demo-card">
+        <h3>📚 Documentation Included</h3>
+        <ul class="feature-list">
+          <li><strong>AVADA-THEME-GUIDE.md:</strong> Complete customization guide</li>
+          <li><strong>COLOR-PALETTE-REFERENCE.md:</strong> Full color usage reference</li>
+          <li><strong>THEME-UPGRADE-SUMMARY.md:</strong> Detailed change log</li>
+          <li><strong>Easy to Maintain:</strong> Clear file structure and comments</li>
+          <li><strong>Best Practices:</strong> Accessibility and SEO optimized</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section class="demo-section" style="background: var(--color-bg-section);">
+    <div class="container">
+      <h2 style="text-align: center;">Enhanced Typography</h2>
+      <p class="section-intro">Navy headings with gold accents</p>
+      
+      <div class="demo-card">
+        <h1>This is an H1 Heading</h1>
+        <h2>This is an H2 Heading with Gold Underline</h2>
+        <h3>This is an H3 Heading</h3>
+        <h4>This is an H4 Heading</h4>
+        <p>This is body text with improved line-height and spacing. The typography system now uses navy blue for headings and proper text hierarchy throughout.</p>
+        <p><a href="#" class="service-link">This is a service link with arrow animation</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Steps Demo -->
+  <section class="demo-section" style="background: white;">
+    <div class="container">
+      <h2 style="text-align: center;">Step Numbers with Pulse Animation</h2>
+      
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Gold Gradient</h3>
+          <p>Step numbers feature gold gradient backgrounds with pulse animation</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Premium Shadows</h3>
+          <p>Enhanced shadows create depth and professional appearance</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Brand Colors</h3>
+          <p>Every element matches your logo's gold and navy palette</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bottom-cta">
+    <div class="container">
+      <h2>Ready to Customize Your Theme?</h2>
+      <p>All files are updated and your site is ready to go!</p>
+      <a href="Start Here/AVADA-THEME-GUIDE.md" class="btn btn-primary">Read the Complete Guide</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <p>&copy; 2025 King Tut Template. Avada-Inspired Theme v2.0</p>
+        <nav class="footer-nav">
+          <a href="Start Here/AVADA-THEME-GUIDE.md">Theme Guide</a>
+          <a href="Start Here/COLOR-PALETTE-REFERENCE.md">Color Reference</a>
+          <a href="Start Here/THEME-UPGRADE-SUMMARY.md">What Changed</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
+

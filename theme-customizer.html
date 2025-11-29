@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>King Tut Theme Customizer - Interactive Color Picker</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/design-tokens-override.css" />
+  <link rel="stylesheet" href="css/avada-enhancements.css" />
+  <style>
+    /* Customizer Panel Styles */
+    .customizer-panel {
+      position: fixed;
+      top: 80px;
+      right: 0;
+      width: 350px;
+      height: calc(100vh - 80px);
+      background: white;
+      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      border-left: 3px solid var(--color-primary);
+    }
+
+    .customizer-panel.closed {
+      transform: translateX(100%);
+    }
+
+    .customizer-toggle {
+      position: fixed;
+      top: 200px;
+      right: 0;
+      background: var(--color-primary);
+      color: var(--color-secondary);
+      border: none;
+      padding: 1rem 0.75rem;
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      cursor: pointer;
+      z-index: 1001;
+      font-weight: 700;
+      box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    .customizer-toggle:hover {
+      background: var(--color-primary-dark);
+      transform: translateX(-5px);
+    }
+
+    .customizer-content {
+      padding: 2rem;
+    }
+
+    .customizer-section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid var(--color-border-light);
+    }
+
+    .customizer-section:last-child {
+      border-bottom: none;
+    }
+
+    .customizer-section h3 {
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+      color: var(--color-secondary);
+    }
+
+    .color-input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .color-input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--color-secondary);
+      font-size: 0.875rem;
+    }
+
+    .color-picker-wrapper {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .color-picker-wrapper input[type="color"] {
+      width: 60px;
+      height: 40px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+    }
+
+    .color-picker-wrapper input[type="text"] {
+      flex: 1;
+      padding: 0.5rem;
+      border: 2px solid var(--color-border);
+      border-radius: var(--border-radius);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+    }
+
+    .preset-colors {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .preset-color {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: var(--border-radius);
+      border: 2px solid var(--color-border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .preset-color:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-md);
+    }
+
+    .preset-color.active {
+      border-color: var(--color-secondary);
+      border-width: 3px;
+      box-shadow: 0 0 0 2px rgba(43, 79, 102, 0.2);
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .action-buttons button {
+      padding: 0.75rem;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-apply {
+      background: var(--color-primary);
+      color: var(--color-secondary);
+    }
+
+    .btn-apply:hover {
+      background: var(--color-primary-dark);
+    }
+
+    .btn-reset {
+      background: var(--color-secondary);
+      color: white;
+    }
+
+    .btn-reset:hover {
+      background: var(--color-secondary-dark);
+    }
+
+    .btn-export {
+      background: var(--color-accent);
+      color: var(--color-secondary);
+    }
+
+    .btn-export:hover {
+      background: var(--color-accent-dark);
+    }
+
+    .code-output {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      overflow-x: auto;
+      margin-top: 1rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .current-colors {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .color-swatch {
+      padding: 0.75rem;
+      border-radius: var(--border-radius);
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 2px solid var(--color-border);
+    }
+
+    .color-swatch.primary {
+      background: var(--color-primary);
+      color: var(--color-secondary);
+    }
+
+    .color-swatch.secondary {
+      background: var(--color-secondary);
+      color: white;
+    }
+
+    .color-swatch.accent {
+      background: var(--color-accent);
+      color: var(--color-secondary);
+    }
+
+    /* Demo Content Styles */
+    .demo-hero {
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .demo-section {
+      padding: 3rem 0;
+    }
+
+    .demo-section:nth-child(even) {
+      background: var(--color-bg-section);
+    }
+
+    @media (max-width: 768px) {
+      .customizer-panel {
+        width: 100%;
+        height: 50vh;
+        top: auto;
+        bottom: 0;
+        transform: translateY(100%);
+      }
+
+      .customizer-panel.closed {
+        transform: translateY(100%);
+      }
+
+      .customizer-toggle {
+        top: auto;
+        bottom: 0;
+        right: 20px;
+        writing-mode: horizontal-tb;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Customizer Toggle Button -->
+  <button class="customizer-toggle" onclick="toggleCustomizer()">
+    🎨 Theme Customizer
+  </button>
+
+  <!-- Customizer Panel -->
+  <div class="customizer-panel" id="customizer">
+    <div class="customizer-content">
+      <h2 style="margin-bottom: 1.5rem; color: var(--color-secondary);">🎨 Theme Customizer</h2>
+      
+      <!-- Current Colors Display -->
+      <div class="customizer-section">
+        <h3>Current Theme</h3>
+        <div class="current-colors">
+          <div class="color-swatch primary" id="swatch-primary">
+            Primary<br><span id="primary-value">#C8A860</span>
+          </div>
+          <div class="color-swatch secondary" id="swatch-secondary">
+            Secondary<br><span id="secondary-value">#2B4F66</span>
+          </div>
+          <div class="color-swatch accent" id="swatch-accent">
+            Accent<br><span id="accent-value">#D4AF37</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Color Pickers -->
+      <div class="customizer-section">
+        <h3>Pick Your Colors</h3>
+        
+        <div class="color-input-group">
+          <label for="primary-color">Primary Color (Buttons, Links)</label>
+          <div class="color-picker-wrapper">
+            <input type="color" id="primary-color" value="#C8A860">
+            <input type="text" id="primary-hex" value="#C8A860" maxlength="7">
+          </div>
+        </div>
+
+        <div class="color-input-group">
+          <label for="secondary-color">Secondary Color (Headings, Navy)</label>
+          <div class="color-picker-wrapper">
+            <input type="color" id="secondary-color" value="#2B4F66">
+            <input type="text" id="secondary-hex" value="#2B4F66" maxlength="7">
+          </div>
+        </div>
+
+        <div class="color-input-group">
+          <label for="accent-color">Accent Color (Highlights)</label>
+          <div class="color-picker-wrapper">
+            <input type="color" id="accent-color" value="#D4AF37">
+            <input type="text" id="accent-hex" value="#D4AF37" maxlength="7">
+          </div>
+        </div>
+      </div>
+
+      <!-- Preset Color Schemes -->
+      <div class="customizer-section">
+        <h3>Quick Presets</h3>
+        <div class="preset-colors">
+          <button class="preset-color active" style="background: linear-gradient(135deg, #C8A860 50%, #2B4F66 50%);" 
+                  onclick="applyPreset('#C8A860', '#2B4F66', '#D4AF37')" 
+                  title="Gold & Navy (Default)"></button>
+          
+          <button class="preset-color" style="background: linear-gradient(135deg, #E63946 50%, #1D3557 50%);" 
+                  onclick="applyPreset('#E63946', '#1D3557', '#F77F00')" 
+                  title="Red & Navy"></button>
+          
+          <button class="preset-color" style="background: linear-gradient(135deg, #2A9D8F 50%, #264653 50%);" 
+                  onclick="applyPreset('#2A9D8F', '#264653', '#E9C46A')" 
+                  title="Teal & Charcoal"></button>
+          
+          <button class="preset-color" style="background: linear-gradient(135deg, #8338EC 50%, #3A0CA3 50%);" 
+                  onclick="applyPreset('#8338EC', '#3A0CA3', '#FB5607')" 
+                  title="Purple & Blue"></button>
+          
+          <button class="preset-color" style="background: linear-gradient(135deg, #06D6A0 50%, #073B4C 50%);" 
+                  onclick="applyPreset('#06D6A0', '#073B4C', '#FFD166')" 
+                  title="Green & Deep Blue"></button>
+          
+          <button class="preset-color" style="background: linear-gradient(135deg, #FF6B6B 50%, #4ECDC4 50%);" 
+                  onclick="applyPreset('#FF6B6B', '#4ECDC4', '#FFE66D')" 
+                  title="Coral & Turquoise"></button>
+          
+          <button class="preset-color" style="background: linear-gradient(135deg, #F79256 50%, #2D4059 50%);" 
+                  onclick="applyPreset('#F79256', '#2D4059', '#FBD85D')" 
+                  title="Orange & Navy"></button>
+          
+          <button class="preset-color" style="background: linear-gradient(135deg, #B565A7 50%, #2E294E 50%);" 
+                  onclick="applyPreset('#B565A7', '#2E294E', '#E8C547')" 
+                  title="Purple & Dark"></button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="customizer-section">
+        <h3>Actions</h3>
+        <div class="action-buttons">
+          <button class="btn-apply" onclick="applyColors()">✓ Apply Colors</button>
+          <button class="btn-reset" onclick="resetColors()">↺ Reset to Default</button>
+          <button class="btn-export" onclick="exportColors()">📋 Copy CSS Code</button>
+        </div>
+      </div>
+
+      <!-- Code Export -->
+      <div class="customizer-section" id="code-section" style="display: none;">
+        <h3>CSS Code</h3>
+        <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: 0.5rem;">
+          Copy this to your site.config.json:
+        </p>
+        <div class="code-output" id="code-output"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <img src="images/logo/kingtutlogo.png" alt="King Tut" class="logo-img" />
+        </a>
+        <nav class="main-nav">
+          <a href="#demo">Demo</a>
+          <a href="#buttons">Buttons</a>
+          <a href="#cards">Cards</a>
+          <a href="#features">Features</a>
+          <a href="index.html" class="btn btn-primary">Back to Home</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero demo-hero" id="demo">
+    <div class="container">
+      <h1>Interactive Theme Customizer</h1>
+      <p class="hero-subtitle" style="font-size: 1.25rem; max-width: 800px; margin: 0 auto 2rem;">
+        Pick your colors and watch the theme transform in real-time!<br>
+        Click the <strong>🎨 Theme Customizer</strong> button to get started.
+      </p>
+      <div class="hero-ctas" style="justify-content: center;">
+        <a href="#" class="btn btn-primary" onclick="toggleCustomizer(); return false;">Open Color Picker</a>
+        <a href="#" class="btn btn-secondary" onclick="applyPreset('#E63946', '#1D3557', '#F77F00'); return false;">Try Red Theme</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Buttons Demo -->
+  <section class="demo-section" id="buttons">
+    <div class="container">
+      <h2>Button Styles</h2>
+      <p class="section-intro">See how your colors look on buttons</p>
+      
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 2rem;">
+        <button class="btn btn-primary">Primary Button</button>
+        <button class="btn btn-secondary">Secondary Button</button>
+        <button class="btn btn-outline-navy">Navy Outline</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards Demo -->
+  <section class="demo-section" id="cards" style="background: white;">
+    <div class="container">
+      <h2>Card Components</h2>
+      <p class="section-intro">Interactive cards with hover effects</p>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>Service Card 1</h3>
+          <p>Hover over cards to see the gold border appear and smooth lift animation.</p>
+          <a href="#" class="service-link">Learn More</a>
+        </div>
+
+        <div class="service-card">
+          <h3>Service Card 2</h3>
+          <p>The heading changes to your primary color on hover - try it!</p>
+          <a href="#" class="service-link">Learn More</a>
+        </div>
+
+        <div class="service-card">
+          <h3>Service Card 3</h3>
+          <p>All colors update dynamically when you change the theme.</p>
+          <a href="#" class="service-link">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Steps Demo -->
+  <section class="demo-section" id="features">
+    <div class="container">
+      <h2>Step Numbers</h2>
+      <p class="section-intro">Gradient step numbers with pulse animation</p>
+      
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Pick Colors</h3>
+          <p>Choose your primary, secondary, and accent colors from the customizer panel.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Preview Live</h3>
+          <p>See your changes in real-time as you adjust the color values.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Export Code</h3>
+          <p>Copy the generated CSS code to use in your project.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Apply Theme</h3>
+          <p>Update your site.config.json with the new colors!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography Demo -->
+  <section class="demo-section" style="background: white;">
+    <div class="container">
+      <h2>Typography Styles</h2>
+      <p class="section-intro">Headings use your secondary color</p>
+      
+      <div style="max-width: 800px; margin: 0 auto;">
+        <h1>H1 Heading with Gradient</h1>
+        <h2>H2 Heading with Gold Underline</h2>
+        <h3>H3 Heading Style</h3>
+        <h4>H4 Heading Style</h4>
+        <p>Body text remains readable and professional. Links and interactive elements use your primary color for consistency.</p>
+        <p><a href="#" class="service-link">This is a service link with arrow →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bottom-cta">
+    <div class="container">
+      <h2>Love Your New Theme?</h2>
+      <p>Copy the CSS code and update your site.config.json</p>
+      <button class="btn btn-primary" style="background: white; color: var(--color-secondary); margin-top: var(--spacing-4);" 
+              onclick="exportColors()">
+        Get CSS Code
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2025 King Tut Template. Avada-Inspired Theme Customizer</p>
+      <nav class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="theme-demo.html">Demo</a>
+        <a href="Start Here/AVADA-THEME-GUIDE.md">Guide</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- JavaScript for Theme Customizer -->
+  <script>
+    // Toggle customizer panel
+    function toggleCustomizer() {
+      const panel = document.getElementById('customizer');
+      panel.classList.toggle('closed');
+    }
+
+    // Sync color picker and hex input
+    function setupColorSync() {
+      const colors = ['primary', 'secondary', 'accent'];
+      
+      colors.forEach(color => {
+        const picker = document.getElementById(`${color}-color`);
+        const hex = document.getElementById(`${color}-hex`);
+        
+        picker.addEventListener('input', (e) => {
+          hex.value = e.target.value.toUpperCase();
+          updateSwatches();
+        });
+        
+        hex.addEventListener('input', (e) => {
+          const value = e.target.value;
+          if (/^#[0-9A-F]{6}$/i.test(value)) {
+            picker.value = value;
+            updateSwatches();
+          }
+        });
+      });
+    }
+
+    // Update color swatches
+    function updateSwatches() {
+      const primary = document.getElementById('primary-color').value;
+      const secondary = document.getElementById('secondary-color').value;
+      const accent = document.getElementById('accent-color').value;
+      
+      document.getElementById('primary-value').textContent = primary.toUpperCase();
+      document.getElementById('secondary-value').textContent = secondary.toUpperCase();
+      document.getElementById('accent-value').textContent = accent.toUpperCase();
+    }
+
+    // Apply colors to theme
+    function applyColors() {
+      const primary = document.getElementById('primary-color').value;
+      const secondary = document.getElementById('secondary-color').value;
+      const accent = document.getElementById('accent-color').value;
+      
+      // Update CSS variables
+      document.documentElement.style.setProperty('--color-primary', primary);
+      document.documentElement.style.setProperty('--color-secondary', secondary);
+      document.documentElement.style.setProperty('--color-accent', accent);
+      
+      // Calculate darker/lighter variants
+      const primaryDark = adjustColor(primary, -20);
+      const primaryLight = adjustColor(primary, 20);
+      const secondaryDark = adjustColor(secondary, -20);
+      const secondaryLight = adjustColor(secondary, 20);
+      const accentDark = adjustColor(accent, -20);
+      const accentLight = adjustColor(accent, 20);
+      
+      document.documentElement.style.setProperty('--color-primary-dark', primaryDark);
+      document.documentElement.style.setProperty('--color-primary-light', primaryLight);
+      document.documentElement.style.setProperty('--color-secondary-dark', secondaryDark);
+      document.documentElement.style.setProperty('--color-secondary-light', secondaryLight);
+      document.documentElement.style.setProperty('--color-accent-dark', accentDark);
+      document.documentElement.style.setProperty('--color-accent-light', accentLight);
+      
+      updateSwatches();
+      
+      // Show success message
+      showNotification('✓ Theme colors applied!');
+    }
+
+    // Apply preset color scheme
+    function applyPreset(primary, secondary, accent) {
+      document.getElementById('primary-color').value = primary;
+      document.getElementById('primary-hex').value = primary;
+      document.getElementById('secondary-color').value = secondary;
+      document.getElementById('secondary-hex').value = secondary;
+      document.getElementById('accent-color').value = accent;
+      document.getElementById('accent-hex').value = accent;
+      
+      // Remove active class from all presets
+      document.querySelectorAll('.preset-color').forEach(btn => btn.classList.remove('active'));
+      
+      applyColors();
+    }
+
+    // Reset to default colors
+    function resetColors() {
+      applyPreset('#C8A860', '#2B4F66', '#D4AF37');
+      showNotification('↺ Reset to default theme');
+    }
+
+    // Export CSS code
+    function exportColors() {
+      const primary = document.getElementById('primary-color').value;
+      const secondary = document.getElementById('secondary-color').value;
+      const accent = document.getElementById('accent-color').value;
+      
+      const code = `{
+  "branding": {
+    "colors": {
+      "primary": {
+        "base": "${primary.toUpperCase()}"
+      },
+      "secondary": {
+        "base": "${secondary.toUpperCase()}"
+      },
+      "accent": {
+        "base": "${accent.toUpperCase()}"
+      }
+    }
+  }
+}`;
+      
+      const codeOutput = document.getElementById('code-output');
+      const codeSection = document.getElementById('code-section');
+      
+      codeOutput.textContent = code;
+      codeSection.style.display = 'block';
+      
+      // Copy to clipboard
+      navigator.clipboard.writeText(code).then(() => {
+        showNotification('📋 CSS code copied to clipboard!');
+      });
+      
+      // Scroll to code
+      codeSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Adjust color brightness
+    function adjustColor(color, amount) {
+      const num = parseInt(color.replace('#', ''), 16);
+      const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+      const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+      const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+      return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0').toUpperCase();
+    }
+
+    // Show notification
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: var(--color-secondary);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-lg);
+        z-index: 10000;
+        font-weight: 600;
+        animation: slideIn 0.3s ease;
+      `;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+      }, 2000);
+    }
+
+    // Add animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(400px); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      setupColorSync();
+      updateSwatches();
+    });
+  </script>
+
+</body>
+</html>
+

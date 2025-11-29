@@ -1,51 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ======================================================================
+       ANALYTICS (Optional)
+       If you're using Google Analytics, replace PUT-YOUR-GOOGLE-ANALYTICS-ID-HERE
+       with your actual tracking ID (format: G-XXXXXXXXXX).
+       Get the ID from site.config.json → analytics.googleAnalytics.trackingId
+       If not using analytics, remove or comment out this section.
+       ====================================================================== -->
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7MX5CJ43F"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=PUT-YOUR-GOOGLE-ANALYTICS-ID-HERE"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-R7MX5CJ43F');
+    gtag('config', 'PUT-YOUR-GOOGLE-ANALYTICS-ID-HERE');
   </script>
   <meta charset="UTF-8" />
-  <title>Locations | Pond Cleanup</title>
-  <meta name="description" content="Pond Cleanup provides pond cleaning and maintenance in cities across the U.S. Find service in your area." />
+  <!-- TITLE TAG: 50-60 characters, format "Page Title | Site Name" -->
+  <title>PUT PAGE TITLE HERE | PUT SITE NAME HERE</title>
+  
+  <!-- META DESCRIPTION: 150-160 characters, compelling description for search results -->
+  <meta name="description" content="PUT YOUR PAGE DESCRIPTION HERE - This should be 150-160 characters and describe what this page is about. Include your main keywords naturally." />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="canonical" href="https://pondcleanup.com/locations" />
+  
+  <!-- CANONICAL URL: Full URL to this page (helps prevent duplicate content issues) -->
+  <link rel="canonical" href="https://PUT-YOUR-DOMAIN-HERE.com/pages/PUT-PAGE-PATH-HERE" />
   <link rel="icon" type="image/x-icon" href="../images/logo/favicon.ico" />
   <link rel="icon" type="image/png" sizes="16x16" href="../images/logo/favicon-16x16.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="../images/logo/favicon-32x32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="../images/logo/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="../images/logo/android-chrome-192x192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="../images/logo/android-chrome-512x512.png" />
+  <link rel="manifest" href="../images/logo/site.webmanifest" />
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
-  <header class="site-header">
+    <!-- ======================================================================
+       STEP 9: HEADER / NAVIGATION
+       ======================================================================
+       The header is consistent across all pages. Update:
+       - Logo alt text (already set to placeholder)
+       - Navigation links (update hrefs and text)
+       - CTA button text/url
+       ====================================================================== -->
+<header class="site-header">
     <div class="container header-inner">
-      <a href="../index.html" class="logo"><img src="../images/logo/pondcleanuplogo.png" alt="Pond Cleanup" class="logo-img" /></a>
+      <a href="../index.html" class="logo"><img src="../images/logo/kingtutlogo.png" alt="PUT YOUR SITE NAME HERE" class="logo-img" /></a>
       <nav class="main-nav">
         <a href="services.html">Services</a>
         <a href="gallery.html">Gallery</a>
         <a href="locations.html">Locations</a>
         <a href="how-it-works.html">How It Works</a>
         <a href="about.html">About</a>
-        <a href="book.html" class="btn btn-primary">Book a Cleaning</a>
+        <a href="book.html" class="btn btn-primary">PUT YOUR CTA TEXT HERE</a>
       </nav>
     </div>
   </header>
 
-  <main>
+    <!-- ======================================================================
+       STEP 10: MAIN CONTENT
+       ======================================================================
+       This is where your page content goes. Use semantic HTML and CSS
+       classes from styles.css. See KING-TUT-TEMPLATE-GUIDE.md for
+       component examples.
+       ====================================================================== -->
+<main>
     <section class="directory-hero">
       <div class="container">
         <h1>Service Locations</h1>
-        <p>Pond Cleanup provides pond cleaning and maintenance in cities across the U.S. Enter your ZIP code to check availability.</p>
+        <p>PUT YOUR SITE NAME HERE provides PUT YOUR PRIMARY SERVICE HERE and maintenance in cities across the U.S. Enter your ZIP code to check availability.</p>
         
         <form class="hero-search" action="book.html" method="GET" style="max-width: 600px; margin: var(--spacing-md) auto 0;">
           <div class="form-row">
-            <label for="location">Your City or ZIP</label>
+            <label for="location">PUT YOUR LOCATION FIELD LABEL HERE</label>
             <input type="text" id="location" name="location" placeholder="e.g. Denver, CO or 80202" required />
           </div>
           <button type="submit" class="btn btn-primary btn-full">Check Availability</button>
@@ -122,7 +151,7 @@
       </div>
     </section>
 
-    <section class="bottom-cta" style="background-image: linear-gradient(rgba(0, 102, 204, 0.9), rgba(0, 163, 163, 0.85)), url('../images/31df9f7919a035760e792bef0b3d2bb1-enhance-4x.jpeg'); background-size: cover; background-position: center; background-attachment: fixed;">
+    <section class="bottom-cta" style="background-image: linear-gradient(rgba(0, 102, 204, 0.9), rgba(0, 163, 163, 0.85)), url('images/Gemini_Generated_Image_3171973171973171.png'); background-size: cover; background-position: center; background-attachment: fixed;">
       <div class="container">
         <h2>Don't see your city?</h2>
         <p>We're expanding! Enter your location to check availability or contact us.</p>
@@ -131,9 +160,16 @@
     </section>
   </main>
 
-  <footer class="site-footer">
+    <!-- ======================================================================
+       STEP 11: FOOTER
+       ======================================================================
+       Footer is consistent across pages. Update:
+       - Copyright year and site name
+       - Footer navigation links
+       ====================================================================== -->
+<footer class="site-footer">
     <div class="container footer-inner">
-      <p>&copy; 2025 Pond Cleanup (pondcleanup.com). All rights reserved.</p>
+      <p>&copy; 2025 PUT YOUR SITE NAME HERE (PUT-YOUR-DOMAIN-HERE.com). All rights reserved.</p>
       <nav class="footer-nav">
         <a href="about.html">About</a>
         <a href="services.html">Services</a>

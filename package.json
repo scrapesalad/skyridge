@@ -1,16 +1,22 @@
 {
-  "name": "pond-cleanup",
+  "name": "website-template",
   "version": "1.0.0",
-  "description": "Pond Cleanup - Nationwide pond cleaning and maintenance service",
+  "description": "A modern, SEO-optimized website template",
   "scripts": {
     "dev": "live-server --port=3000 --open=/index.html",
-    "start": "live-server --port=3000 --open=/index.html"
+    "start": "live-server --port=3000 --open=/index.html",
+    "build": "node scripts/build-pages.js",
+    "validate:cities": "node scripts/validate-city-pages.js",
+    "generate:sitemap": "node scripts/generate-sitemap.js",
+    "check:sitemap": "node scripts/check-sitemap.js",
+    "update:placeholders": "node scripts/update-metadata-placeholders.js",
+    "sync:design-tokens": "node scripts/sync-design-tokens.js"
   },
   "keywords": [
-    "pond",
-    "cleaning",
-    "maintenance",
-    "pond cleanup"
+    "website",
+    "template",
+    "business",
+    "service"
   ],
   "author": "",
   "license": "ISC",

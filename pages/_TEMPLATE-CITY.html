@@ -1,0 +1,202 @@
+<!--
+  ============================================================================
+  KING TUT TEMPLATE - CITY/LOCATION PAGE TEMPLATE
+  ============================================================================
+  
+  Use this template for location-specific pages (cities, regions, etc.).
+  Place in: pages/cities/city-name-state.html
+  
+  USAGE:
+  1. Copy this file: cp _TEMPLATE-CITY.html cities/your-city-state.html
+  2. Follow the STEP comments to customize
+  3. Remove these comment blocks when done
+  
+  IMPORTANT: City pages need 600+ words and 250+ city-unique words for SEO.
+  Run: npm run validate:cities to check quality.
+  
+  ============================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7MX5CJ43F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R7MX5CJ43F'); <!-- REPLACE: Update tracking ID -->
+  </script>
+
+  <!-- ======================================================================
+       META TAGS (Required for SEO)
+       IMPORTANT: City pages need 600+ words and 250+ city-unique words
+       ====================================================================== -->
+  <meta charset="UTF-8" />
+  
+  <!-- TITLE TAG: 50-60 characters, include city name and state -->
+  <title>PUT SERVICES HERE in PUT CITY NAME HERE, PUT STATE HERE | PUT SITE NAME HERE</title>
+  
+  <!-- META DESCRIPTION: 150-160 characters, include city name and services -->
+  <meta name="description" content="PUT YOUR CITY-SPECIFIC DESCRIPTION HERE - Include city name, state, neighborhoods served, and services offered. Make it compelling for local search." />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- META KEYWORDS: Include city-specific keywords -->
+  <meta name="keywords" content="PUT SERVICE KEYWORD HERE PUT CITY NAME HERE, PUT CITY NAME HERE PUT STATE HERE, PUT SERVICE KEYWORD HERE near me" />
+  
+  <!-- CANONICAL URL: Full URL to this city page -->
+  <link rel="canonical" href="https://PUT-YOUR-DOMAIN-HERE.com/pages/cities/PUT-CITY-SLUG-HERE" />
+  
+  <!-- FAVICONS: All favicon sizes for your site -->
+  <link rel="icon" type="image/x-icon" href="../../images/logo/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../images/logo/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../images/logo/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../../images/logo/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="../../images/logo/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../../images/logo/android-chrome-512x512.png" />
+  <link rel="manifest" href="../../images/logo/site.webmanifest" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../css/styles.css" />
+  
+  <!-- ======================================================================
+       STRUCTURED DATA (JSON-LD) - LocalBusiness Schema
+       This helps with local SEO and Google My Business integration
+       ====================================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "PUT YOUR BUSINESS NAME HERE - PUT CITY NAME HERE",
+    "description": "PUT SERVICES HERE in PUT CITY NAME HERE, PUT STATE HERE",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "PUT CITY NAME HERE",
+      "addressRegion": "PUT STATE CODE HERE",
+      "addressCountry": "US"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "PUT CITY NAME HERE"
+    },
+    "url": "https://PUT-YOUR-DOMAIN-HERE.com/pages/cities/PUT-CITY-SLUG-HERE"
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="logo">
+        <img src="../../images/logo/kingtutlogo.png" alt="PUT YOUR SITE NAME HERE" class="logo-img" />
+      </a>
+      <nav class="main-nav">
+        <a href="../services.html">Services</a>
+        <a href="../about.html">About</a>
+        <a href="index.html">Cities</a> <!-- Link to cities index -->
+        <a href="../contact.html">Contact</a>
+        <a href="../book.html" class="btn btn-primary">Get Started</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="directory-hero">
+      <div class="container">
+        <h1>Services in City Name, State</h1> <!-- REPLACE: City name and state -->
+        <p>Professional services serving City Name and surrounding areas. Quality service, local expertise.</p> <!-- REPLACE: City-specific intro -->
+      </div>
+    </section>
+
+    <!-- City-Specific Content -->
+    <section class="how-it-works">
+      <div class="container" style="max-width: 1000px;">
+        <!-- IMPORTANT: Include city name naturally throughout content -->
+        
+        <h2>Services in City Name</h2> <!-- REPLACE: Include city name -->
+        <p>We provide comprehensive services to residents and businesses throughout City Name, State. Our local team understands the unique needs of the area and delivers quality results.</p> <!-- REPLACE: City-specific content -->
+        
+        <!-- Service Areas / Neighborhoods -->
+        <h2>Areas We Serve in City Name</h2> <!-- REPLACE: Include city name -->
+        <p>We serve the following neighborhoods and areas in and around City Name:</p>
+        <ul class="services-list">
+          <li>Neighborhood 1</li> <!-- REPLACE: Add local neighborhoods -->
+          <li>Neighborhood 2</li>
+          <li>Neighborhood 3</li>
+          <li>ZIP codes: 12345, 12346</li> <!-- REPLACE: Add ZIP codes -->
+        </ul>
+
+        <!-- Local Information -->
+        <h2>Why Choose Us in City Name</h2> <!-- REPLACE: Include city name -->
+        <p>When you need services in City Name, you want a team that understands local conditions and regulations. We bring years of experience serving the City Name area.</p> <!-- REPLACE: City-specific benefits -->
+        
+        <ul class="services-list">
+          <li>Local expertise in City Name area</li> <!-- REPLACE: City-specific benefits -->
+          <li>Familiar with local regulations</li>
+          <li>Quick response times in City Name</li>
+          <li>Knowledge of area-specific needs</li>
+        </ul>
+
+        <!-- Process / How It Works -->
+        <h2>How We Serve City Name</h2> <!-- REPLACE: Include city name -->
+        <p>Our process for serving City Name customers:</p>
+        <ol class="services-list">
+          <li>Contact us for a free quote</li>
+          <li>We'll assess your needs</li>
+          <li>Schedule service at your convenience</li>
+          <li>Professional service delivery</li>
+        </ol>
+
+        <!-- Local References (Important for SEO) -->
+        <h2>City Name Service Information</h2> <!-- REPLACE: Include city name -->
+        <p>City Name is known for [local characteristic]. This makes our services particularly valuable for City Name residents because [reason].</p> <!-- REPLACE: Add local context -->
+        
+        <!-- Images with city-specific alt text -->
+        <div style="margin: var(--spacing-lg) 0;">
+          <img src="images/Gemini_Generated_Image_3171973171973171.png" alt="Services in City Name, State" style="width: 100%; max-width: 800px; border-radius: 8px;" /> <!-- REPLACE: Add city image with city name in alt -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Nearby Cities / Related Links -->
+    <section class="how-it-works" style="background: var(--color-light);">
+      <div class="container" style="max-width: 1000px;">
+        <h2>Also Serving Nearby Areas</h2>
+        <p>We also provide services in these nearby cities:</p>
+        <ul class="services-list">
+          <li><a href="nearby-city-1.html">Nearby City 1</a></li> <!-- REPLACE: Add nearby city links -->
+          <li><a href="nearby-city-2.html">Nearby City 2</a></li>
+          <li><a href="nearby-city-3.html">Nearby City 3</a></li>
+        </ul>
+        <p><a href="index.html">← Back to all cities</a></p>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bottom-cta" style="background-image: linear-gradient(rgba(0, 102, 204, 0.9), rgba(0, 163, 163, 0.85)), url('images/Gemini_Generated_Image_6xm42n6xm42n6xm4.png'); background-size: cover; background-position: center;">
+      <div class="container">
+        <h2>Ready for Service in City Name?</h2> <!-- REPLACE: Include city name -->
+        <p>Get a free quote for services in City Name, State today.</p> <!-- REPLACE: Include city name -->
+        <a href="../book.html" class="btn btn-primary">Get a Free Quote</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2025 Your Site Name. All rights reserved.</p>
+      <nav class="footer-nav">
+        <a href="../about.html">About</a>
+        <a href="../services.html">Services</a>
+        <a href="index.html">Cities</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
+

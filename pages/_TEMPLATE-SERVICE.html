@@ -1,0 +1,155 @@
+<!--
+  ============================================================================
+  KING TUT TEMPLATE - SERVICE PAGE TEMPLATE
+  ============================================================================
+  
+  Use this template for individual service detail pages.
+  Place in: pages/services/your-service-name.html
+  
+  USAGE:
+  1. Copy this file: cp _TEMPLATE-SERVICE.html services/my-service.html
+  2. Follow the STEP comments to customize
+  3. Remove these comment blocks when done
+  
+  ============================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7MX5CJ43F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R7MX5CJ43F'); <!-- REPLACE: Update tracking ID -->
+  </script>
+
+  <!-- ======================================================================
+       META TAGS (Required for SEO)
+       ====================================================================== -->
+  <meta charset="UTF-8" />
+  
+  <!-- TITLE TAG: 50-60 characters, format "Service Name | Site Name" -->
+  <title>PUT SERVICE NAME HERE | PUT SITE NAME HERE</title>
+  
+  <!-- META DESCRIPTION: 150-160 characters, describe the service and benefits -->
+  <meta name="description" content="PUT YOUR SERVICE DESCRIPTION HERE - This should be 150-160 characters and describe what this service provides, key benefits, and what customers get." />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- CANONICAL URL: Full URL to this service page -->
+  <link rel="canonical" href="https://PUT-YOUR-DOMAIN-HERE.com/pages/services/PUT-SERVICE-PATH-HERE" />
+  
+  <!-- FAVICONS: All favicon sizes for your site -->
+  <link rel="icon" type="image/x-icon" href="../../images/logo/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../images/logo/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../images/logo/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../../images/logo/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="../../images/logo/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../../images/logo/android-chrome-512x512.png" />
+  <link rel="manifest" href="../../images/logo/site.webmanifest" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../../css/styles.css" />
+  
+  <!-- ======================================================================
+       STRUCTURED DATA (JSON-LD) - Service Schema
+       This helps search engines understand your service offering
+       ====================================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "PUT SERVICE TYPE HERE",
+    "name": "PUT SERVICE NAME HERE",
+    "description": "PUT SERVICE DESCRIPTION HERE",
+    "provider": {
+      "@type": "Organization",
+      "name": "PUT YOUR BUSINESS NAME HERE",
+      "url": "https://PUT-YOUR-DOMAIN-HERE.com"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "PUT COUNTRY OR REGION HERE"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="logo">
+        <img src="../../images/logo/kingtutlogo.png" alt="PUT YOUR SITE NAME HERE" class="logo-img" />
+      </a>
+      <nav class="main-nav">
+        <a href="../services.html">Services</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../book.html" class="btn btn-primary">Get Started</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="directory-hero">
+      <div class="container">
+        <h1>Service Name</h1> <!-- REPLACE: Service name -->
+        <p>Brief description of what this service provides and why customers need it.</p> <!-- REPLACE: Service intro -->
+      </div>
+    </section>
+
+    <!-- Service Details -->
+    <section class="how-it-works">
+      <div class="container" style="max-width: 800px;">
+        <h2>What's Included</h2> <!-- REPLACE: Update heading -->
+        <p>Detailed description of what customers get with this service.</p> <!-- REPLACE: Add details -->
+        
+        <ul class="services-list">
+          <li>Feature or benefit 1</li> <!-- REPLACE: Add features -->
+          <li>Feature or benefit 2</li>
+          <li>Feature or benefit 3</li>
+        </ul>
+
+        <h2>How It Works</h2> <!-- REPLACE: Update heading -->
+        <p>Explain the process or steps involved in this service.</p> <!-- REPLACE: Add process description -->
+        
+        <!-- Optional: Process steps -->
+        <ol class="services-list">
+          <li>Step 1: Description</li> <!-- REPLACE: Add steps -->
+          <li>Step 2: Description</li>
+          <li>Step 3: Description</li>
+        </ol>
+
+        <h2>Why Choose This Service</h2> <!-- REPLACE: Update heading -->
+        <p>Explain the benefits and value proposition.</p> <!-- REPLACE: Add benefits -->
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bottom-cta" style="background-image: linear-gradient(rgba(0, 102, 204, 0.9), rgba(0, 163, 163, 0.85)), url('images/Gemini_Generated_Image_3171973171973171.png'); background-size: cover; background-position: center;">
+      <div class="container">
+        <h2>Ready to Get Started?</h2>
+        <p>Get a free quote or book this service today.</p>
+        <a href="../book.html" class="btn btn-primary">Book Now</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2025 Your Site Name. All rights reserved.</p>
+      <nav class="footer-nav">
+        <a href="../about.html">About</a>
+        <a href="../services.html">Services</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
+

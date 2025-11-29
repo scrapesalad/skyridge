@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- COMPONENT: global-head -->
+</head>
+<body>
+<!-- COMPONENT: skip-link -->
+<!-- COMPONENT: header -->
+
+  <!-- ======================================================================
+       MAIN CONTENT
+       ====================================================================== -->
+  <main id="main-content">
+<!-- COMPONENT: hero -->
+
+    <!-- ================================================================
+         SERVICES SECTION
+         ================================================================ -->
+    <section class="what-we-do" aria-labelledby="services-heading">
+      <div class="container">
+        <h2 id="services-heading">PUT YOUR SERVICES SECTION HEADING HERE</h2> <!-- REPLACE: Update heading -->
+        <p class="section-intro">
+          PUT A SHORT INTRO HERE – e.g. "We offer end-to-end PUT SERVICE CATEGORY HERE for homeowners and businesses."
+        </p> <!-- REPLACE: Update intro -->
+
+        <div class="services-grid">
+          <!-- Service Card 1 -->
+          <article class="service-card service-card-bg" style="background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.7)), url('images/PUT-YOUR-SERVICE-IMAGE-1-HERE.jpg');">
+            <div class="service-card-content">
+              <h3>PUT YOUR SERVICE NAME HERE</h3> <!-- REPLACE: Update service name -->
+              <p>PUT YOUR SERVICE DESCRIPTION HERE – One or two lines explaining the benefit and ideal customer.</p> <!-- REPLACE: Update description -->
+              <a href="pages/services/PUT-YOUR-SERVICE-PAGE-HERE.html" class="service-link">Learn more →</a> <!-- REPLACE: Update link -->
+            </div>
+          </article>
+          <!-- Service Card 2 -->
+          <article class="service-card service-card-bg" style="background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.7)), url('images/PUT-YOUR-SERVICE-IMAGE-2-HERE.jpg');">
+            <div class="service-card-content">
+              <h3>PUT YOUR SERVICE NAME HERE</h3> <!-- REPLACE: Update service name -->
+              <p>PUT YOUR SERVICE DESCRIPTION HERE – Focus on outcome or transformation for the client.</p> <!-- REPLACE: Update description -->
+              <a href="pages/services/PUT-YOUR-SERVICE-PAGE-HERE.html" class="service-link">Learn more →</a> <!-- REPLACE: Update link -->
+            </div>
+          </article>
+          <!-- Service Card 3 -->
+          <article class="service-card service-card-bg" style="background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.7)), url('images/PUT-YOUR-SERVICE-IMAGE-3-HERE.jpg');">
+            <div class="service-card-content">
+              <h3>PUT YOUR SERVICE NAME HERE</h3> <!-- REPLACE: Update service name -->
+              <p>PUT YOUR SERVICE DESCRIPTION HERE – Address a common problem or pain point you solve.</p> <!-- REPLACE: Update description -->
+              <a href="pages/services/PUT-YOUR-SERVICE-PAGE-HERE.html" class="service-link">Learn more →</a> <!-- REPLACE: Update link -->
+            </div>
+          </article>
+          <!-- Service Card 4 -->
+          <article class="service-card service-card-bg" style="background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.7)), url('images/PUT-YOUR-SERVICE-IMAGE-4-HERE.jpg');">
+            <div class="service-card-content">
+              <h3>PUT YOUR SERVICE NAME HERE</h3> <!-- REPLACE: Update service name -->
+              <p>PUT YOUR SERVICE DESCRIPTION HERE – Highlight something premium, fast, or unique.</p> <!-- REPLACE: Update description -->
+              <a href="pages/services/PUT-YOUR-SERVICE-PAGE-HERE.html" class="service-link">Learn more →</a> <!-- REPLACE: Update link -->
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         WHY CHOOSE US
+         ================================================================ -->
+    <section class="why-us section-with-bg" aria-labelledby="why-heading" style="background-image: linear-gradient(rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.98)), url('images/PUT-YOUR-BACKGROUND-IMAGE-HERE.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+      <div class="container">
+        <h2 id="why-heading">Why PUT YOUR TARGET AUDIENCE HERE Choose PUT YOUR SITE NAME HERE</h2> <!-- REPLACE: Update heading -->
+
+        <div class="why-grid">
+          <div class="why-item">
+            <h3>PUT BENEFIT TITLE #1 HERE</h3> <!-- REPLACE: Update benefit title -->
+            <p>PUT BENEFIT DESCRIPTION HERE – e.g. "Transparent pricing with no hidden fees."</p> <!-- REPLACE: Update description -->
+          </div>
+          <div class="why-item">
+            <h3>PUT BENEFIT TITLE #2 HERE</h3> <!-- REPLACE: Update benefit title -->
+            <p>PUT BENEFIT DESCRIPTION HERE – e.g. "Licensed, insured, and vetted professionals."</p> <!-- REPLACE: Update description -->
+          </div>
+          <div class="why-item">
+            <h3>PUT BENEFIT TITLE #3 HERE</h3> <!-- REPLACE: Update benefit title -->
+            <p>PUT BENEFIT DESCRIPTION HERE – e.g. "Fast response times and same-day availability."</p> <!-- REPLACE: Update description -->
+          </div>
+          <div class="why-item">
+            <h3>PUT BENEFIT TITLE #4 HERE</h3> <!-- REPLACE: Update benefit title -->
+            <p>PUT BENEFIT DESCRIPTION HERE – e.g. "5-star rated by customers across PUT LOCATION HERE."</p> <!-- REPLACE: Update description -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         HOW IT WORKS
+         ================================================================ -->
+    <section class="how-it-works" aria-labelledby="how-heading">
+      <div class="container">
+        <h2 id="how-heading">How PUT YOUR SITE NAME HERE Works</h2> <!-- REPLACE: Update heading -->
+        <div class="steps-grid">
+          <div class="step">
+            <span class="step-number">1</span>
+            <h3>PUT STEP 1 TITLE HERE</h3> <!-- REPLACE: Update step title -->
+            <p>PUT STEP 1 DESCRIPTION HERE – e.g. "Tell us about your project or schedule a quick call."</p> <!-- REPLACE: Update description -->
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            <h3>PUT STEP 2 TITLE HERE</h3> <!-- REPLACE: Update step title -->
+            <p>PUT STEP 2 DESCRIPTION HERE – e.g. "Get a clear, upfront quote with timeline."</p> <!-- REPLACE: Update description -->
+          </div>
+          <div class="step">
+            <span class="step-number">3</span>
+            <h3>PUT STEP 3 TITLE HERE</h3> <!-- REPLACE: Update step title -->
+            <p>PUT STEP 3 DESCRIPTION HERE – e.g. "We complete the work with minimal disruption."</p> <!-- REPLACE: Update description -->
+          </div>
+          <div class="step">
+            <span class="step-number">4</span>
+            <h3>PUT STEP 4 TITLE HERE</h3> <!-- REPLACE: Update step title -->
+            <p>PUT STEP 4 DESCRIPTION HERE – e.g. "You enjoy the results, with ongoing support if needed."</p> <!-- REPLACE: Update description -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         BEFORE & AFTER / PORTFOLIO
+         ================================================================ -->
+    <section class="before-after" aria-labelledby="portfolio-heading">
+      <div class="container">
+        <h2 id="portfolio-heading">PUT YOUR PORTFOLIO SECTION HEADING HERE</h2> <!-- REPLACE: Update heading -->
+        <p class="section-intro">PUT YOUR SECTION INTRO TEXT HERE – e.g. "See how we've transformed spaces for clients like you."</p> <!-- REPLACE: Update intro -->
+
+        <div class="before-after-grid">
+          <figure class="before-after-item">
+            <div class="before-after-images">
+              <div class="before-photo">
+                <img src="images/0b89a8b10a3cdccda885b1d037df7b2d-enhance-4x.jpeg" alt="PUT YOUR BEFORE IMAGE ALT TEXT HERE" loading="lazy" decoding="async" />
+                <span class="label">Before</span>
+              </div>
+              <div class="after-photo">
+                <img src="images/PXL_20250628_171207914.jpg" alt="PUT YOUR AFTER IMAGE ALT TEXT HERE" loading="lazy" decoding="async" />
+                <span class="label">After</span>
+              </div>
+            </div>
+            <figcaption>PUT YOUR CAPTION TEXT HERE – Briefly describe what changed and the result.</figcaption> <!-- REPLACE: Update caption -->
+          </figure>
+
+          <figure class="before-after-item">
+            <div class="before-after-images">
+              <div class="before-photo">
+                <img src="images/PUT-YOUR-BEFORE-IMAGE-2-HERE.jpg" alt="PUT YOUR BEFORE IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+                <span class="label">Before</span>
+              </div>
+              <div class="after-photo">
+                <img src="images/PUT-YOUR-AFTER-IMAGE-2-HERE.jpg" alt="PUT YOUR AFTER IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+                <span class="label">After</span>
+              </div>
+            </div>
+            <figcaption>PUT YOUR CAPTION TEXT HERE – Focus on the benefit to the client.</figcaption> <!-- REPLACE: Update caption -->
+          </figure>
+
+          <figure class="before-after-item">
+            <div class="before-after-images">
+              <div class="before-photo">
+                <img src="images/PUT-YOUR-BEFORE-IMAGE-3-HERE.jpg" alt="PUT YOUR BEFORE IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+                <span class="label">Before</span>
+              </div>
+              <div class="after-photo">
+                <img src="images/PUT-YOUR-AFTER-IMAGE-3-HERE.jpg" alt="PUT YOUR AFTER IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+                <span class="label">After</span>
+              </div>
+            </div>
+            <figcaption>PUT YOUR CAPTION TEXT HERE – Call out any impressive stats or numbers.</figcaption> <!-- REPLACE: Update caption -->
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         GALLERY
+         ================================================================ -->
+    <section class="gallery" aria-labelledby="gallery-heading">
+      <div class="container">
+        <h2 id="gallery-heading">PUT YOUR GALLERY SECTION HEADING HERE</h2> <!-- REPLACE: Update heading -->
+        <p class="section-intro">PUT YOUR GALLERY INTRO TEXT HERE – e.g. "A glimpse at our recent projects and favorite results."</p> <!-- REPLACE: Update intro -->
+
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="images/PUT-YOUR-GALLERY-IMAGE-1-HERE.jpg" alt="PUT YOUR IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+          </div>
+          <div class="gallery-item">
+            <img src="images/PUT-YOUR-GALLERY-IMAGE-2-HERE.jpg" alt="PUT YOUR IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+          </div>
+          <div class="gallery-item">
+            <img src="images/PUT-YOUR-GALLERY-IMAGE-3-HERE.jpg" alt="PUT YOUR IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+          </div>
+          <div class="gallery-item">
+            <img src="images/PUT-YOUR-GALLERY-IMAGE-4-HERE.jpg" alt="PUT YOUR IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+          </div>
+          <div class="gallery-item">
+            <img src="images/PUT-YOUR-GALLERY-IMAGE-5-HERE.jpg" alt="PUT YOUR IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+          </div>
+          <div class="gallery-item">
+            <img src="images/PUT-YOUR-GALLERY-IMAGE-6-HERE.jpg" alt="PUT YOUR IMAGE ALT TEXT HERE" loading="lazy" decoding="async" /> <!-- REPLACE: Update image and alt -->
+          </div>
+        </div>
+
+        <div class="gallery-cta">
+          <a href="pages/gallery.html" class="btn btn-secondary">View Full Gallery</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         TESTIMONIALS
+         ================================================================ -->
+    <section class="testimonials" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <h2 id="testimonials-heading">What PUT YOUR TARGET AUDIENCE HERE Are Saying</h2> <!-- REPLACE: Update heading -->
+
+        <div class="testimonials-grid">
+          <article class="testimonial" itemscope itemtype="https://schema.org/Review">
+            <p class="testimonial-text" itemprop="reviewBody">
+              "PUT YOUR TESTIMONIAL TEXT HERE – Make it specific and outcome-focused."
+            </p> <!-- REPLACE: Update testimonial -->
+            <p class="testimonial-meta">
+              — <span itemprop="author">PUT CUSTOMER NAME HERE</span>, <span itemprop="name">PUT LOCATION HERE</span>
+            </p> <!-- REPLACE: Update attribution -->
+          </article>
+
+          <article class="testimonial" itemscope itemtype="https://schema.org/Review">
+            <p class="testimonial-text" itemprop="reviewBody">
+              "PUT YOUR TESTIMONIAL TEXT HERE – Another short, believable quote."
+            </p> <!-- REPLACE: Update testimonial -->
+            <p class="testimonial-meta">
+              — <span itemprop="author">PUT CUSTOMER NAME HERE</span>, <span itemprop="name">PUT LOCATION HERE</span>
+            </p> <!-- REPLACE: Update attribution -->
+          </article>
+
+          <article class="testimonial" itemscope itemtype="https://schema.org/Review">
+            <p class="testimonial-text" itemprop="reviewBody">
+              "PUT YOUR TESTIMONIAL TEXT HERE – Ideally mention speed, quality, or service."
+            </p> <!-- REPLACE: Update testimonial -->
+            <p class="testimonial-meta">
+              — <span itemprop="author">PUT CUSTOMER NAME HERE</span>, <span itemprop="name">PUT LOCATION HERE</span>
+            </p> <!-- REPLACE: Update attribution -->
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         BOTTOM CTA
+         ================================================================ -->
+    <section class="bottom-cta" aria-labelledby="bottom-cta-heading" style="background-image: linear-gradient(rgba(0, 102, 204, 0.9), rgba(0, 163, 163, 0.85)), url('images/PUT-YOUR-BACKGROUND-IMAGE-HERE.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+      <div class="container">
+        <h2 id="bottom-cta-heading">PUT YOUR FINAL CTA HEADING HERE</h2> <!-- REPLACE: Update heading -->
+        <p>PUT YOUR CTA DESCRIPTION HERE – e.g. "Ready to get started? Request your free quote in less than 60 seconds."</p> <!-- REPLACE: Update description -->
+        <a href="pages/book.html" class="btn btn-primary">PUT YOUR CTA BUTTON TEXT HERE</a> <!-- REPLACE: Update button text and URL -->
+      </div>
+    </section>
+  </main>
+
+<!-- COMPONENT: footer -->
+<!-- COMPONENT: scripts -->
+</body>
+</html>
+
