@@ -1,39 +1,117 @@
-# Script to verify all pages have canonical URLs
-$missingCanonical = @()
-$pages = Get-ChildItem -Path "pages" -Recurse -Filter "*.html" | Where-Object { $_.FullName -notlike "*node_modules*" }
+# SEO Verification Script for Pond Cleanup
+# Checks all HTML pages for proper SEO elements
 
-foreach ($page in $pages) {
-    $content = Get-Content $page.FullName -Raw
-    if ($content -notmatch 'rel="canonical"') {
-        $missingCanonical += $page.FullName
+Write-Host "=== Pond Cleanup SEO Verification ===" -ForegroundColor Cyan
+Write-Host ""
+
+# Get all HTML files
+$htmlFiles = Get-ChildItem -Path . -Include *.html -Recurse -File | Where-Object { 
+    $_.FullName -notmatch '\\node_modules\\' 
+}
+
+$totalFiles = $htmlFiles.Count
+$issuesFound = 0
+$filesWithIssues = @()
+
+foreach ($file in $htmlFiles) {
+    $relativePath = $file.FullName.Replace((Get-Location).Path, "").TrimStart('\')
+    $content = Get-Content $file.FullName -Raw -Encoding UTF8
+    $fileIssues = @()
+    
+    # Check for canonical URL
+    if ($content -notmatch '<link rel="canonical"') {
+        $fileIssues += "Missing canonical URL"
     }
-}
-
-if ($missingCanonical.Count -eq 0) {
-    Write-Host "✅ All pages have canonical URLs!" -ForegroundColor Green
-} else {
-    Write-Host "⚠️  Pages missing canonical URLs:" -ForegroundColor Yellow
-    $missingCanonical | ForEach-Object { Write-Host "  - $_" }
-}
-
-# Check for pondauthority.com in canonical URLs
-$wrongCanonical = @()
-foreach ($page in $pages) {
-    $content = Get-Content $page.FullName -Raw
-    if ($content -match 'rel="canonical" href="([^"]+)"') {
-        $canonical = $matches[1]
-        if ($canonical -notlike "https://pondauthority.com*") {
-            $wrongCanonical += "$($page.Name): $canonical"
+    # Check if canonical points to correct domain
+    elseif ($content -match '<link rel="canonical" href="https://pondauthority\.com') {
+        $fileIssues += "Canonical URL points to wrong domain (pondauthority.com)"
+    }
+    
+    # Check for meta title
+    if ($content -notmatch '<title>') {
+        $fileIssues += "Missing title tag"
+    }
+    
+    # Check for meta description
+    if ($content -notmatch '<meta name="description"') {
+        $fileIssues += "Missing meta description"
+    }
+    
+    # Check for viewport meta
+    if ($content -notmatch '<meta name="viewport"') {
+        $fileIssues += "Missing viewport meta tag"
+    }
+    
+    # Check for Google Analytics
+    if ($content -notmatch 'gtag\(') {
+        $fileIssues += "Missing Google Analytics"
+    }
+    
+    # Check for favicon
+    if ($content -notmatch 'favicon') {
+        $fileIssues += "Missing favicon reference"
+    }
+    
+    # Check for proper HTML lang attribute
+    if ($content -notmatch '<html lang="en"') {
+        $fileIssues += "Missing or incorrect HTML lang attribute"
+    }
+    
+    if ($fileIssues.Count -gt 0) {
+        $issuesFound += $fileIssues.Count
+        $filesWithIssues += $relativePath
+        Write-Host "❌ $relativePath" -ForegroundColor Red
+        foreach ($issue in $fileIssues) {
+            Write-Host "   - $issue" -ForegroundColor Yellow
         }
+    } else {
+        Write-Host "✅ $relativePath" -ForegroundColor Green
     }
 }
 
-if ($wrongCanonical.Count -eq 0) {
-    Write-Host "✅ All canonical URLs point to pondauthority.com!" -ForegroundColor Green
+Write-Host ""
+Write-Host "=== Summary ===" -ForegroundColor Cyan
+Write-Host "Total HTML files checked: $totalFiles"
+Write-Host "Files with issues: $($filesWithIssues.Count)" -ForegroundColor $(if ($filesWithIssues.Count -eq 0) { "Green" } else { "Yellow" })
+Write-Host "Total issues found: $issuesFound" -ForegroundColor $(if ($issuesFound -eq 0) { "Green" } else { "Yellow" })
+
+if ($issuesFound -eq 0) {
+    Write-Host ""
+    Write-Host "🎉 All SEO checks passed!" -ForegroundColor Green
 } else {
-    Write-Host "⚠️  Canonical URLs not pointing to pondauthority.com:" -ForegroundColor Yellow
-    $wrongCanonical | ForEach-Object { Write-Host "  - $_" }
+    Write-Host ""
+    Write-Host "⚠️  Please fix the issues listed above." -ForegroundColor Yellow
 }
 
-Write-Host "`nTotal pages checked: $($pages.Count)" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Sitemap check:" -ForegroundColor Cyan
+if (Test-Path "sitemap.xml") {
+    $sitemap = Get-Content "sitemap.xml" -Raw
+    $urlCount = ([regex]::Matches($sitemap, "<loc>")).Count
+    Write-Host "✅ sitemap.xml found with $urlCount URLs" -ForegroundColor Green
+    
+    if ($sitemap -match 'pondauthority\.com') {
+        Write-Host "❌ Sitemap contains references to pondauthority.com" -ForegroundColor Red
+    } else {
+        Write-Host "✅ All sitemap URLs use correct domain (pondcleanup.com)" -ForegroundColor Green
+    }
+} else {
+    Write-Host "❌ sitemap.xml not found" -ForegroundColor Red
+}
 
+Write-Host ""
+Write-Host "Robots.txt check:" -ForegroundColor Cyan
+if (Test-Path "robots.txt") {
+    $robots = Get-Content "robots.txt" -Raw
+    Write-Host "✅ robots.txt found" -ForegroundColor Green
+    
+    if ($robots -match 'pondauthority\.com') {
+        Write-Host "❌ robots.txt contains references to pondauthority.com" -ForegroundColor Red
+    } else {
+        Write-Host "✅ robots.txt uses correct domain (pondcleanup.com)" -ForegroundColor Green
+    }
+} else {
+    Write-Host "❌ robots.txt not found" -ForegroundColor Red
+}
+
+Write-Host ""
