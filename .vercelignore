@@ -28,6 +28,3 @@ data/
 # Template files
 *.template
 _TEMPLATE-*.html
-
-# Public folder (we're deploying from root)
-public/
