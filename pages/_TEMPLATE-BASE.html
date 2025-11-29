@@ -73,19 +73,19 @@
   <!-- ======================================================================
        CANONICAL URL (Required for SEO)
        This tells search engines the preferred URL for this page.
-       Use full URL: https://yourdomain.com/pages/your-page
+       Use full URL: https://Place-website-domain-here/pages/your-page
        ====================================================================== -->
-  <link rel="canonical" href="https://PUT-YOUR-DOMAIN-HERE.com/pages/PUT-PAGE-PATH-HERE" />
+  <link rel="canonical" href="https://Place-website-domain-here/pages/PUT-PAGE-PATH-HERE" />
   
   <!-- ======================================================================
        OPEN GRAPH TAGS (Recommended for Social Sharing)
        These control how your page appears when shared on Facebook, LinkedIn, etc.
        ====================================================================== -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://PUT-YOUR-DOMAIN-HERE.com/pages/PUT-PAGE-PATH-HERE" />
+  <meta property="og:url" content="https://Place-website-domain-here/pages/PUT-PAGE-PATH-HERE" />
   <meta property="og:title" content="PUT PAGE TITLE HERE" />
   <meta property="og:description" content="PUT PAGE DESCRIPTION HERE - Same as meta description above" />
-  <meta property="og:image" content="https://PUT-YOUR-DOMAIN-HERE.com/images/logo/heroimage.png" />
+  <meta property="og:image" content="https://Place-website-domain-here/images/logo/heroimage.png" />
   <meta property="og:site_name" content="PUT YOUR SITE NAME HERE" />
   
   <!-- ======================================================================
@@ -95,7 +95,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="PUT PAGE TITLE HERE" />
   <meta name="twitter:description" content="PUT PAGE DESCRIPTION HERE" />
-  <meta name="twitter:image" content="https://PUT-YOUR-DOMAIN-HERE.com/images/logo/heroimage.png" />
+  <meta name="twitter:image" content="https://Place-website-domain-here/images/logo/heroimage.png" />
   
   <!-- ======================================================================
        FAVICONS (Required)
@@ -113,10 +113,15 @@
   <!-- ======================================================================
        STEP 7: STYLESHEET (Required)
        ======================================================================
-       This links to your main CSS file. The path uses ../ because pages
-       are in the pages/ subdirectory.
+       This links to your main CSS files. The path uses / because these are
+       absolute paths from the root. Includes:
+       - styles.css: Main stylesheet
+       - design-tokens-override.css: Design tokens from site.config.json
+       - avada-enhancements.css: Premium Avada-inspired theme enhancements
        ====================================================================== -->
   <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/design-tokens-override.css" />
+  <link rel="stylesheet" href="/css/avada-enhancements.css" />
   
   <!-- ======================================================================
        STRUCTURED DATA (JSON-LD) - Optional but Highly Recommended for SEO
@@ -135,7 +140,7 @@
     "@type": "WebPage",
     "name": "PUT PAGE TITLE HERE",
     "description": "PUT PAGE DESCRIPTION HERE",
-    "url": "https://PUT-YOUR-DOMAIN-HERE.com/pages/PUT-PAGE-PATH-HERE"
+    "url": "https://Place-website-domain-here/pages/PUT-PAGE-PATH-HERE"
   }
   </script>
 </head>

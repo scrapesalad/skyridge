@@ -39,7 +39,7 @@ function getDefaultConfig() {
     site: {
       name: 'Your Site Name',
       domain: 'yoursite.com',
-      url: 'https://yoursite.com',
+      url: 'https://Place-website-domain-here',
       description: 'A website',
       keywords: [],
       language: 'en',

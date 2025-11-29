@@ -1,89 +1,46 @@
-// Contractor data
+// Contractor data - Replace with your actual contractor/service provider data
 const contractors = [
   {
-    id: 'bluewater-pond-garden',
-    name: 'Bluewater Pond & Garden',
-    location: 'Denver, CO',
-    city: 'denver',
-    state: 'co',
-    zip: ['80202', '80203', '80204'],
-    distance: '12 miles away',
+    id: 'example-provider-1',
+    name: 'PUT PROVIDER NAME HERE',
+    location: 'PUT CITY, ST',
+    city: 'PUT CITY NAME',
+    state: 'PUT STATE ABBR',
+    zip: ['PUT ZIP CODE'],
+    distance: 'PUT DISTANCE HERE',
     rating: 4.9,
     reviews: 32,
-    description: 'Specializing in residential pond cleaning, maintenance, and new installations. Over 10 years of experience serving the Front Range.',
-    services: ['Pond Cleaning', 'Maintenance', 'Installation'],
-    url: 'contractor/bluewater-pond-garden.html'
+    description: 'PUT PROVIDER DESCRIPTION HERE - Specializing in PUT PRIMARY SERVICE HERE, maintenance, and new installations.',
+    services: ['PUT SERVICE 1 HERE', 'PUT SERVICE 2 HERE', 'PUT SERVICE 3 HERE'],
+    url: 'pages/examples/example-provider-1.html'
   },
   {
-    id: 'mountain-pond-solutions',
-    name: 'Mountain Pond Solutions',
-    location: 'Boulder, CO',
-    city: 'boulder',
-    state: 'co',
-    zip: ['80301', '80302'],
-    distance: '25 miles away',
+    id: 'example-provider-2',
+    name: 'PUT PROVIDER NAME HERE',
+    location: 'PUT CITY, ST',
+    city: 'PUT CITY NAME',
+    state: 'PUT STATE ABBR',
+    zip: ['PUT ZIP CODE'],
+    distance: 'PUT DISTANCE HERE',
     rating: 4.7,
     reviews: 18,
-    description: 'Expert in alpine pond systems and natural water features. Specializes in eco-friendly maintenance and algae control.',
-    services: ['Maintenance', 'Algae Control', 'Repair'],
-    url: 'contractor/mountain-pond-solutions.html'
+    description: 'PUT PROVIDER DESCRIPTION HERE - Expert in PUT SERVICE TYPE HERE. Specializes in PUT SPECIALTY HERE.',
+    services: ['PUT SERVICE 1 HERE', 'PUT SERVICE 2 HERE', 'PUT SERVICE 3 HERE'],
+    url: 'pages/examples/example-provider-2.html'
   },
   {
-    id: 'rocky-mountain-waterworks',
-    name: 'Rocky Mountain Waterworks',
-    location: 'Denver, CO',
-    city: 'denver',
-    state: 'co',
-    zip: ['80202', '80203', '80204'],
-    distance: '8 miles away',
+    id: 'example-provider-3',
+    name: 'PUT PROVIDER NAME HERE',
+    location: 'PUT CITY, ST',
+    city: 'PUT CITY NAME',
+    state: 'PUT STATE ABBR',
+    zip: ['PUT ZIP CODE'],
+    distance: 'PUT DISTANCE HERE',
     rating: 4.8,
     reviews: 41,
-    description: 'Full-service pond and water feature company. From design to installation to ongoing maintenance.',
-    services: ['Installation', 'Design', 'Maintenance', 'Cleaning'],
-    url: 'contractor/rocky-mountain-waterworks.html'
-  },
-  {
-    id: 'clearwater-pond-care',
-    name: 'Clearwater Pond Care',
-    location: 'Aurora, CO',
-    city: 'aurora',
-    state: 'co',
-    zip: ['80010', '80011'],
-    distance: '15 miles away',
-    rating: 4.9,
-    reviews: 27,
-    description: 'Focused on koi pond maintenance and cleaning. Seasonal service plans available.',
-    services: ['Cleaning', 'Maintenance', 'Repair'],
-    url: 'contractor/clearwater-pond-care.html'
-  },
-  {
-    id: 'aquatic-designs-co',
-    name: 'Aquatic Designs Co.',
-    location: 'Littleton, CO',
-    city: 'littleton',
-    state: 'co',
-    zip: ['80120', '80121'],
-    distance: '20 miles away',
-    rating: 4.6,
-    reviews: 22,
-    description: 'Custom water feature design and installation. Specializes in large-scale commercial and residential projects.',
-    services: ['Installation', 'Design', 'Water Features'],
-    url: 'contractor/aquatic-designs-co.html'
-  },
-  {
-    id: 'utah-water-gardens',
-    name: 'Utah Water Gardens',
-    location: 'Salt Lake City, UT',
-    city: 'salt lake city',
-    state: 'ut',
-    zip: ['84101', '84102', '84103', '84104', '84105', '84106', '84107', '84108', '84109', '84110', '84111', '84112', '84113', '84114', '84115', '84116', '84117', '84118', '84119', '84120', '84121', '84123', '84124', '84128'],
-    distance: '0 miles away',
-    rating: 4.9,
-    reviews: 45,
-    description: 'Utah\'s premier pond and water feature specialists. Expert installation, maintenance, and repair services for residential and commercial properties throughout the Salt Lake Valley.',
-    services: ['Installation', 'Maintenance', 'Cleaning', 'Repair', 'Algae Control', 'Design'],
-    url: 'contractor/utah-water-gardens.html',
-    website: 'https://utahwatergardens.com'
+    description: 'PUT PROVIDER DESCRIPTION HERE - Full-service PUT SERVICE TYPE HERE company. From design to installation to ongoing maintenance.',
+    services: ['PUT SERVICE 1 HERE', 'PUT SERVICE 2 HERE', 'PUT SERVICE 3 HERE'],
+    url: 'pages/examples/example-provider-3.html'
   }
 ];
 
@@ -240,4 +197,3 @@ if (window.location.pathname.includes('find-a-contractor.html')) {
     });
   }
 }
-

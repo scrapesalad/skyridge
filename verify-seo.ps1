@@ -1,7 +1,7 @@
-# SEO Verification Script for Pond Cleanup
+# SEO Verification Script
 # Checks all HTML pages for proper SEO elements
 
-Write-Host "=== Pond Cleanup SEO Verification ===" -ForegroundColor Cyan
+Write-Host "=== SEO Verification ===" -ForegroundColor Cyan
 Write-Host ""
 
 # Get all HTML files
@@ -22,9 +22,9 @@ foreach ($file in $htmlFiles) {
     if ($content -notmatch '<link rel="canonical"') {
         $fileIssues += "Missing canonical URL"
     }
-    # Check if canonical points to correct domain
-    elseif ($content -match '<link rel="canonical" href="https://pondauthority\.com') {
-        $fileIssues += "Canonical URL points to wrong domain (pondauthority.com)"
+    # Check if canonical uses placeholder
+    elseif ($content -match '<link rel="canonical" href="https://(pondauthority|pondcleanup|yoursite|yourdomain)\.com') {
+        $fileIssues += "Canonical URL contains hardcoded domain - should use placeholder"
     }
     
     # Check for meta title
@@ -90,10 +90,10 @@ if (Test-Path "sitemap.xml") {
     $urlCount = ([regex]::Matches($sitemap, "<loc>")).Count
     Write-Host "✅ sitemap.xml found with $urlCount URLs" -ForegroundColor Green
     
-    if ($sitemap -match 'pondauthority\.com') {
-        Write-Host "❌ Sitemap contains references to pondauthority.com" -ForegroundColor Red
+    if ($sitemap -match '(pondauthority|pondcleanup|yoursite|yourdomain)\.com') {
+        Write-Host "❌ Sitemap contains hardcoded domain references" -ForegroundColor Red
     } else {
-        Write-Host "✅ All sitemap URLs use correct domain (pondcleanup.com)" -ForegroundColor Green
+        Write-Host "✅ All sitemap URLs use placeholder domain" -ForegroundColor Green
     }
 } else {
     Write-Host "❌ sitemap.xml not found" -ForegroundColor Red
@@ -105,10 +105,10 @@ if (Test-Path "robots.txt") {
     $robots = Get-Content "robots.txt" -Raw
     Write-Host "✅ robots.txt found" -ForegroundColor Green
     
-    if ($robots -match 'pondauthority\.com') {
-        Write-Host "❌ robots.txt contains references to pondauthority.com" -ForegroundColor Red
+    if ($robots -match '(pondauthority|pondcleanup|yoursite|yourdomain)\.com') {
+        Write-Host "❌ robots.txt contains hardcoded domain references" -ForegroundColor Red
     } else {
-        Write-Host "✅ robots.txt uses correct domain (pondcleanup.com)" -ForegroundColor Green
+        Write-Host "✅ robots.txt uses placeholder domain" -ForegroundColor Green
     }
 } else {
     Write-Host "❌ robots.txt not found" -ForegroundColor Red

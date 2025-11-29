@@ -19,7 +19,7 @@ const MIN_IMAGES = config.validation.cityPages.minImages || 3;
 // Brand information from config
 const BRAND = {
   name: config.site.name || 'Your Site Name',
-  url: config.site.url || 'https://yoursite.com',
+  url: config.site.url || 'https://Place-website-domain-here',
   phone: config.contact.phone || '(varies by location)'
 };
 

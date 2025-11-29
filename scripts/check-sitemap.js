@@ -56,7 +56,7 @@ function validateSitemap() {
   const issues = [];
   
   // Check for correct domain
-  const siteUrl = config.site.url || 'https://yoursite.com';
+  const siteUrl = config.site.url || 'https://Place-website-domain-here';
   const wrongDomain = urls.filter(url => !url.startsWith(siteUrl));
   if (wrongDomain.length > 0) {
     issues.push({

@@ -44,10 +44,10 @@ function findHTMLFiles(dir) {
 function replacePondContent(content) {
   // Replace pond-specific text
   content = content.replace(/Pond Cleanup/gi, 'PUT YOUR SITE NAME HERE');
-  content = content.replace(/pondcleanup\.com/gi, 'PUT-YOUR-DOMAIN-HERE.com');
-  content = content.replace(/Pond cleaning/gi, 'PUT YOUR PRIMARY SERVICE HERE');
-  content = content.replace(/pond cleaning/gi, 'PUT YOUR PRIMARY SERVICE HERE');
-  content = content.replace(/Pond Cleaning/gi, 'PUT YOUR PRIMARY SERVICE HERE');
+  content = content.replace(/pondcleanup\.com/gi, 'Place-website-domain-here');
+  content = content.replace(/PUT PRIMARY SERVICE HERE/gi, 'PUT YOUR PRIMARY SERVICE HERE');
+  content = content.replace(/PUT PRIMARY SERVICE HERE/gi, 'PUT YOUR PRIMARY SERVICE HERE');
+  content = content.replace(/PUT PRIMARY SERVICE HERE/gi, 'PUT YOUR PRIMARY SERVICE HERE');
   content = content.replace(/pond owners/gi, 'PUT YOUR TARGET AUDIENCE HERE');
   content = content.replace(/Pond Owners/gi, 'PUT YOUR TARGET AUDIENCE HERE');
   content = content.replace(/pond specialist/gi, 'PUT YOUR SERVICE PROVIDER TYPE HERE');
@@ -56,12 +56,12 @@ function replacePondContent(content) {
   content = content.replace(/koi pond/gi, 'PUT YOUR SERVICE TYPE HERE');
   content = content.replace(/muck removal/gi, 'PUT YOUR SERVICE TYPE HERE');
   content = content.replace(/Book a Cleaning/gi, 'PUT YOUR CTA TEXT HERE');
-  content = content.replace(/Book a Pond Cleaning/gi, 'PUT YOUR CTA TEXT HERE');
+  content = content.replace(/Book a PUT PRIMARY SERVICE HERE/gi, 'PUT YOUR CTA TEXT HERE');
   content = content.replace(/Get a Free Quote/gi, 'PUT YOUR CTA TEXT HERE');
   
   // Replace specific phrases
-  content = content.replace(/Nationwide Pond Cleaning &amp; Maintenance/gi, 'PUT YOUR MAIN HEADLINE HERE');
-  content = content.replace(/Professional pond cleaning, muck removal, and seasonal maintenance/gi, 'PUT YOUR SERVICE DESCRIPTION HERE');
+  content = content.replace(/Nationwide PUT PRIMARY SERVICE HERE &amp; Maintenance/gi, 'PUT YOUR MAIN HEADLINE HERE');
+  content = content.replace(/Professional PUT PRIMARY SERVICE HERE, muck removal, and seasonal maintenance/gi, 'PUT YOUR SERVICE DESCRIPTION HERE');
   content = content.replace(/Serving residential and small commercial ponds nationwide/gi, 'PUT YOUR SERVICE AREA DESCRIPTION HERE');
   
   // Replace form labels
@@ -69,7 +69,7 @@ function replacePondContent(content) {
   content = content.replace(/Pond Type/gi, 'PUT YOUR FIELD LABEL HERE');
   content = content.replace(/Service Needed/gi, 'PUT YOUR FIELD LABEL HERE');
   content = content.replace(/Select pond type/gi, 'PUT YOUR DROPDOWN PLACEHOLDER HERE');
-  content = content.replace(/Pond cleaning \/ muck removal/gi, 'PUT YOUR OPTION TEXT HERE');
+  content = content.replace(/PUT PRIMARY SERVICE HERE \/ muck removal/gi, 'PUT YOUR OPTION TEXT HERE');
   
   // Replace testimonials
   content = content.replace(/They turned our murky pond/gi, 'PUT YOUR TESTIMONIAL TEXT HERE');

@@ -19,7 +19,7 @@ const path = require('path');
 const REPLACEMENTS = {
   // Pond-specific terms
   'pond maintenance': 'service maintenance',
-  'pond cleaning': 'professional service',
+  'PUT PRIMARY SERVICE HERE': 'professional service',
   'pond repair': 'repair service',
   'pond installation': 'installation service',
   'pond restoration': 'restoration service',
@@ -32,7 +32,7 @@ const REPLACEMENTS = {
   
   // Case variations
   'Pond Maintenance': 'Service Maintenance',
-  'Pond Cleaning': 'Professional Service',
+  'PUT PRIMARY SERVICE HERE': 'Professional Service',
   'Pond Repair': 'Repair Service',
   'Pond Installation': 'Installation Service',
   'Pond Restoration': 'Restoration Service',
@@ -43,7 +43,7 @@ const REPLACEMENTS = {
   
   // ALL CAPS
   'POND MAINTENANCE': 'SERVICE MAINTENANCE',
-  'POND CLEANING': 'PROFESSIONAL SERVICE',
+  'PUT PRIMARY SERVICE HERE': 'PROFESSIONAL SERVICE',
   'POND SERVICE': 'PROFESSIONAL SERVICE',
   
   // Contractor-specific terms

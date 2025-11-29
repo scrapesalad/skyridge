@@ -89,16 +89,16 @@ const REPLACEMENTS = [
   
   // Meta tag images (OG and Twitter)
   {
-    pattern: /content=["']https:\/\/PUT-YOUR-DOMAIN-HERE\.com\/images\/PUT-OG-IMAGE-FILENAME-HERE\.jpg["']/gi,
-    replacement: () => `content="https://PUT-YOUR-DOMAIN-HERE.com/images/${IMAGE_MAP['PUT-OG-IMAGE-FILENAME-HERE']}"`
+    pattern: /content=["']https:\/\/Place-website-domain-here\.com\/images\/PUT-OG-IMAGE-FILENAME-HERE\.jpg["']/gi,
+    replacement: () => `content="https://Place-website-domain-here/images/${IMAGE_MAP['PUT-OG-IMAGE-FILENAME-HERE']}"`
   },
   {
-    pattern: /content=["']https:\/\/PUT-YOUR-DOMAIN-HERE\.com\/images\/PUT-TWITTER-IMAGE-FILENAME-HERE\.jpg["']/gi,
-    replacement: () => `content="https://PUT-YOUR-DOMAIN-HERE.com/images/${IMAGE_MAP['PUT-TWITTER-IMAGE-FILENAME-HERE']}"`
+    pattern: /content=["']https:\/\/Place-website-domain-here\.com\/images\/PUT-TWITTER-IMAGE-FILENAME-HERE\.jpg["']/gi,
+    replacement: () => `content="https://Place-website-domain-here/images/${IMAGE_MAP['PUT-TWITTER-IMAGE-FILENAME-HERE']}"`
   },
   {
-    pattern: /"logo":\s*"https:\/\/PUT-YOUR-DOMAIN-HERE\.com\/images\/PUT-LOGO-FILENAME-HERE\.png"/gi,
-    replacement: () => `"logo": "https://PUT-YOUR-DOMAIN-HERE.com/images/${IMAGE_MAP['PUT-LOGO-FILENAME-HERE']}"`
+    pattern: /"logo":\s*"https:\/\/Place-website-domain-here\.com\/images\/PUT-LOGO-FILENAME-HERE\.png"/gi,
+    replacement: () => `"logo": "https://Place-website-domain-here/images/${IMAGE_MAP['PUT-LOGO-FILENAME-HERE']}"`
   }
 ];
 

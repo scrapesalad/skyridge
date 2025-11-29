@@ -1,5 +1,5 @@
 /**
- * Dynamic Sitemap Generator for Pond Cleanup
+ * Dynamic Sitemap Generator
  * Generates sitemap.xml from filesystem scan
  * 
  * Usage: node scripts/generate-sitemap.js
@@ -11,7 +11,7 @@ const path = require('path');
 const { loadConfig } = require('./config-loader');
 
 const config = loadConfig();
-const SITE = config.site.url || 'https://yoursite.com';
+const SITE = config.site.url || 'https://Place-website-domain-here';
 const ROOT = path.join(__dirname, '..');
 const OUT_FILE = path.join(ROOT, config.seo.sitemap.path || 'sitemap.xml');
 
@@ -103,7 +103,7 @@ function scanDirectory(dir, baseUrl = '') {
       urls.push(...scanDirectory(fullPath, baseUrl));
     } else if (entry.isFile() && entry.name.endsWith('.html')) {
       // Skip certain files
-      if (entry.name === 'pondauthority.code-workspace') {
+      if (entry.name.endsWith('.code-workspace')) {
         continue;
       }
       
@@ -150,7 +150,7 @@ function generateSitemap(urls) {
  * Main function
  */
 function main() {
-  console.log('🗺️  Generating sitemap for Pond Cleanup...\n');
+  console.log('🗺️  Generating sitemap...\n');
   
   const urls = [];
   
