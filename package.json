@@ -6,6 +6,7 @@
     "dev": "live-server --port=3000 --open=/index.html",
     "start": "live-server --port=3000 --open=/index.html",
     "build": "node scripts/build-pages.js",
+    "prepare:vercel": "node scripts/prepare-vercel.js",
     "validate:cities": "node scripts/validate-city-pages.js",
     "generate:sitemap": "node scripts/generate-sitemap.js",
     "check:sitemap": "node scripts/check-sitemap.js",

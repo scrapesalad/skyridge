@@ -1,0 +1,33 @@
+# Development files
+node_modules/
+.git/
+.idea/
+.vscode/
+
+# Documentation (not needed in production)
+Start Here/
+utahmmc-king-tut-master/
+qa/
+
+# Scripts (not needed in deployment)
+scripts/
+*.ps1
+*.js
+!public/**/*.js
+
+# Config files
+package-lock.json
+
+# Build artifacts
+dist/
+*.log
+
+# Public folder (we're deploying from root)
+public/
+
+# Data files (if not needed)
+data/
+
+# Template files
+*.template
+_TEMPLATE-*.html

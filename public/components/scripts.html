@@ -1,0 +1,19 @@
+  <!-- ======================================================================
+       CORE JAVASCRIPT (Minimal, for mobile nav etc.)
+       ====================================================================== -->
+  <script>
+    // Mobile navigation toggle
+    (function() {
+      var navToggle = document.querySelector('.nav-toggle');
+      var mainNav = document.getElementById('main-nav');
+
+      if (!navToggle || !mainNav) return;
+
+      navToggle.addEventListener('click', function() {
+        var isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', String(!isExpanded));
+        mainNav.classList.toggle('main-nav--open');
+      });
+    })();
+  </script>
+
