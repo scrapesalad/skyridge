@@ -91,7 +91,7 @@ h2::after {
 
 .btn-primary {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: var(--color-secondary);
+  color: white;
   border: 2px solid transparent;
   box-shadow: 0 4px 15px rgba(200, 168, 96, 0.3);
 }
@@ -344,7 +344,7 @@ h2::after {
 
 .bottom-cta .btn-primary {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-  color: var(--color-secondary);
+  color: white;
   font-weight: 700;
   font-size: 1rem;
 }

@@ -53,16 +53,26 @@
        - Navigation links (update hrefs and text)
        - CTA button text/url
        ====================================================================== -->
-<header class="site-header">
+  <header class="site-header">
     <div class="container header-inner">
-      <a href="../index.html" class="logo"><img src="/images/logo/kingtutlogo.png" alt="PUT YOUR SITE NAME HERE" class="logo-img" /></a>
-      <nav class="main-nav">
-        <a href="find-a-contractor.html">Find a Professional</a>
-        <a href="cities/index.html">Cities</a>
+      <a href="../index.html" class="logo" aria-label="Go to homepage">
+        <img src="/images/logo/kingtutlogo.png" alt="PUT YOUR SITE NAME HERE" class="logo-img" />
+      </a>
+
+      <!-- Mobile nav toggle -->
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="main-nav">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav id="main-nav" class="main-nav" aria-label="Primary navigation">
         <a href="services.html">Services</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="locations.html">Locations</a>
         <a href="how-it-works.html">How It Works</a>
-        <a href="for-contractors.html">For Contractors</a>
-        <a href="contact.html" class="btn btn-primary">Get Help</a>
+        <a href="about.html">About</a>
+        <a href="book.html" class="btn btn-primary">PUT YOUR MAIN CTA TEXT HERE</a>
       </nav>
     </div>
   </header>
@@ -157,17 +167,43 @@
        - Copyright year and site name
        - Footer navigation links
        ====================================================================== -->
-<footer class="site-footer">
+  <footer class="site-footer">
     <div class="container footer-inner">
-      <p>&copy; 2025 PUT YOUR SERVICE TYPE HERE Authority. All rights reserved.</p>
-      <nav class="footer-nav">
+      <p>&copy; 2025 PUT YOUR SITE NAME HERE (Place-website-domain-here). All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
         <a href="about.html">About</a>
-        <a href="#resources">Resources</a>
-        <a href="for-contractors.html">For Contractors</a>
+        <a href="services.html">Services</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="locations.html">Locations</a>
+        <a href="faq.html">FAQ</a>
         <a href="contact.html">Contact</a>
       </nav>
     </div>
   </footer>
+  <!-- ======================================================================
+       MOBILE NAVIGATION SCRIPT
+       ====================================================================== -->
+  <script>
+    // Mobile navigation toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const mainNav = document.querySelector('#main-nav');
+    
+    if (navToggle && mainNav) {
+      navToggle.addEventListener('click', function() {
+        const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', !isExpanded);
+        mainNav.classList.toggle('nav-open');
+      });
+      
+      // Close nav when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!navToggle.contains(event.target) && !mainNav.contains(event.target)) {
+          navToggle.setAttribute('aria-expanded', 'false');
+          mainNav.classList.remove('nav-open');
+        }
+      });
+    }
+  </script>
 </body>
 </html>
 
