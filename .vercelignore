@@ -22,12 +22,12 @@ package-lock.json
 dist/
 *.log
 
-# Public folder (we're deploying from root)
-public/
-
 # Data files (if not needed)
 data/
 
 # Template files
 *.template
 _TEMPLATE-*.html
+
+# Public folder (we're deploying from root)
+public/
