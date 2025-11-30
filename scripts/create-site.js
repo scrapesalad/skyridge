@@ -103,8 +103,12 @@ async function replaceTokensInFile(filePath, replacements) {
     'PUT YOUR SITE NAME HERE': replacements.SITE_NAME,
     'PUT SITE NAME HERE': replacements.SITE_NAME,
     'PUT YOUR BUSINESS NAME HERE': replacements.BUSINESS_NAME,
-    'PUT YOUR SERVICE TYPE HERE': replacements.SERVICE_TYPE,
+    'PUT YOUR SERVICE TYPE HERE': replacements.PRIMARY_SERVICE, // Use PRIMARY_SERVICE for better consistency
     'PUT PRIMARY SERVICE HERE': replacements.PRIMARY_SERVICE,
+    'PUT YOUR PRIMARY SERVICE HERE': replacements.PRIMARY_SERVICE,
+    'YOUR PRIMARY SERVICE': replacements.PRIMARY_SERVICE,
+    'PRIMARY SERVICE': replacements.PRIMARY_SERVICE,
+    '{{PRIMARY_SERVICE}}': replacements.PRIMARY_SERVICE, // Also handle token format
     'PUT YOUR SERVICE AREA HERE': replacements.SERVICE_AREA,
     'PUT YOUR REGION HERE': replacements.REGION,
     'PUT YOUR AREA HERE': replacements.SERVICE_AREA,
@@ -293,11 +297,13 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
     }
 
     // Improved wget command for higher quality images
-    // Reject social media icons, logos, and small images
+    // Reject social media icons, logos, and small images - be very aggressive
     const rejectPatterns = [
       'icon', 'logo', 'favicon', 'thumbnail', 'thumb', 'small', 'avatar',
       'instagram', 'facebook', 'twitter', 'linkedin', 'pinterest', 'social', 'share',
-      'sprite', 'button', 'badge', 'widget', 'emoji', 'smiley', 'cdninstagram'
+      'sprite', 'button', 'badge', 'widget', 'emoji', 'smiley', 'cdninstagram',
+      'static.cdninstagram', 'wixstatic', 'rsrc.php', 'index.html', '.tmp',
+      'VsNE', 'lam-', 'aM-g', 'H1l_', '-7Z_', 'De-Dw', 'base_logo'
     ].join(',');
 
     const cmd = [
@@ -329,7 +335,7 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
     const scrapedFiles = await fsp.readdir(destDir);
     const imageFiles = [];
     
-    // Patterns to identify social media icons, logos, and non-content images
+    // Patterns to identify social media icons, logos, and non-content images - be very aggressive
     const socialIconPatterns = [
       /instagram/i, /facebook/i, /twitter/i, /linkedin/i, /pinterest/i,
       /social/i, /share/i, /icon/i, /logo/i, /favicon/i, /avatar/i,
@@ -341,11 +347,31 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
       /^-[A-Z]/i,              // Pattern like "-7Z_RkdLJUX.png" (Instagram)
       /^[A-Z][a-z]-[A-Z][a-z]/i, // Pattern like "De-Dwpd5CHc.png"
       /rsrc\.php/i,            // Instagram resource URLs
-      /\.tmp$/i                 // Temporary files
+      /\.tmp$/i,               // Temporary files
+      /^VsNE/i, /^lam-/i, /^aM-g/i, /^H1l_/i, /^-7Z_/i, /^De-Dw/i, // Specific Instagram patterns
+      /base_logo/i,            // Logo files
+      /index\.html/i           // HTML files that shouldn't be images
     ];
     
-    // Collect all image files with their sizes
+    // First pass: Remove all non-image files (HTML, CSS, JS, etc.)
     for (const file of scrapedFiles) {
+      const filePath = path.join(destDir, file);
+      try {
+        // Remove HTML files, CSS, JS, and other non-image files
+        if (/\.(html|htm|css|js|json|txt|xml|svg)$/i.test(file) || file.includes('index') || file.includes('.tmp')) {
+          await fsp.unlink(filePath);
+          continue;
+        }
+      } catch (err) {
+        // Skip if file can't be accessed
+      }
+    }
+    
+    // Re-read directory after cleanup
+    const cleanedFiles = await fsp.readdir(destDir);
+    
+    // Collect all image files with their sizes
+    for (const file of cleanedFiles) {
       if (/\.(jpg|jpeg|png|gif|webp)$/i.test(file)) {
         const filePath = path.join(destDir, file);
         try {
@@ -1294,21 +1320,31 @@ async function run() {
       }
       
       // Copy scraped images to main images folder, replacing existing images
+      // First, replace template images with scraped images (use template image names so HTML references work)
       const imagesToCopy = Math.min(imageFiles.length, existingImageNames.length);
       for (let i = 0; i < imagesToCopy; i++) {
         const scrapedFile = path.join(imagesScrapedDest, imageFiles[i]);
         const destFile = path.join(mainImagesDir, existingImageNames[i]);
-        await fsp.copyFile(scrapedFile, destFile);
+        try {
+          await fsp.copyFile(scrapedFile, destFile);
+          console.log(`   📸 Replaced ${existingImageNames[i]} with scraped image`);
+        } catch (err) {
+          console.warn(`   ⚠️  Could not replace ${existingImageNames[i]}: ${err.message}`);
+        }
       }
       
-      // Copy remaining scraped images with their original names
+      // Copy remaining scraped images with their original names (for gallery pages)
       for (let i = imagesToCopy; i < imageFiles.length; i++) {
         const scrapedFile = path.join(imagesScrapedDest, imageFiles[i]);
         const destFile = path.join(mainImagesDir, imageFiles[i]);
-        await fsp.copyFile(scrapedFile, destFile);
+        try {
+          await fsp.copyFile(scrapedFile, destFile);
+        } catch (err) {
+          // Skip if file already exists or can't be copied
+        }
       }
       
-      console.log(`   ✅ Replaced ${imagesToCopy} images in main images folder with scraped images`);
+      console.log(`   ✅ Copied ${imagesToCopy} scraped images to main images folder`);
     }
   }
 
