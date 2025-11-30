@@ -1456,6 +1456,33 @@ async function run() {
 
   console.log('\n📂 Creating site at:', destSiteDir);
   await copyDir(srcTemplateDir, destSiteDir);
+  
+  // Check if this is a Next.js template and install dependencies
+  const packageJsonPath = path.join(destSiteDir, 'package.json');
+  if (fs.existsSync(packageJsonPath)) {
+    try {
+      const packageJson = JSON.parse(await fsp.readFile(packageJsonPath, 'utf-8'));
+      const isNextJs = packageJson.dependencies && (packageJson.dependencies.next || packageJson.dependencies['next.js']);
+      
+      if (isNextJs) {
+        console.log('⚙️  Detected Next.js template - installing dependencies...');
+        try {
+          execSync('npm install', { 
+            cwd: destSiteDir, 
+            stdio: 'inherit',
+            shell: true
+          });
+          console.log('   ✅ Dependencies installed successfully');
+        } catch (err) {
+          console.warn('   ⚠️  Failed to install dependencies automatically.');
+          console.warn('   Please run "npm install" in the generated folder manually.');
+        }
+      }
+    } catch (err) {
+      // If we can't parse package.json, just continue
+      console.warn('   ⚠️  Could not check for Next.js template:', err.message);
+    }
+  }
 
   // Copy CSS files from root directory (template CSS folder may be empty)
   const rootCssDir = path.join(rootDir, 'css');
@@ -1463,15 +1490,26 @@ async function run() {
   
   if (fs.existsSync(rootCssDir)) {
     const rootCssFiles = await fsp.readdir(rootCssDir);
+    let copiedCount = 0;
     for (const file of rootCssFiles) {
       if (file.endsWith('.css') && file !== 'design-tokens-override.css') {
         // Skip design-tokens-override.css as we'll generate it
         const srcFile = path.join(rootCssDir, file);
         const destFile = path.join(destCssDir, file);
-        await fsp.copyFile(srcFile, destFile);
+        // Check if source file exists before copying
+        if (fs.existsSync(srcFile)) {
+          try {
+            await fsp.copyFile(srcFile, destFile);
+            copiedCount++;
+          } catch (err) {
+            console.warn(`   ⚠️  Could not copy ${file}: ${err.message}`);
+          }
+        }
       }
     }
-    console.log('   ✅ Copied CSS files from root directory');
+    if (copiedCount > 0) {
+      console.log(`   ✅ Copied ${copiedCount} CSS file(s) from root directory`);
+    }
   }
 
   console.log('🎨 Applying color scheme...');
