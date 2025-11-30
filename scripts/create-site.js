@@ -731,6 +731,124 @@ async function generateCityPages(destDir, cityData, templateDir, replacements) {
   console.log(`   ✅ Generated ${generatedCount} city pages`);
 }
 
+// Generate cities list HTML organized by region for locations page
+function generateCitiesListHTML(cityData) {
+  if (!cityData || Object.keys(cityData).length === 0) {
+    return '<p>No cities available at this time.</p>';
+  }
+  
+  // Organize cities by region
+  const regions = {
+    'West Coast': ['CA', 'WA', 'OR', 'AZ', 'NV'],
+    'Southwest & Texas': ['TX', 'NM', 'OK'],
+    'Midwest': ['IL', 'CO', 'MN', 'MO', 'IN', 'WI', 'MI', 'OH', 'IA', 'KS', 'NE', 'ND', 'SD'],
+    'Southeast': ['GA', 'FL', 'NC', 'TN', 'SC', 'AL', 'MS', 'LA', 'AR', 'KY', 'WV', 'VA'],
+    'Northeast': ['NY', 'MA', 'PA', 'DC', 'MD', 'CT', 'RI', 'VT', 'NH', 'ME', 'NJ', 'DE']
+  };
+  
+  const citiesByRegion = {};
+  for (const [region, states] of Object.entries(regions)) {
+    citiesByRegion[region] = [];
+  }
+  citiesByRegion['More Cities'] = [];
+  
+  // Sort cities into regions
+  for (const [citySlug, city] of Object.entries(cityData)) {
+    const stateAbbr = city.stateAbbr.toUpperCase();
+    let assigned = false;
+    
+    for (const [region, states] of Object.entries(regions)) {
+      if (states.includes(stateAbbr)) {
+        citiesByRegion[region].push(city);
+        assigned = true;
+        break;
+      }
+    }
+    
+    if (!assigned) {
+      citiesByRegion['More Cities'].push(city);
+    }
+  }
+  
+  // Sort cities within each region by city name
+  for (const region in citiesByRegion) {
+    citiesByRegion[region].sort((a, b) => a.cityName.localeCompare(b.cityName));
+  }
+  
+  // Generate HTML
+  let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">';
+  
+  for (const [region, cities] of Object.entries(citiesByRegion)) {
+    if (cities.length === 0) continue;
+    
+    html += '<div>';
+    html += `<h3>${region}</h3>`;
+    html += '<ul class="services-list">';
+    
+    for (const city of cities) {
+      const citySlug = city.citySlug || slugifyCity(city.cityName);
+      const stateLower = city.stateAbbr.toLowerCase();
+      html += `<li><a href="cities/${citySlug}-${stateLower}.html">${city.cityName}, ${city.stateAbbr}</a></li>`;
+    }
+    
+    html += '</ul>';
+    html += '</div>';
+  }
+  
+  // Add "View all cities" link if there are many cities
+  if (Object.keys(cityData).length > 20) {
+    html += '<div>';
+    html += '<h3>More Cities</h3>';
+    html += '<ul class="services-list">';
+    html += '<li><a href="cities/index.html">View all cities →</a></li>';
+    html += '</ul>';
+    html += '</div>';
+  }
+  
+  html += '</div>';
+  
+  return html;
+}
+
+// Update locations page with generated cities list
+async function updateLocationsPage(destDir, cityData) {
+  const locationsPath = path.join(destDir, 'pages', 'locations.html');
+  
+  if (!fs.existsSync(locationsPath)) {
+    return; // Locations page doesn't exist, skip
+  }
+  
+  let content = await fsp.readFile(locationsPath, 'utf-8');
+  
+  // Generate cities list HTML
+  const citiesListHTML = generateCitiesListHTML(cityData);
+  
+  // Replace the cities list section - look for the "Areas We Serve" section
+  // Pattern: <h2>Areas We Serve</h2> followed by a div with grid, ending before next section or </main>
+  const areasWeServePattern = /(<h2>Areas We Serve<\/h2>\s*<div[^>]*>)[\s\S]*?(<\/div>\s*<\/div>\s*<\/section>)/;
+  
+  if (areasWeServePattern.test(content)) {
+    content = content.replace(
+      areasWeServePattern,
+      `$1\n${citiesListHTML}\n$2`
+    );
+  } else {
+    // Fallback: try to find a token placeholder
+    content = content.replace(/{{CITIES_LIST}}/g, citiesListHTML);
+    
+    // If still no match, try a simpler pattern - replace the entire grid div
+    const simplePattern = /(<h2>Areas We Serve<\/h2>)[\s\S]*?(<\/div>\s*<\/div>\s*<\/section>)/;
+    if (simplePattern.test(content)) {
+      content = content.replace(
+        simplePattern,
+        `$1\n        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">\n${citiesListHTML}\n        </div>\n      </div>\n    </section>`
+      );
+    }
+  }
+  
+  await fsp.writeFile(locationsPath, content, 'utf-8');
+}
+
 // Process template files (site.config.json.template, package.json.template, etc.)
 async function processTemplateFiles(rootDir, destDir, replacements) {
   const templateFiles = [
@@ -1242,6 +1360,11 @@ async function run() {
   const cityDataPath = path.join(destSiteDir, 'city-data.json');
   await fsp.writeFile(cityDataPath, JSON.stringify(cityData, null, 2), 'utf-8');
   console.log('   ✅ Generated city-data.json');
+  
+  // Update locations page with generated cities list
+  console.log('📍 Updating locations page with city data...');
+  await updateLocationsPage(destSiteDir, cityData);
+  console.log('   ✅ Updated locations page with city list');
 
   console.log('\n✅ Done! Generated site at:', answers.outputFolder);
   console.log(`   Generated ${htmlFiles.length} pages with all tokens replaced.`);
