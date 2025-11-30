@@ -191,9 +191,15 @@ async function fixAbsolutePaths(filePath, siteRootDir) {
   }
 
   // Fix CSS paths: /css/ -> ../css/ or ../../css/ (depending on depth)
-  const cssHrefPattern = /href=["']\/css\//g;
+  // Also fix invalid patterns like /../css/ or /css/ that should be relative
+  const cssHrefPattern = /href=["']\/\.\.\/css\//g;
   if (cssHrefPattern.test(content)) {
     content = content.replace(cssHrefPattern, `href="${relativePrefix}css/`);
+    modified = true;
+  }
+  const cssHrefPattern2 = /href=["']\/css\//g;
+  if (cssHrefPattern2.test(content)) {
+    content = content.replace(cssHrefPattern2, `href="${relativePrefix}css/`);
     modified = true;
   }
 
@@ -290,8 +296,8 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
     // Reject social media icons, logos, and small images
     const rejectPatterns = [
       'icon', 'logo', 'favicon', 'thumbnail', 'thumb', 'small', 'avatar',
-      'instagram', 'facebook', 'twitter', 'linkedin', 'social', 'share',
-      'sprite', 'button', 'badge', 'widget', 'emoji', 'smiley'
+      'instagram', 'facebook', 'twitter', 'linkedin', 'pinterest', 'social', 'share',
+      'sprite', 'button', 'badge', 'widget', 'emoji', 'smiley', 'cdninstagram'
     ].join(',');
 
     const cmd = [
@@ -328,9 +334,14 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
       /instagram/i, /facebook/i, /twitter/i, /linkedin/i, /pinterest/i,
       /social/i, /share/i, /icon/i, /logo/i, /favicon/i, /avatar/i,
       /sprite/i, /button/i, /badge/i, /widget/i, /emoji/i, /smiley/i,
+      /cdninstagram/i, /static\.cdninstagram/i, /wixstatic/i, // CDN patterns
       /^[a-z0-9]{1,2}[_-]/i,  // Very short filenames (often icons)
       /^[A-Z][a-z]-[A-Z]/i,   // Pattern like "De-Dwpd5CHc.png" (social icons)
-      /^[a-z]+-[a-z]+-[a-z]+/i // Pattern like "lam-fZmwmvn.png"
+      /^[a-z]+-[a-z]+-[a-z]+/i, // Pattern like "lam-fZmwmvn.png"
+      /^-[A-Z]/i,              // Pattern like "-7Z_RkdLJUX.png" (Instagram)
+      /^[A-Z][a-z]-[A-Z][a-z]/i, // Pattern like "De-Dwpd5CHc.png"
+      /rsrc\.php/i,            // Instagram resource URLs
+      /\.tmp$/i                 // Temporary files
     ];
     
     // Collect all image files with their sizes
@@ -1175,6 +1186,14 @@ async function run() {
   const cityData = buildCityEntries(answers, vertical, business);
   const cityCount = Object.keys(cityData).length;
   await generateCityPages(destSiteDir, cityData, srcTemplateDir, replacements);
+  
+  // Fix paths in newly generated city pages (they're 2 levels deep: pages/cities/)
+  console.log('🔧 Fixing CSS paths in city pages...');
+  const citiesDir = path.join(destSiteDir, 'pages', 'cities');
+  if (fs.existsSync(citiesDir)) {
+    await fixPathsRecursively(citiesDir, destSiteDir);
+  }
+  console.log('   ✅ Fixed CSS paths in city pages');
   
   // Generate city data JSON file for reference
   const cityDataPath = path.join(destSiteDir, 'city-data.json');
