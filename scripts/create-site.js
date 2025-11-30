@@ -416,6 +416,10 @@ async function run() {
 
   // Get vertical preset
   const vertical = verticals[answers.verticalKey];
+  if (!vertical) {
+    console.error(`❌ Vertical "${answers.verticalKey}" not found in verticals.json`);
+    process.exit(1);
+  }
 
   const siteName = answers.siteName.trim() || answers.businessName.trim();
 
@@ -474,7 +478,7 @@ async function run() {
     CITY_SLUG_4: (answers.serviceArea.split(',')[3]?.trim() || 'city-4').toLowerCase().replace(/\s+/g, '-'),
     HOME_PAGE_DESCRIPTION: vertical.homeDescription || `Professional ${vertical.primaryService} services in ${answers.serviceArea}. Quality service, competitive pricing, guaranteed results.`,
     KEYWORDS: vertical.keywords ? vertical.keywords.join(', ') : `${vertical.serviceType}, ${answers.businessName}, ${answers.serviceArea}`,
-    KEYWORDS_ARRAY: vertical.keywords ? `"${vertical.keywords.join('", "')}"` : `"${vertical.serviceType}", "${answers.businessName}"`
+    KEYWORDS_ARRAY: vertical.keywords ? `"${vertical.keywords.join('", "')}"` : `"${vertical.serviceType}", "${answers.businessName}"`,
     WEBSITE_URL: fullUrl,
     BUSINESS_DESCRIPTION: `Professional ${vertical.primaryService} services in ${answers.serviceArea}`,
     PHONE_NUMBER: answers.phone,
