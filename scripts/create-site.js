@@ -31,7 +31,8 @@ const TEMPLATES = [
   { name: 'Corporate Split – Split-screen Hero & Icon Boxes', folder: 'corporate-split' },
   { name: 'One Page Parallax – Single-page Scrolling', folder: 'onepage-parallax' },
   { name: 'Portfolio Grid – Masonry Grid & Case Studies', folder: 'portfolio-grid' },
-  { name: 'Agency Modern – Full-width Slider & Overlapping Cards', folder: 'agency-modern' }
+  { name: 'Agency Modern – Full-width Slider & Overlapping Cards', folder: 'agency-modern' },
+  { name: 'Marketing Landing – Next.js & Tailwind CSS', folder: 'king-tut-templates/marketing-landing' }
 ];
 
 const COLOR_SCHEMES = {
