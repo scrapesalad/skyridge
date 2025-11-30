@@ -171,6 +171,76 @@ async function replaceTokensRecursively(rootDir, replacements) {
   }
 }
 
+// Fix absolute paths to relative paths based on file depth
+async function fixAbsolutePaths(filePath, siteRootDir) {
+  let content = await fsp.readFile(filePath, 'utf-8');
+  let modified = false;
+
+  // Calculate depth: how many directories deep from site root
+  const relativePath = path.relative(siteRootDir, path.dirname(filePath));
+  const depth = relativePath === '.' ? 0 : relativePath.split(path.sep).length;
+  
+  // Build relative path prefix (e.g., "" for root, "../" for depth 1, "../../" for depth 2)
+  const relativePrefix = depth > 0 ? '../'.repeat(depth) : '';
+
+  // Only fix if file is in a subdirectory (depth > 0) or if it has absolute paths
+  if (depth === 0) {
+    // Root level files should use relative paths without ../
+    // Check if they already have relative paths, if not, they might be fine
+    return; // Root files should already have correct paths
+  }
+
+  // Fix CSS paths: /css/ -> ../css/ or ../../css/ (depending on depth)
+  const cssHrefPattern = /href=["']\/css\//g;
+  if (cssHrefPattern.test(content)) {
+    content = content.replace(cssHrefPattern, `href="${relativePrefix}css/`);
+    modified = true;
+  }
+
+  // Fix image src paths: /images/ -> ../images/ or ../../images/
+  const imageSrcPattern = /src=["']\/images\//g;
+  if (imageSrcPattern.test(content)) {
+    content = content.replace(imageSrcPattern, `src="${relativePrefix}images/`);
+    modified = true;
+  }
+
+  // Fix image URLs in CSS url(): /images/ -> ../images/
+  const imageUrlPattern = /url\(["']?\/images\//g;
+  if (imageUrlPattern.test(content)) {
+    content = content.replace(imageUrlPattern, `url(${relativePrefix}images/`);
+    modified = true;
+  }
+
+  // Fix background-image URLs: url('/images/...') -> url('../images/...')
+  const bgImagePattern = /background-image:\s*url\(["']?\/images\//g;
+  if (bgImagePattern.test(content)) {
+    content = content.replace(bgImagePattern, `background-image: url(${relativePrefix}images/`);
+    modified = true;
+  }
+
+  if (modified) {
+    await fsp.writeFile(filePath, content, 'utf-8');
+  }
+}
+
+// Fix paths recursively in all HTML files
+async function fixPathsRecursively(rootDir, siteRootDir) {
+  const entries = await fsp.readdir(rootDir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(rootDir, entry.name);
+
+    if (entry.isDirectory()) {
+      await fixPathsRecursively(fullPath, siteRootDir);
+    } else if (entry.isFile()) {
+      // Only fix paths in HTML files
+      if (/\.(html|htm)$/i.test(entry.name)) {
+        await fixAbsolutePaths(fullPath, siteRootDir);
+      }
+    }
+  }
+}
+
 async function writeColorTokens(cssFilePath, scheme) {
   const cssContent = `
 :root {
@@ -628,6 +698,11 @@ async function run() {
   console.log(`   Processing ${htmlFiles.length} HTML files...`);
   
   await replaceTokensRecursively(destSiteDir, replacements);
+
+  // Fix absolute paths to relative paths for local file viewing
+  console.log('🔧 Fixing CSS and image paths for local viewing...');
+  await fixPathsRecursively(destSiteDir, destSiteDir);
+  console.log('   ✅ Fixed absolute paths to relative paths');
 
   console.log('\n✅ Done! Generated site at:', answers.outputFolder);
   console.log(`   Generated ${htmlFiles.length} pages with all tokens replaced.`);
