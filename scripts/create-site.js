@@ -900,6 +900,230 @@ async function processTemplateFiles(rootDir, destDir, replacements) {
   }
 }
 
+// --------- SEO & STRUCTURED DATA HELPERS -----------------------
+
+/**
+ * Generate sitemap.xml and robots.txt based on generated HTML files
+ * @param {string} destSiteDir - root output directory
+ * @param {string} fullUrl - canonical site URL (e.g. https://example.com)
+ * @param {string[]} htmlFiles - absolute paths to all generated HTML files
+ */
+async function generateSitemapAndRobots(destSiteDir, fullUrl, htmlFiles) {
+  try {
+    // Normalize domain (no trailing slash)
+    const baseUrl = fullUrl.replace(/\/+$/, '');
+
+    // Build URL list from htmlFiles
+    const urls = htmlFiles
+      .map((filePath) => {
+        const rel = path.relative(destSiteDir, filePath).replace(/\\/g, '/');
+        return rel;
+      })
+      // ignore partials or template-like files if any
+      .filter((rel) => !rel.startsWith('_') && rel.toLowerCase().endsWith('.html'));
+
+    const now = new Date().toISOString();
+
+    const sitemapEntries = urls
+      .map((rel) => {
+        // index.html at root → /
+        // pages/about.html → /pages/about.html
+        let loc = `${baseUrl}/${rel}`;
+        // Normalize index.html to trailing slash
+        if (rel === 'index.html') {
+          loc = `${baseUrl}/`;
+        }
+        return `
+  <url>
+    <loc>${loc}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>${rel === 'index.html' ? '1.0' : '0.7'}</priority>
+  </url>`;
+      })
+      .join('\n');
+
+    const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapEntries}
+</urlset>
+`;
+
+    const sitemapPath = path.join(destSiteDir, 'sitemap.xml');
+    await fsp.writeFile(sitemapPath, sitemapXml.trim() + '\n', 'utf-8');
+
+    const robotsTxt = `User-agent: *
+Allow: /
+
+Sitemap: ${baseUrl}/sitemap.xml
+`;
+
+    const robotsPath = path.join(destSiteDir, 'robots.txt');
+    await fsp.writeFile(robotsPath, robotsTxt, 'utf-8');
+
+    console.log('   ✅ Generated sitemap.xml and robots.txt');
+  } catch (err) {
+    console.warn('   ⚠️  Failed to generate sitemap/robots:', err.message);
+  }
+}
+
+/**
+ * Inject a JSON-LD <script> into an HTML file (before </head> if possible)
+ * If </head> is not found, inject before </body>.
+ */
+async function injectJsonLdScript(htmlPath, jsonLdObjectOrArray) {
+  if (!fs.existsSync(htmlPath)) return;
+
+  let html = await fsp.readFile(htmlPath, 'utf-8');
+  const jsonLd = JSON.stringify(jsonLdObjectOrArray, null, 2);
+  const scriptTag = `\n<script type="application/ld+json">\n${jsonLd}\n</script>\n`;
+
+  if (html.includes('</head>')) {
+    html = html.replace('</head>', `${scriptTag}</head>`);
+  } else if (html.includes('</HEAD>')) {
+    html = html.replace('</HEAD>', `${scriptTag}</HEAD>`);
+  } else if (html.includes('</body>')) {
+    html = html.replace('</body>', `${scriptTag}</body>`);
+  } else if (html.includes('</BODY>')) {
+    html = html.replace('</BODY>', `${scriptTag}</BODY>`);
+  } else {
+    // Fallback: just append
+    html += scriptTag;
+  }
+
+  await fsp.writeFile(htmlPath, html, 'utf-8');
+}
+
+/**
+ * Add LocalBusiness structured data to the home page (index.html)
+ */
+async function addHomeStructuredData(destSiteDir, answers, vertical, fullUrl) {
+  try {
+    const homePath = path.join(destSiteDir, 'index.html');
+    if (!fs.existsSync(homePath)) {
+      return;
+    }
+
+    const domain = answers.domain.trim();
+    const baseUrl = fullUrl.replace(/\/+$/, '');
+
+    const phoneDigits = (answers.phone || '').replace(/[^\d]/g, '');
+    const telephone = phoneDigits ? `+1${phoneDigits}` : undefined;
+
+    const localBusinessLd = {
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      '@id': `${baseUrl}#localbusiness`,
+      name: answers.businessName,
+      url: baseUrl,
+      telephone,
+      email: answers.email || undefined,
+      description:
+        vertical.homeDescription ||
+        `Professional ${vertical.primaryService} services in ${answers.serviceArea}.`,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: answers.street,
+        addressLocality: answers.city,
+        addressRegion: answers.state,
+        postalCode: answers.zip,
+        addressCountry: answers.country || 'USA'
+      },
+      areaServed: {
+        '@type': 'AdministrativeArea',
+        name: answers.serviceArea
+      },
+      sameAs: [
+        `https://facebook.com/${domain.replace(/\./g, '-')}`,
+        `https://instagram.com/${domain.replace(/\./g, '-')}`,
+        `https://linkedin.com/company/${domain.replace(/\./g, '-')}`
+      ]
+    };
+
+    await injectJsonLdScript(homePath, localBusinessLd);
+    console.log('   ✅ Added LocalBusiness JSON-LD to index.html');
+  } catch (err) {
+    console.warn('   ⚠️  Failed to add home structured data:', err.message);
+  }
+}
+
+/**
+ * Add LocalBusiness + FAQPage JSON-LD to each generated city page
+ */
+async function addCityStructuredData(destSiteDir, cityData) {
+  try {
+    const pagesDir = path.join(destSiteDir, 'pages', 'cities');
+
+    for (const [citySlug, city] of Object.entries(cityData)) {
+      const cityFileName = `${citySlug}-${city.stateAbbr.toLowerCase()}.html`;
+      const cityPath = path.join(pagesDir, cityFileName);
+      if (!fs.existsSync(cityPath)) continue;
+
+      const telephoneDigits = (city.phoneNumber || '').replace(/[^\d]/g, '');
+      const cityTelephone = telephoneDigits ? `+1${telephoneDigits}` : undefined;
+
+      const localBusinessLd = {
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        '@id': `${city.baseUrl}/pages/cities/${citySlug}-${city.stateAbbr.toLowerCase()}.html#localbusiness`,
+        name: city.businessName,
+        url: `${city.baseUrl}/pages/cities/${citySlug}-${city.stateAbbr.toLowerCase()}.html`,
+        telephone: cityTelephone,
+        email: city.email || undefined,
+        description: city.metaDescription || city.heroText,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: city.cityName,
+          addressRegion: city.stateAbbr,
+          addressCountry: 'USA'
+        },
+        areaServed: {
+          '@type': 'City',
+          name: `${city.cityName}, ${city.stateAbbr}`
+        }
+      };
+
+      const faqEntities =
+        (city.faq || []).map((item) => ({
+          '@type': 'Question',
+          name: item.q,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.a
+          }
+        })) || [];
+
+      const faqLd =
+        faqEntities.length > 0
+          ? {
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: faqEntities
+            }
+          : null;
+
+      const jsonLd = faqLd ? [localBusinessLd, faqLd] : localBusinessLd;
+
+      await injectJsonLdScript(cityPath, jsonLd);
+    }
+
+    console.log('   ✅ Added structured data to city pages');
+  } catch (err) {
+    console.warn('   ⚠️  Failed to add city structured data:', err.message);
+  }
+}
+
+/**
+ * High-level helper to add all SEO enhancements
+ */
+async function addSeoEnhancements(destSiteDir, fullUrl, htmlFiles, answers, vertical, cityData) {
+  console.log('🧩 Adding SEO enhancements (sitemap, robots, structured data)...');
+  await generateSitemapAndRobots(destSiteDir, fullUrl, htmlFiles);
+  await addHomeStructuredData(destSiteDir, answers, vertical, fullUrl);
+  await addCityStructuredData(destSiteDir, cityData);
+  console.log('   ✅ SEO enhancements complete');
+}
+
 // --------- MAIN FLOW --------------------------------------------
 
 async function run() {
@@ -1401,6 +1625,9 @@ async function run() {
   console.log('📍 Updating locations page with city data...');
   await updateLocationsPage(destSiteDir, cityData);
   console.log('   ✅ Updated locations page with city list');
+
+  // SEO enhancements (sitemap, robots.txt, JSON-LD)
+  await addSeoEnhancements(destSiteDir, fullUrl, htmlFiles, answers, vertical, cityData);
 
   console.log('\n✅ Done! Generated site at:', answers.outputFolder);
   console.log(`   Generated ${htmlFiles.length} pages with all tokens replaced.`);
