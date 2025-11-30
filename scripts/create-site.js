@@ -168,8 +168,8 @@ async function replaceTokensRecursively(rootDir, replacements) {
     if (entry.isDirectory()) {
       await replaceTokensRecursively(fullPath, replacements);
     } else if (entry.isFile()) {
-      // Only replace in text-like files (including templates)
-      if (/\.(html|htm|css|js|json|txt|md|template)$/i.test(entry.name)) {
+      // Only replace in text-like files (including templates and Next.js files)
+      if (/\.(html|htm|css|js|json|txt|md|template|tsx|ts|jsx)$/i.test(entry.name)) {
         await replaceTokensInFile(fullPath, replacements);
       }
     }
@@ -1425,6 +1425,22 @@ async function run() {
     KEYWORDS: vertical.keywords ? vertical.keywords.join(', ') : `${vertical.serviceType}, ${answers.businessName}, ${answers.serviceArea}`,
     KEYWORDS_ARRAY: vertical.keywords ? `"${vertical.keywords.join('", "')}"` : `"${vertical.serviceType}", "${answers.businessName}"`,
     WEBSITE_URL: fullUrl,
+    // Next.js template tokens (from template.json placeholders)
+    siteUrl: fullUrl,
+    siteTitle: siteName,
+    metaDescription: vertical.homeDescription || `Professional ${vertical.primaryService} services in ${answers.serviceArea}. Quality service, competitive pricing, guaranteed results.`,
+    metaKeywords: vertical.keywords ? vertical.keywords.join(', ') : `${vertical.serviceType}, ${answers.businessName}, ${answers.serviceArea}`,
+    tagline: vertical.homeDescription || `Professional ${vertical.primaryService} services`,
+    heroHeading: `Professional ${vertical.primaryService} in ${answers.serviceArea}`,
+    heroSubheading: vertical.homeDescription || `Quality service, competitive pricing, guaranteed results.`,
+    heroImage: '/images/hero-image.jpg',
+    ctaLabel: 'GET FREE QUOTE',
+    phoneNumber: answers.phone,
+    phoneLink: `tel:+1${answers.phone.replace(/[^\d]/g, '')}`,
+    email: answers.email,
+    footerText: `© ${currentYear} ${answers.businessName}. All Rights Reserved.`,
+    logoPath: '/images/logo/kingtutlogo.png',
+    logoAlt: siteName,
     BUSINESS_DESCRIPTION: `Professional ${vertical.primaryService} services in ${answers.serviceArea}`,
     PHONE_NUMBER: answers.phone,
     PHONE: answers.phone,
