@@ -60,6 +60,29 @@ The generator creates a folder with:
 - `images/` - All images and assets from the template
 - All pages are pre-filled with your business information
 
+## Image Scraping (Optional)
+
+The generator can automatically scrape high-quality images from a website URL you provide:
+
+1. **Install wget** (required for image scraping):
+   - **Windows**: `choco install wget` (via Chocolatey) or download from [GNU Wget](https://www.gnu.org/software/wget/)
+   - **macOS**: `brew install wget`
+   - **Linux**: `apt-get install wget` or `yum install wget`
+
+2. **During site generation**, when prompted for "URL to scrape images from":
+   - Enter a URL to a website, gallery page, or media page
+   - The generator will download high-quality images (min 30KB, prioritizing largest)
+   - Images are automatically filtered to remove small thumbnails/icons
+   - Top 50 largest images are kept and used in your site
+
+3. **Image Quality**:
+   - Only images larger than 30KB are kept (filters out blurry thumbnails)
+   - Images are sorted by size (largest first)
+   - Small icons, logos, and thumbnails are automatically excluded
+   - Scraped images replace stock images in the main `images/` folder
+
+**Note**: Ensure you have rights to use the images you're scraping. Only scrape from sites you own or have permission to use.
+
 ## Customization
 
 After generation, you can:

@@ -262,31 +262,104 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
     console.log('   Note: Ensure you have rights to use these images.');
     
     // Check if wget is available
+    let wgetPath = 'wget';
     try {
-      execSync('wget --version', { stdio: 'ignore' });
+      // Try to find wget.exe on Windows
+      if (process.platform === 'win32') {
+        try {
+          const wgetCheck = execSync('where.exe wget', { encoding: 'utf-8' }).trim();
+          if (wgetCheck) {
+            wgetPath = wgetCheck.split('\n')[0].trim();
+          }
+        } catch (e) {
+          // Fall back to just 'wget'
+        }
+      }
+      execSync(`"${wgetPath}" --version`, { stdio: 'ignore' });
     } catch (err) {
       console.warn('   ⚠️  wget not found. Skipping image fetch.');
-      console.warn('   Install wget or manually add images to images/stock/');
+      console.warn('   Install wget:');
+      console.warn('     Windows: choco install wget');
+      console.warn('     macOS: brew install wget');
+      console.warn('     Linux: apt-get install wget');
+      console.warn('   Or manually add images to images/stock/');
       return;
     }
 
+    // Improved wget command for higher quality images
+    // First pass: get all images, then filter by size
     const cmd = [
-      'wget',
+      `"${wgetPath}"`,
       '-r',               // recursive
-      '-l1',              // depth 1
-      '-H',               // span hosts
-      '-t1',              // tries
-      '-nd',              // no directory structure
+      '-l2',              // depth 2 (increased from 1 to get more images)
+      '-H',               // span hosts (follow links to other domains)
+      '-t3',              // tries 3 (increased for reliability)
+      '-nd',              // no directory structure (flat output)
       '-N',               // only new files
-      '-np',              // no parent
-      '-A', 'jpg,jpeg,png,gif,webp',  // accept extensions
+      '-np',              // no parent (don't go up directories)
+      '-A', 'jpg,jpeg,png,gif,webp',  // accept image extensions
+      '-R', 'icon,logo,favicon,thumbnail,thumb,small,avatar',  // reject small/icon images
+      '--no-check-certificate',  // skip SSL verification (for some sites)
       '-e', 'robots=off', // ignore robots.txt (use carefully)
+      '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',  // better user agent
+      '--timeout=30',     // timeout for each request
+      '--tries=3',        // retry failed downloads
+      '--page-requisites', // get page requisites (CSS, images, etc.)
       `"${sourceUrl}"`,
       '-P', `"${destDir}"`
     ].join(' ');
 
+    console.log('   🔍 Scraping for high-quality images...');
     execSync(cmd, { stdio: 'inherit' });
-    console.log('   ✅ Images fetched successfully');
+    
+    // Filter out small/blurry images by file size and prioritize larger images
+    console.log('   🎨 Filtering for high-quality images (min 30KB, prioritizing largest)...');
+    const scrapedFiles = await fsp.readdir(destDir);
+    const imageFiles = [];
+    
+    // Collect all image files with their sizes
+    for (const file of scrapedFiles) {
+      if (/\.(jpg|jpeg|png|gif|webp)$/i.test(file)) {
+        const filePath = path.join(destDir, file);
+        try {
+          const stats = await fsp.stat(filePath);
+          const fileSizeKB = stats.size / 1024;
+          
+          // Only consider images larger than 30KB (better quality threshold)
+          if (fileSizeKB >= 30) {
+            imageFiles.push({ name: file, path: filePath, size: stats.size });
+          } else {
+            // Remove small images
+            await fsp.unlink(filePath);
+          }
+        } catch (err) {
+          // Skip if file can't be accessed
+        }
+      }
+    }
+    
+    // Sort by file size (largest first) to prioritize high-quality images
+    imageFiles.sort((a, b) => b.size - a.size);
+    
+    // Keep top 50 largest images (to avoid too many files)
+    const maxImages = 50;
+    let removedCount = 0;
+    if (imageFiles.length > maxImages) {
+      for (let i = maxImages; i < imageFiles.length; i++) {
+        await fsp.unlink(imageFiles[i].path);
+        removedCount++;
+      }
+      imageFiles.splice(maxImages);
+    }
+    
+    const keptCount = imageFiles.length;
+    const totalRemoved = scrapedFiles.length - keptCount - removedCount + removedCount;
+    
+    console.log(`   ✅ Images fetched: ${keptCount} high-quality images kept (${totalRemoved} small/duplicate images removed)`);
+    if (keptCount > 0) {
+      const avgSize = Math.round(imageFiles.reduce((sum, img) => sum + (img.size / 1024), 0) / keptCount);
+      console.log(`   📊 Average image size: ${avgSize}KB`);
+    }
   } catch (err) {
     console.warn('   ⚠️  Error fetching images:', err.message);
     console.warn('   You can manually add images to images/stock/');
