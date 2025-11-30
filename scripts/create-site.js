@@ -4,8 +4,27 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const fsp = require('fs/promises');
 const path = require('path');
+const { execSync } = require('child_process');
 
 // --------- CONFIG: TEMPLATES & COLOR SCHEMES -----------------
+
+// Load vertical presets
+let verticals = {};
+try {
+  const verticalsPath = path.join(__dirname, '..', 'verticals.json');
+  verticals = JSON.parse(fs.readFileSync(verticalsPath, 'utf-8'));
+} catch (err) {
+  console.warn('⚠️  Warning: Could not load verticals.json, using fallback');
+  verticals = {
+    'custom': {
+      primaryService: 'Custom Service',
+      serviceType: 'custom',
+      homeDescription: 'Professional services',
+      keywords: ['service', 'professional'],
+      defaultServices: ['Service 1', 'Service 2']
+    }
+  };
+}
 
 const TEMPLATES = [
   { name: 'King Tut Classic – Service Business', folder: 'kingtut-classic' },
@@ -71,7 +90,12 @@ async function replaceTokensInFile(filePath, replacements) {
   // Replace new token format: {{TOKEN_NAME}}
   for (const [token, value] of Object.entries(replacements)) {
     const regex = new RegExp(`{{${token}}}`, 'g');
-    content = content.replace(regex, value);
+    // Special handling for KEYWORDS_ARRAY - don't escape quotes in JSON
+    if (token === 'KEYWORDS_ARRAY') {
+      content = content.replace(regex, value);
+    } else {
+      content = content.replace(regex, value);
+    }
   }
 
   // Replace old placeholder format: PUT YOUR SITE NAME HERE, etc.
@@ -139,8 +163,8 @@ async function replaceTokensRecursively(rootDir, replacements) {
     if (entry.isDirectory()) {
       await replaceTokensRecursively(fullPath, replacements);
     } else if (entry.isFile()) {
-      // Only replace in text-like files
-      if (/\.(html|htm|css|js|json|txt)$/i.test(entry.name)) {
+      // Only replace in text-like files (including templates)
+      if (/\.(html|htm|css|js|json|txt|md|template)$/i.test(entry.name)) {
         await replaceTokensInFile(fullPath, replacements);
       }
     }
@@ -161,6 +185,87 @@ async function writeColorTokens(cssFilePath, scheme) {
   await fsp.writeFile(cssFilePath, cssContent.trim() + '\n', 'utf-8');
 }
 
+// Fetch images with wget (if URL provided)
+async function fetchImagesWithWget(sourceUrl, destDir) {
+  try {
+    console.log(`📸 Fetching images from: ${sourceUrl}`);
+    console.log('   Note: Ensure you have rights to use these images.');
+    
+    // Check if wget is available
+    try {
+      execSync('wget --version', { stdio: 'ignore' });
+    } catch (err) {
+      console.warn('   ⚠️  wget not found. Skipping image fetch.');
+      console.warn('   Install wget or manually add images to images/stock/');
+      return;
+    }
+
+    const cmd = [
+      'wget',
+      '-r',               // recursive
+      '-l1',              // depth 1
+      '-H',               // span hosts
+      '-t1',              // tries
+      '-nd',              // no directory structure
+      '-N',               // only new files
+      '-np',              // no parent
+      '-A', 'jpg,jpeg,png,gif,webp',  // accept extensions
+      '-e', 'robots=off', // ignore robots.txt (use carefully)
+      `"${sourceUrl}"`,
+      '-P', `"${destDir}"`
+    ].join(' ');
+
+    execSync(cmd, { stdio: 'inherit' });
+    console.log('   ✅ Images fetched successfully');
+  } catch (err) {
+    console.warn('   ⚠️  Error fetching images:', err.message);
+    console.warn('   You can manually add images to images/stock/');
+  }
+}
+
+// Generate setup guide from template
+async function generateSetupGuide(templatePath, outputPath, replacements) {
+  if (!fs.existsSync(templatePath)) {
+    console.warn(`   ⚠️  Setup template not found: ${templatePath}`);
+    return;
+  }
+  
+  let content = await fsp.readFile(templatePath, 'utf-8');
+  
+  for (const [token, value] of Object.entries(replacements)) {
+    const regex = new RegExp(`{{${token}}}`, 'g');
+    content = content.replace(regex, value);
+  }
+  
+  await fsp.writeFile(outputPath, content, 'utf-8');
+  console.log('   ✅ Generated SETUP.md');
+}
+
+// Process template files (site.config.json.template, package.json.template, etc.)
+async function processTemplateFiles(rootDir, destDir, replacements) {
+  const templateFiles = [
+    { src: 'site.config.json.template', dest: 'site.config.json' },
+    { src: 'package.json.template', dest: 'package.json' }
+  ];
+  
+  for (const template of templateFiles) {
+    const srcPath = path.join(rootDir, template.src);
+    const destPath = path.join(destDir, template.dest);
+    
+    if (fs.existsSync(srcPath)) {
+      let content = await fsp.readFile(srcPath, 'utf-8');
+      
+      for (const [token, value] of Object.entries(replacements)) {
+        const regex = new RegExp(`{{${token}}}`, 'g');
+        content = content.replace(regex, value);
+      }
+      
+      await fsp.writeFile(destPath, content, 'utf-8');
+      console.log(`   ✅ Generated ${template.dest}`);
+    }
+  }
+}
+
 // --------- MAIN FLOW --------------------------------------------
 
 async function run() {
@@ -179,10 +284,19 @@ async function run() {
       message: 'Site Name (optional, press enter to reuse Business Name):'
     },
     {
+      type: 'list',
+      name: 'verticalKey',
+      message: 'What type of site is this?',
+      choices: Object.keys(verticals).map(key => ({
+        name: verticals[key].primaryService,
+        value: key
+      }))
+    },
+    {
       type: 'input',
-      name: 'serviceType',
-      message: 'Primary Service / Website Type (e.g. Pressure Washing, Dental Clinic, Agency):',
-      validate: (v) => v.trim() ? true : 'Please enter a service type.'
+      name: 'domain',
+      message: 'Domain (e.g. yoursite.com, without https://):',
+      validate: (v) => v.trim() ? true : 'Please enter a domain.'
     },
     {
       type: 'input',
@@ -195,6 +309,48 @@ async function run() {
       name: 'yearStarted',
       message: 'Year started (e.g. 2015):',
       default: '2020'
+    },
+    {
+      type: 'input',
+      name: 'phone',
+      message: 'Phone number:',
+      default: '(555) 123-4567'
+    },
+    {
+      type: 'input',
+      name: 'email',
+      message: 'Email address:',
+      default: (ans) => `info@${ans.domain || 'yoursite.com'}`
+    },
+    {
+      type: 'input',
+      name: 'street',
+      message: 'Street address:',
+      default: '123 Main Street'
+    },
+    {
+      type: 'input',
+      name: 'city',
+      message: 'City:',
+      default: 'Your City'
+    },
+    {
+      type: 'input',
+      name: 'state',
+      message: 'State (2-letter code):',
+      default: 'ST'
+    },
+    {
+      type: 'input',
+      name: 'zip',
+      message: 'ZIP/Postal code:',
+      default: '12345'
+    },
+    {
+      type: 'input',
+      name: 'country',
+      message: 'Country:',
+      default: 'USA'
     },
     {
       type: 'list',
@@ -249,8 +405,17 @@ async function run() {
       message: 'Output folder name (where to generate the site):',
       default: (ans) =>
         ans.businessName.trim().toLowerCase().replace(/\s+/g, '-')
+    },
+    {
+      type: 'input',
+      name: 'imageSourceUrl',
+      message: 'Optional: URL to scrape images from (e.g. current site, media page). Press enter to skip:',
+      default: ''
     }
   ]);
+
+  // Get vertical preset
+  const vertical = verticals[answers.verticalKey];
 
   const siteName = answers.siteName.trim() || answers.businessName.trim();
 
@@ -280,41 +445,57 @@ async function run() {
 
   // Tokens to replace in templates
   const currentYear = new Date().getFullYear().toString();
+  const domain = answers.domain.trim();
+  const domainSlug = domain.replace(/\./g, '-');
+  const fullUrl = domain.startsWith('http') ? domain : `https://${domain}`;
+  
   const replacements = {
     BUSINESS_NAME: answers.businessName,
     SITE_NAME: siteName,
-    SERVICE_TYPE: answers.serviceType,
-    PRIMARY_SERVICE: answers.serviceType,      // in case you use both
+    DOMAIN: domain,
+    DOMAIN_SLUG: domainSlug,
+    FULL_URL: fullUrl,
+    SERVICE_TYPE: vertical.serviceType,
+    PRIMARY_SERVICE: vertical.primaryService,
     SERVICE_AREA: answers.serviceArea,
     REGION: answers.serviceArea,
     YEAR_STARTED: answers.yearStarted,
     CURRENT_YEAR: currentYear,
     // Default values for optional tokens
     TARGET_AUDIENCE: 'your needs',
-    CITY: answers.serviceArea.split(',')[0] || answers.serviceArea,
-    CITY_1: answers.serviceArea.split(',')[0] || 'City 1',
+    CITY: answers.city || answers.serviceArea.split(',')[0] || answers.serviceArea,
+    CITY_1: answers.serviceArea.split(',')[0] || answers.city || 'City 1',
     CITY_2: answers.serviceArea.split(',')[1]?.trim() || 'City 2',
     CITY_3: answers.serviceArea.split(',')[2]?.trim() || 'City 3',
     CITY_4: answers.serviceArea.split(',')[3]?.trim() || 'City 4',
-    CITY_SLUG_1: (answers.serviceArea.split(',')[0] || 'city-1').toLowerCase().replace(/\s+/g, '-'),
+    CITY_SLUG_1: (answers.serviceArea.split(',')[0] || answers.city || 'city-1').toLowerCase().replace(/\s+/g, '-'),
     CITY_SLUG_2: (answers.serviceArea.split(',')[1]?.trim() || 'city-2').toLowerCase().replace(/\s+/g, '-'),
     CITY_SLUG_3: (answers.serviceArea.split(',')[2]?.trim() || 'city-3').toLowerCase().replace(/\s+/g, '-'),
     CITY_SLUG_4: (answers.serviceArea.split(',')[3]?.trim() || 'city-4').toLowerCase().replace(/\s+/g, '-'),
-    HOME_PAGE_DESCRIPTION: `Professional ${answers.serviceType} services in ${answers.serviceArea}. Quality service, competitive pricing, guaranteed results.`,
-    KEYWORDS: `${answers.serviceType}, ${answers.businessName}, ${answers.serviceArea}`,
-    WEBSITE_URL: `https://${answers.outputFolder}.com`,
-    BUSINESS_DESCRIPTION: `Professional ${answers.serviceType} services in ${answers.serviceArea}`,
-    PHONE_NUMBER: '(555) 123-4567',
-    PHONE: '(555) 123-4567',
-    EMAIL: `info@${answers.outputFolder}.com`,
-    STREET_ADDRESS: '123 Main Street',
-    POSTAL_CODE: '12345',
-    COUNTRY: 'USA',
-    FACEBOOK_URL: `https://facebook.com/${answers.outputFolder}`,
-    INSTAGRAM_URL: `https://instagram.com/${answers.outputFolder}`,
-    LINKEDIN_URL: `https://linkedin.com/company/${answers.outputFolder}`,
+    HOME_PAGE_DESCRIPTION: vertical.homeDescription || `Professional ${vertical.primaryService} services in ${answers.serviceArea}. Quality service, competitive pricing, guaranteed results.`,
+    KEYWORDS: vertical.keywords ? vertical.keywords.join(', ') : `${vertical.serviceType}, ${answers.businessName}, ${answers.serviceArea}`,
+    KEYWORDS_ARRAY: vertical.keywords ? `"${vertical.keywords.join('", "')}"` : `"${vertical.serviceType}", "${answers.businessName}"`
+    WEBSITE_URL: fullUrl,
+    BUSINESS_DESCRIPTION: `Professional ${vertical.primaryService} services in ${answers.serviceArea}`,
+    PHONE_NUMBER: answers.phone,
+    PHONE: answers.phone,
+    EMAIL: answers.email,
+    STREET: answers.street,
+    STREET_ADDRESS: answers.street,
+    CITY_ADDRESS: answers.city,
+    STATE: answers.state,
+    ZIP: answers.zip,
+    POSTAL_CODE: answers.zip,
+    COUNTRY: answers.country,
+    FACEBOOK_URL: `https://facebook.com/${domainSlug}`,
+    INSTAGRAM_URL: `https://instagram.com/${domainSlug}`,
+    LINKEDIN_URL: `https://linkedin.com/company/${domainSlug}`,
     GOOGLE_ANALYTICS_ID: 'UA-XXXXX-Y',
-    PRIMARY_COLOR: scheme.primary
+    PRIMARY_COLOR: scheme.primary,
+    SECONDARY_COLOR: scheme.secondary,
+    ACCENT_COLOR: scheme.accent,
+    BACKGROUND_COLOR: scheme.background,
+    TEXT_COLOR: scheme.text
   };
 
   console.log('\n📂 Creating site at:', destSiteDir);
@@ -323,6 +504,35 @@ async function run() {
   console.log('🎨 Applying color scheme...');
   const cssTokensFile = path.join(destSiteDir, 'css', 'design-tokens-override.css');
   await writeColorTokens(cssTokensFile, scheme);
+
+  // Process template files (site.config.json, package.json)
+  console.log('📄 Generating config files...');
+  await processTemplateFiles(rootDir, destSiteDir, replacements);
+
+  // Generate setup guide
+  console.log('📖 Generating setup guide...');
+  const setupTemplatePath = path.join(rootDir, 'SETUP.template.md');
+  const setupOutputPath = path.join(destSiteDir, 'SETUP.md');
+  await generateSetupGuide(setupTemplatePath, setupOutputPath, replacements);
+
+  // Handle images
+  console.log('🖼️  Handling images...');
+  const imagesStockDir = path.join(rootDir, 'stock-images', answers.verticalKey);
+  const imagesStockDest = path.join(destSiteDir, 'images', 'stock');
+  
+  if (fs.existsSync(imagesStockDir)) {
+    await copyDir(imagesStockDir, imagesStockDest);
+    console.log('   ✅ Copied stock images for', vertical.primaryService);
+  } else {
+    console.log('   ℹ️  No stock images found for this vertical');
+  }
+
+  // Optionally fetch images from URL
+  if (answers.imageSourceUrl && answers.imageSourceUrl.trim()) {
+    const imagesScrapedDest = path.join(destSiteDir, 'images', 'scraped');
+    await fsp.mkdir(imagesScrapedDest, { recursive: true });
+    await fetchImagesWithWget(answers.imageSourceUrl.trim(), imagesScrapedDest);
+  }
 
   console.log('✏️ Replacing template tokens in all files...');
   const htmlFiles = [];
@@ -344,6 +554,8 @@ async function run() {
 
   console.log('\n✅ Done! Generated site at:', answers.outputFolder);
   console.log(`   Generated ${htmlFiles.length} pages with all tokens replaced.`);
+  console.log(`   Vertical: ${vertical.primaryService}`);
+  console.log(`   Domain: ${fullUrl}`);
   console.log('   Open index.html in your browser or serve the folder with any static server.\n');
 }
 

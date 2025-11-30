@@ -1,0 +1,17 @@
+{
+  "name": "{{DOMAIN_SLUG}}",
+  "version": "1.0.0",
+  "description": "{{HOME_PAGE_DESCRIPTION}}",
+  "scripts": {
+    "dev": "live-server --port=3000 --open=/index.html",
+    "start": "live-server --port=3000 --open=/index.html",
+    "build": "echo 'No build step needed for static site'"
+  },
+  "keywords": [{{KEYWORDS_ARRAY}}],
+  "author": "{{BUSINESS_NAME}}",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
+

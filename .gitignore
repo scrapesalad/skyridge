@@ -5,3 +5,25 @@ node_modules/
 .idea/
 
 .vercel
+
+# Generated sites (test outputs)
+/*/
+!templates/
+!stock-images/
+!scripts/
+!pages/
+!css/
+!images/
+!components/
+!docs/
+!Start Here/
+!.gitignore
+!*.json
+!*.md
+!*.html
+!*.txt
+!*.xml
+!*.ps1
+!*.js
+!*.css
+!*.template

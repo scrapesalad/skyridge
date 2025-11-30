@@ -1,0 +1,55 @@
+{
+  "site": {
+    "name": "{{BUSINESS_NAME}}",
+    "tagline": "{{PRIMARY_SERVICE}}",
+    "domain": "{{DOMAIN}}",
+    "url": "{{FULL_URL}}",
+    "description": "{{HOME_PAGE_DESCRIPTION}}",
+    "keywords": [{{KEYWORDS_ARRAY}}],
+    "language": "en",
+    "author": "{{BUSINESS_NAME}}"
+  },
+  "branding": {
+    "logo": {
+      "path": "images/logo/kingtutlogo.png",
+      "alt": "{{BUSINESS_NAME}}",
+      "faviconPath": "images/logo/favicon.ico",
+      "height": "104px",
+      "maxWidth": "350px"
+    },
+    "colors": {
+      "primary": {
+        "base": "{{PRIMARY_COLOR}}",
+        "dark": "#A68943",
+        "light": "#D4BA7F"
+      },
+      "secondary": {
+        "base": "{{SECONDARY_COLOR}}",
+        "dark": "#1E3849",
+        "light": "#3D6A89"
+      },
+      "accent": {
+        "base": "{{ACCENT_COLOR}}",
+        "dark": "#B8951F",
+        "light": "#E0C35C"
+      }
+    }
+  },
+  "contact": {
+    "phone": "{{PHONE}}",
+    "email": "{{EMAIL}}",
+    "address": {
+      "street": "{{STREET}}",
+      "city": "{{CITY}}",
+      "state": "{{STATE}}",
+      "zip": "{{ZIP}}",
+      "country": "{{COUNTRY}}"
+    }
+  },
+  "seo": {
+    "defaultTitle": "{{SITE_NAME}} | {{PRIMARY_SERVICE}}",
+    "defaultDescription": "{{HOME_PAGE_DESCRIPTION}}",
+    "defaultKeywords": "{{KEYWORDS_CSV}}"
+  }
+}
+

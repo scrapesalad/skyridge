@@ -1,0 +1,112 @@
+{
+  "landscaping": {
+    "primaryService": "Landscaping & Lawn Care",
+    "serviceType": "landscaping",
+    "homeDescription": "Professional residential and commercial landscaping, lawn care, and outdoor maintenance services. Quality workmanship, competitive pricing, and guaranteed satisfaction.",
+    "keywords": [
+      "landscaping",
+      "lawn care",
+      "yard maintenance",
+      "landscape design",
+      "irrigation",
+      "sprinkler systems"
+    ],
+    "defaultServices": [
+      "Weekly Lawn Maintenance",
+      "Landscape Design & Installation",
+      "Seasonal Cleanups",
+      "Irrigation & Sprinkler Systems"
+    ]
+  },
+  "roofing": {
+    "primaryService": "Roofing Services",
+    "serviceType": "roofing",
+    "homeDescription": "Expert residential and commercial roof repair, replacement, and inspections. Licensed, insured, and trusted by homeowners and businesses.",
+    "keywords": [
+      "roofing contractor",
+      "roof repair",
+      "roof replacement",
+      "roof inspection",
+      "gutter installation"
+    ],
+    "defaultServices": [
+      "Roof Repair",
+      "Roof Replacement",
+      "Roof Inspections",
+      "Gutter Installation"
+    ]
+  },
+  "plumbing": {
+    "primaryService": "Plumbing Services",
+    "serviceType": "plumbing",
+    "homeDescription": "Professional plumbing services for residential and commercial properties. Emergency repairs, installations, and maintenance. Available 24/7.",
+    "keywords": [
+      "plumber",
+      "plumbing repair",
+      "plumbing installation",
+      "emergency plumber",
+      "drain cleaning"
+    ],
+    "defaultServices": [
+      "Emergency Plumbing",
+      "Drain Cleaning",
+      "Water Heater Installation",
+      "Pipe Repair & Replacement"
+    ]
+  },
+  "hvac": {
+    "primaryService": "HVAC Services",
+    "serviceType": "HVAC",
+    "homeDescription": "Complete heating, ventilation, and air conditioning services. Installation, repair, and maintenance for residential and commercial properties.",
+    "keywords": [
+      "HVAC",
+      "air conditioning",
+      "heating repair",
+      "AC installation",
+      "furnace repair"
+    ],
+    "defaultServices": [
+      "AC Installation & Repair",
+      "Heating System Service",
+      "Duct Cleaning",
+      "HVAC Maintenance"
+    ]
+  },
+  "pressure-washing": {
+    "primaryService": "Pressure Washing Services",
+    "serviceType": "pressure washing",
+    "homeDescription": "Professional pressure washing and exterior cleaning services. Driveways, siding, decks, and commercial properties. Free estimates.",
+    "keywords": [
+      "pressure washing",
+      "power washing",
+      "exterior cleaning",
+      "deck cleaning",
+      "driveway cleaning"
+    ],
+    "defaultServices": [
+      "Residential Pressure Washing",
+      "Commercial Cleaning",
+      "Deck & Patio Cleaning",
+      "Driveway & Sidewalk Cleaning"
+    ]
+  },
+  "electrical": {
+    "primaryService": "Electrical Services",
+    "serviceType": "electrical",
+    "homeDescription": "Licensed electricians providing residential and commercial electrical services. Safe, reliable, and code-compliant installations and repairs.",
+    "keywords": [
+      "electrician",
+      "electrical repair",
+      "electrical installation",
+      "panel upgrade",
+      "lighting installation"
+    ],
+    "defaultServices": [
+      "Electrical Repairs",
+      "Panel Upgrades",
+      "Lighting Installation",
+      "Outlet & Switch Installation"
+    ]
+  }
+}
+
