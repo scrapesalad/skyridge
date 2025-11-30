@@ -554,6 +554,61 @@ async function run() {
     await fsp.mkdir(imagesScrapedDest, { recursive: true });
     await fetchImagesWithWget(answers.imageSourceUrl.trim(), imagesScrapedDest);
     console.log(`   📁 Scraped images saved to: images/scraped/`);
+    
+    // Copy scraped images to main images folder to replace template/stock images
+    const mainImagesDir = path.join(destSiteDir, 'images');
+    const scrapedFiles = await fsp.readdir(imagesScrapedDest);
+    const imageFiles = scrapedFiles.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f));
+    
+    if (imageFiles.length > 0) {
+      // Get list of images in main images folder (from template) that need to be replaced
+      let existingImageNames = [];
+      if (fs.existsSync(mainImagesDir)) {
+        const mainFiles = await fsp.readdir(mainImagesDir, { withFileTypes: true });
+        // Only get image files, exclude directories like 'logo' and 'stock'
+        existingImageNames = mainFiles
+          .filter(f => f.isFile() && /\.(jpg|jpeg|png|gif|webp)$/i.test(f.name))
+          .map(f => f.name);
+      }
+      
+      // If no existing images in main folder, check stock folder
+      if (existingImageNames.length === 0) {
+        const stockImagesDir = path.join(destSiteDir, 'images', 'stock');
+        if (fs.existsSync(stockImagesDir)) {
+          const stockFiles = await fsp.readdir(stockImagesDir);
+          existingImageNames = stockFiles.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f));
+        }
+      }
+      
+      // If still no images, use default gallery image names from template
+      if (existingImageNames.length === 0) {
+        existingImageNames = [
+          'Gemini_Generated_Image_3171973171973171.png',
+          'Gemini_Generated_Image_6xm42n6xm42n6xm4.png',
+          'Gemini_Generated_Image_7uiph7uiph7uiph7.png',
+          'Gemini_Generated_Image_8c0h358c0h358c0h.png',
+          'Gemini_Generated_Image_f836zcf836zcf836.png',
+          'Gemini_Generated_Image_fbz66qfbz66qfbz6.png'
+        ];
+      }
+      
+      // Copy scraped images to main images folder, replacing existing images
+      const imagesToCopy = Math.min(imageFiles.length, existingImageNames.length);
+      for (let i = 0; i < imagesToCopy; i++) {
+        const scrapedFile = path.join(imagesScrapedDest, imageFiles[i]);
+        const destFile = path.join(mainImagesDir, existingImageNames[i]);
+        await fsp.copyFile(scrapedFile, destFile);
+      }
+      
+      // Copy remaining scraped images with their original names
+      for (let i = imagesToCopy; i < imageFiles.length; i++) {
+        const scrapedFile = path.join(imagesScrapedDest, imageFiles[i]);
+        const destFile = path.join(mainImagesDir, imageFiles[i]);
+        await fsp.copyFile(scrapedFile, destFile);
+      }
+      
+      console.log(`   ✅ Replaced ${imagesToCopy} images in main images folder with scraped images`);
+    }
   }
 
   console.log('✏️ Replacing template tokens in all files...');
