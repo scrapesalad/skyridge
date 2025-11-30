@@ -287,7 +287,13 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
     }
 
     // Improved wget command for higher quality images
-    // First pass: get all images, then filter by size
+    // Reject social media icons, logos, and small images
+    const rejectPatterns = [
+      'icon', 'logo', 'favicon', 'thumbnail', 'thumb', 'small', 'avatar',
+      'instagram', 'facebook', 'twitter', 'linkedin', 'social', 'share',
+      'sprite', 'button', 'badge', 'widget', 'emoji', 'smiley'
+    ].join(',');
+
     const cmd = [
       `"${wgetPath}"`,
       '-r',               // recursive
@@ -298,7 +304,7 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
       '-N',               // only new files
       '-np',              // no parent (don't go up directories)
       '-A', 'jpg,jpeg,png,gif,webp',  // accept image extensions
-      '-R', 'icon,logo,favicon,thumbnail,thumb,small,avatar',  // reject small/icon images
+      '-R', rejectPatterns,  // reject social icons, logos, thumbnails
       '--no-check-certificate',  // skip SSL verification (for some sites)
       '-e', 'robots=off', // ignore robots.txt (use carefully)
       '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',  // better user agent
@@ -312,10 +318,20 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
     console.log('   🔍 Scraping for high-quality images...');
     execSync(cmd, { stdio: 'inherit' });
     
-    // Filter out small/blurry images by file size and prioritize larger images
-    console.log('   🎨 Filtering for high-quality images (min 30KB, prioritizing largest)...');
+    // Filter out small/blurry images, social icons, and logos by file size and filename
+    console.log('   🎨 Filtering for high-quality content images (min 50KB, excluding social icons/logos)...');
     const scrapedFiles = await fsp.readdir(destDir);
     const imageFiles = [];
+    
+    // Patterns to identify social media icons, logos, and non-content images
+    const socialIconPatterns = [
+      /instagram/i, /facebook/i, /twitter/i, /linkedin/i, /pinterest/i,
+      /social/i, /share/i, /icon/i, /logo/i, /favicon/i, /avatar/i,
+      /sprite/i, /button/i, /badge/i, /widget/i, /emoji/i, /smiley/i,
+      /^[a-z0-9]{1,2}[_-]/i,  // Very short filenames (often icons)
+      /^[A-Z][a-z]-[A-Z]/i,   // Pattern like "De-Dwpd5CHc.png" (social icons)
+      /^[a-z]+-[a-z]+-[a-z]+/i // Pattern like "lam-fZmwmvn.png"
+    ];
     
     // Collect all image files with their sizes
     for (const file of scrapedFiles) {
@@ -325,11 +341,16 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
           const stats = await fsp.stat(filePath);
           const fileSizeKB = stats.size / 1024;
           
-          // Only consider images larger than 30KB (better quality threshold)
-          if (fileSizeKB >= 30) {
+          // Check if filename indicates it's a social icon or logo
+          const isSocialIcon = socialIconPatterns.some(pattern => pattern.test(file));
+          
+          // Only keep images that are:
+          // 1. Larger than 50KB (increased threshold for better quality)
+          // 2. Not identified as social icons/logos by filename
+          if (fileSizeKB >= 50 && !isSocialIcon) {
             imageFiles.push({ name: file, path: filePath, size: stats.size });
           } else {
-            // Remove small images
+            // Remove small images or social icons
             await fsp.unlink(filePath);
           }
         } catch (err) {
@@ -341,8 +362,8 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
     // Sort by file size (largest first) to prioritize high-quality images
     imageFiles.sort((a, b) => b.size - a.size);
     
-    // Keep top 50 largest images (to avoid too many files)
-    const maxImages = 50;
+    // Keep top 30 largest images (reduced to focus on best quality)
+    const maxImages = 30;
     let removedCount = 0;
     if (imageFiles.length > maxImages) {
       for (let i = maxImages; i < imageFiles.length; i++) {
@@ -353,12 +374,15 @@ async function fetchImagesWithWget(sourceUrl, destDir) {
     }
     
     const keptCount = imageFiles.length;
-    const totalRemoved = scrapedFiles.length - keptCount - removedCount + removedCount;
+    const totalRemoved = scrapedFiles.length - keptCount;
     
-    console.log(`   ✅ Images fetched: ${keptCount} high-quality images kept (${totalRemoved} small/duplicate images removed)`);
+    console.log(`   ✅ Images fetched: ${keptCount} high-quality content images kept`);
+    console.log(`   🗑️  Removed: ${totalRemoved} social icons, logos, and small images`);
     if (keptCount > 0) {
       const avgSize = Math.round(imageFiles.reduce((sum, img) => sum + (img.size / 1024), 0) / keptCount);
       console.log(`   📊 Average image size: ${avgSize}KB`);
+    } else {
+      console.warn('   ⚠️  No suitable content images found. Consider using stock images or providing a gallery/media page URL.');
     }
   } catch (err) {
     console.warn('   ⚠️  Error fetching images:', err.message);
