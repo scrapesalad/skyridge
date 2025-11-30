@@ -505,6 +505,23 @@ async function run() {
   console.log('\n📂 Creating site at:', destSiteDir);
   await copyDir(srcTemplateDir, destSiteDir);
 
+  // Copy CSS files from root directory (template CSS folder may be empty)
+  const rootCssDir = path.join(rootDir, 'css');
+  const destCssDir = path.join(destSiteDir, 'css');
+  
+  if (fs.existsSync(rootCssDir)) {
+    const rootCssFiles = await fsp.readdir(rootCssDir);
+    for (const file of rootCssFiles) {
+      if (file.endsWith('.css') && file !== 'design-tokens-override.css') {
+        // Skip design-tokens-override.css as we'll generate it
+        const srcFile = path.join(rootCssDir, file);
+        const destFile = path.join(destCssDir, file);
+        await fsp.copyFile(srcFile, destFile);
+      }
+    }
+    console.log('   ✅ Copied CSS files from root directory');
+  }
+
   console.log('🎨 Applying color scheme...');
   const cssTokensFile = path.join(destSiteDir, 'css', 'design-tokens-override.css');
   await writeColorTokens(cssTokensFile, scheme);
@@ -536,6 +553,7 @@ async function run() {
     const imagesScrapedDest = path.join(destSiteDir, 'images', 'scraped');
     await fsp.mkdir(imagesScrapedDest, { recursive: true });
     await fetchImagesWithWget(answers.imageSourceUrl.trim(), imagesScrapedDest);
+    console.log(`   📁 Scraped images saved to: images/scraped/`);
   }
 
   console.log('✏️ Replacing template tokens in all files...');
