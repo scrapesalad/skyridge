@@ -431,7 +431,7 @@ async function run() {
       name: 'verticalKey',
       message: 'What type of site is this?',
       choices: Object.keys(verticals).map(key => ({
-        name: verticals[key].primaryService,
+        name: verticals[key].label || verticals[key].primaryService,
         value: key
       }))
     },
@@ -544,6 +544,19 @@ async function run() {
     },
     {
       type: 'input',
+      name: 'customServices',
+      message: 'List up to 6 core services (comma separated). Press enter to use defaults:',
+      default: (ans) => {
+        const vertical = verticals[ans.verticalKey];
+        return vertical && vertical.services ? vertical.services.join(', ') : '';
+      },
+      when: (ans) => {
+        const vertical = verticals[ans.verticalKey];
+        return vertical && vertical.services && vertical.services.length > 0;
+      }
+    },
+    {
+      type: 'input',
       name: 'outputFolder',
       message: 'Output folder name (where to generate the site):',
       default: (ans) =>
@@ -562,6 +575,18 @@ async function run() {
   if (!vertical) {
     console.error(`❌ Vertical "${answers.verticalKey}" not found in verticals.json`);
     process.exit(1);
+  }
+
+  // Parse services (use custom if provided, otherwise use vertical defaults)
+  let finalServices = [];
+  if (answers.customServices && answers.customServices.trim()) {
+    finalServices = answers.customServices
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+      .slice(0, 6); // Limit to 6 services
+  } else if (vertical.services && Array.isArray(vertical.services)) {
+    finalServices = vertical.services.slice(0, 6); // Limit to 6 services
   }
 
   const siteName = answers.siteName.trim() || answers.businessName.trim();
@@ -642,7 +667,14 @@ async function run() {
     SECONDARY_COLOR: scheme.secondary,
     ACCENT_COLOR: scheme.accent,
     BACKGROUND_COLOR: scheme.background,
-    TEXT_COLOR: scheme.text
+    TEXT_COLOR: scheme.text,
+    // Service tokens (up to 6 services)
+    SERVICE_1: finalServices[0] || '',
+    SERVICE_2: finalServices[1] || '',
+    SERVICE_3: finalServices[2] || '',
+    SERVICE_4: finalServices[3] || '',
+    SERVICE_5: finalServices[4] || '',
+    SERVICE_6: finalServices[5] || ''
   };
 
   console.log('\n📂 Creating site at:', destSiteDir);

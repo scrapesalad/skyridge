@@ -1,5 +1,6 @@
 {
   "landscaping": {
+    "label": "Landscaping & Lawn Care",
     "primaryService": "Landscaping & Lawn Care",
     "serviceType": "landscaping",
     "homeDescription": "Professional residential and commercial landscaping, lawn care, and outdoor maintenance services. Quality workmanship, competitive pricing, and guaranteed satisfaction.",
@@ -11,14 +12,17 @@
       "irrigation",
       "sprinkler systems"
     ],
-    "defaultServices": [
+    "services": [
       "Weekly Lawn Maintenance",
       "Landscape Design & Installation",
       "Seasonal Cleanups",
-      "Irrigation & Sprinkler Systems"
+      "Irrigation & Sprinkler Systems",
+      "Mulching & Bed Maintenance",
+      "Tree & Shrub Care"
     ]
   },
   "roofing": {
+    "label": "Roofing Services",
     "primaryService": "Roofing Services",
     "serviceType": "roofing",
     "homeDescription": "Expert residential and commercial roof repair, replacement, and inspections. Licensed, insured, and trusted by homeowners and businesses.",
@@ -29,14 +33,17 @@
       "roof inspection",
       "gutter installation"
     ],
-    "defaultServices": [
-      "Roof Repair",
-      "Roof Replacement",
+    "services": [
       "Roof Inspections",
-      "Gutter Installation"
+      "Roof Repair",
+      "Full Roof Replacement",
+      "Storm Damage Repair",
+      "Gutter & Downspout Services",
+      "Emergency Leak Repair"
     ]
   },
   "plumbing": {
+    "label": "Plumbing Services",
     "primaryService": "Plumbing Services",
     "serviceType": "plumbing",
     "homeDescription": "Professional plumbing services for residential and commercial properties. Emergency repairs, installations, and maintenance. Available 24/7.",
@@ -47,14 +54,17 @@
       "emergency plumber",
       "drain cleaning"
     ],
-    "defaultServices": [
+    "services": [
       "Emergency Plumbing",
       "Drain Cleaning",
       "Water Heater Installation",
-      "Pipe Repair & Replacement"
+      "Pipe Repair & Replacement",
+      "Fixture Installation",
+      "Sewer Line Services"
     ]
   },
   "hvac": {
+    "label": "HVAC Services",
     "primaryService": "HVAC Services",
     "serviceType": "HVAC",
     "homeDescription": "Complete heating, ventilation, and air conditioning services. Installation, repair, and maintenance for residential and commercial properties.",
@@ -65,14 +75,17 @@
       "AC installation",
       "furnace repair"
     ],
-    "defaultServices": [
+    "services": [
       "AC Installation & Repair",
       "Heating System Service",
       "Duct Cleaning",
-      "HVAC Maintenance"
+      "HVAC Maintenance",
+      "Indoor Air Quality",
+      "Thermostat Installation"
     ]
   },
   "pressure-washing": {
+    "label": "Pressure Washing Services",
     "primaryService": "Pressure Washing Services",
     "serviceType": "pressure washing",
     "homeDescription": "Professional pressure washing and exterior cleaning services. Driveways, siding, decks, and commercial properties. Free estimates.",
@@ -83,14 +96,17 @@
       "deck cleaning",
       "driveway cleaning"
     ],
-    "defaultServices": [
+    "services": [
       "Residential Pressure Washing",
       "Commercial Cleaning",
       "Deck & Patio Cleaning",
-      "Driveway & Sidewalk Cleaning"
+      "Driveway & Sidewalk Cleaning",
+      "Siding & Exterior Cleaning",
+      "Roof Cleaning"
     ]
   },
   "electrical": {
+    "label": "Electrical Services",
     "primaryService": "Electrical Services",
     "serviceType": "electrical",
     "homeDescription": "Licensed electricians providing residential and commercial electrical services. Safe, reliable, and code-compliant installations and repairs.",
@@ -101,11 +117,13 @@
       "panel upgrade",
       "lighting installation"
     ],
-    "defaultServices": [
+    "services": [
       "Electrical Repairs",
       "Panel Upgrades",
       "Lighting Installation",
-      "Outlet & Switch Installation"
+      "Outlet & Switch Installation",
+      "Electrical Safety Inspections",
+      "Generator Installation"
     ]
   }
 }
