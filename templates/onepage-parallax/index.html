@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{SITE_NAME}} | {{PRIMARY_SERVICE}}</title>
+  <meta name="description" content="{{HOME_PAGE_DESCRIPTION}}" />
+  <meta name="theme-color" content="{{PRIMARY_COLOR}}" />
+  <link rel="icon" type="image/x-icon" href="images/logo/favicon.ico" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/design-tokens-override.css" />
+  <link rel="stylesheet" href="css/template.css" />
+</head>
+<body>
+  <!-- HEADER WITH ANCHOR NAV -->
+  <header class="header header--fixed">
+    <div class="container header__inner">
+      <a href="#hero" class="header__logo">
+        <img src="images/logo/kingtutlogo.png" alt="{{SITE_NAME}}" />
+      </a>
+      <nav class="header__nav">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact" class="btn btn--primary">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- FULL-SCREEN HERO WITH PARALLAX -->
+    <section id="hero" class="hero hero--fullscreen">
+      <div class="hero__parallax-bg"></div>
+      <div class="hero__content">
+        <h1>{{BUSINESS_NAME}}</h1>
+        <p class="hero__subtitle">Premium {{SERVICE_TYPE}} in {{SERVICE_AREA}}</p>
+        <a href="#contact" class="btn btn--primary btn--large">Get Free Quote</a>
+      </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services" class="section section--band">
+      <div class="container">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <h3>Service One</h3>
+            <p>Professional {{SERVICE_TYPE}} solutions tailored to your needs.</p>
+          </div>
+          <div class="service-card">
+            <h3>Service Two</h3>
+            <p>Expert service delivery with guaranteed satisfaction.</p>
+          </div>
+          <div class="service-card">
+            <h3>Service Three</h3>
+            <p>Premium options for discerning clients.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="section section--band section--alt">
+      <div class="container">
+        <h2>About {{BUSINESS_NAME}}</h2>
+        <p>Serving {{SERVICE_AREA}} since {{YEAR_STARTED}}, we deliver exceptional {{SERVICE_TYPE}} with a focus on quality and customer satisfaction.</p>
+      </div>
+    </section>
+
+    <!-- PROJECTS GALLERY -->
+    <section id="projects" class="section section--band">
+      <div class="container">
+        <h2>Recent Projects</h2>
+        <div class="gallery-grid">
+          <div class="gallery-item"><img src="images/Gemini_Generated_Image_3171973171973171.png" alt="Project 1" /></div>
+          <div class="gallery-item"><img src="images/Gemini_Generated_Image_6xm42n6xm42n6xm4.png" alt="Project 2" /></div>
+          <div class="gallery-item"><img src="images/Gemini_Generated_Image_7uiph7uiph7uiph7.png" alt="Project 3" /></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="section section--band section--alt">
+      <div class="container">
+        <h2>Pricing Packages</h2>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>Basic</h3>
+            <div class="price">$299</div>
+            <ul>
+              <li>Feature one</li>
+              <li>Feature two</li>
+            </ul>
+            <a href="#contact" class="btn btn--primary">Get Started</a>
+          </div>
+          <div class="pricing-card pricing-card--featured">
+            <h3>Premium</h3>
+            <div class="price">$599</div>
+            <ul>
+              <li>All Basic features</li>
+              <li>Premium support</li>
+            </ul>
+            <a href="#contact" class="btn btn--primary">Get Started</a>
+          </div>
+          <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <div class="price">Custom</div>
+            <ul>
+              <li>Everything in Premium</li>
+              <li>Custom solutions</li>
+            </ul>
+            <a href="#contact" class="btn btn--primary">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="section section--band">
+      <div class="container">
+        <h2>Get In Touch</h2>
+        <div class="contact-grid">
+          <div class="contact-form">
+            <form>
+              <input type="text" placeholder="Your Name" required />
+              <input type="email" placeholder="Your Email" required />
+              <textarea placeholder="Your Message" rows="5" required></textarea>
+              <button type="submit" class="btn btn--primary">Send Message</button>
+            </form>
+          </div>
+          <div class="contact-info">
+            <p><strong>Phone:</strong> {{PHONE}}</p>
+            <p><strong>Email:</strong> {{EMAIL}}</p>
+            <p><strong>Area:</strong> {{SERVICE_AREA}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; {{CURRENT_YEAR}} {{BUSINESS_NAME}}. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
+

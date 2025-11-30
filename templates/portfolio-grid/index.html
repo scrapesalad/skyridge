@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{SITE_NAME}} | {{PRIMARY_SERVICE}}</title>
+  <meta name="description" content="{{HOME_PAGE_DESCRIPTION}}" />
+  <meta name="theme-color" content="{{PRIMARY_COLOR}}" />
+  <link rel="icon" type="image/x-icon" href="images/logo/favicon.ico" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/design-tokens-override.css" />
+  <link rel="stylesheet" href="css/template.css" />
+</head>
+<body>
+  <!-- MINIMAL HEADER -->
+  <header class="header header--minimal">
+    <div class="container header__inner">
+      <a href="/" class="header__logo">
+        <img src="images/logo/kingtutlogo.png" alt="{{SITE_NAME}}" />
+      </a>
+      <nav class="header__nav">
+        <a href="pages/projects.html">Projects</a>
+        <a href="pages/about.html">About</a>
+        <a href="pages/contact.html">Contact</a>
+        <a href="pages/book.html" class="btn btn--small">Get Quote</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- COMPACT HERO -->
+    <section class="hero hero--compact">
+      <div class="container">
+        <h1>{{BUSINESS_NAME}}</h1>
+        <p class="hero__tagline">Premium {{SERVICE_TYPE}} Portfolio</p>
+      </div>
+    </section>
+
+    <!-- FILTERABLE PROJECT GRID -->
+    <section class="section">
+      <div class="container">
+        <div class="filter-tabs">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="residential">Residential</button>
+          <button class="filter-btn" data-filter="commercial">Commercial</button>
+        </div>
+        <div class="portfolio-grid">
+          <div class="portfolio-item" data-category="residential">
+            <img src="images/Gemini_Generated_Image_3171973171973171.png" alt="Project 1" />
+            <div class="portfolio-overlay">
+              <h3>Residential Project</h3>
+              <p>{{SERVICE_TYPE}} in {{CITY_1}}</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="commercial">
+            <img src="images/Gemini_Generated_Image_6xm42n6xm42n6xm4.png" alt="Project 2" />
+            <div class="portfolio-overlay">
+              <h3>Commercial Project</h3>
+              <p>{{SERVICE_TYPE}} in {{CITY_2}}</p>
+            </div>
+          </div>
+          <div class="portfolio-item" data-category="residential">
+            <img src="images/Gemini_Generated_Image_7uiph7uiph7uiph7.png" alt="Project 3" />
+            <div class="portfolio-overlay">
+              <h3>Residential Project</h3>
+              <p>{{SERVICE_TYPE}} in {{CITY_3}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS SLIDER -->
+    <section class="section section--light">
+      <div class="container">
+        <h2>Client Testimonials</h2>
+        <div class="testimonial-slider">
+          <div class="testimonial-slide">
+            <p>"Outstanding work from {{BUSINESS_NAME}}. Highly recommend!"</p>
+            <span>— Client, {{CITY_1}}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer site-footer--minimal">
+    <div class="container">
+      <p>&copy; {{CURRENT_YEAR}} {{BUSINESS_NAME}}. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
+

@@ -1,0 +1,70 @@
+/* ============================================
+   DESIGN TOKENS OVERRIDE
+   ============================================
+   Auto-generated from site.config.json
+   DO NOT EDIT MANUALLY - Run: npm run sync:design-tokens
+   ============================================ */
+
+:root {
+  --color-primary: #C8A860;
+  --color-primary-dark: #A68943;
+  --color-primary-light: #D4BA7F;
+  --color-primary-50: #FAF7F0;
+  --color-primary-100: #F2EBD9;
+  --color-primary-200: #E8DEC0;
+  --color-primary-300: #DDD1A7;
+  --color-primary-400: #D3C38E;
+  --color-primary-500: #C8A860;
+  --color-primary-600: #B5964D;
+  --color-primary-700: #A68943;
+  --color-primary-800: #8A7238;
+  --color-primary-900: #6E5B2D;
+  --color-secondary: #2B4F66;
+  --color-secondary-dark: #1E3849;
+  --color-secondary-light: #3D6A89;
+  --color-secondary-50: #E8EDF1;
+  --color-secondary-100: #D1DBE3;
+  --color-secondary-200: #A3B7C7;
+  --color-secondary-300: #7593AB;
+  --color-secondary-400: #476F8F;
+  --color-secondary-500: #2B4F66;
+  --color-secondary-600: #234258;
+  --color-secondary-700: #1E3849;
+  --color-secondary-800: #182E3B;
+  --color-secondary-900: #12242D;
+  --color-accent: #D4AF37;
+  --color-accent-dark: #B8951F;
+  --color-accent-light: #E0C35C;
+  --color-accent-50: #FBF8EC;
+  --color-accent-100: #F5EED0;
+  --color-accent-200: #EEE3A8;
+  --color-accent-300: #E7D880;
+  --color-accent-400: #DECB58;
+  --color-accent-500: #D4AF37;
+  --color-accent-600: #C19E24;
+  --color-accent-700: #B8951F;
+  --color-accent-800: #967A19;
+  --color-accent-900: #735F13;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  --color-text-primary: #111827;
+  --color-text-secondary: #4b5563;
+  --color-text-tertiary: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-text-inverse: #ffffff;
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f9fafb;
+  --color-bg-tertiary: #f3f4f6;
+  --color-bg-section: #FAF7F0;
+  --color-bg-dark: #1E3849;
+  --font-primary: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-headings: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: SF Mono, Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  --font-size-h1: clamp(2rem, 5vw, 3rem);
+  --font-size-h2: clamp(1.75rem, 4vw, 2.5rem);
+  --font-size-h3: clamp(1.5rem, 3vw, 2rem);
+  --font-size-h4: clamp(1.25rem, 2.5vw, 1.5rem);
+  --container-max-width: 1200px;
+}

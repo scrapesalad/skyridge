@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{{SITE_NAME}} | {{PRIMARY_SERVICE}}</title>
+  <meta name="description" content="{{HOME_PAGE_DESCRIPTION}}" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Brand UI via tokens file -->
+  <meta name="theme-color" content="{{PRIMARY_COLOR}}" />
+
+  <link rel="icon" type="image/x-icon" href="images/logo/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/logo/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/logo/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/logo/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="images/logo/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="images/logo/android-chrome-512x512.png" />
+  <link rel="manifest" href="images/logo/site.webmanifest" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/design-tokens-override.css" />
+  <link rel="stylesheet" href="css/template.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- HEADER -->
+  <header class="header header--sticky">
+    <div class="container header__inner">
+      <a href="/" class="header__logo">
+        <img src="images/logo/kingtutlogo.png" alt="{{SITE_NAME}}" />
+      </a>
+      <nav class="header__nav" aria-label="Main navigation">
+        <a href="pages/services.html">Services</a>
+        <a href="pages/about.html">About</a>
+        <a href="pages/locations.html">Locations</a>
+        <a href="pages/contact.html">Contact</a>
+        <a href="pages/book.html" class="btn btn--primary">Get Free Quote</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- SPLIT HERO -->
+    <section class="hero hero--split">
+      <div class="hero__pane hero__pane--content">
+        <div class="container hero__content-wrap">
+          <h1>Premium {{SERVICE_TYPE}} in {{SERVICE_AREA}}</h1>
+          <p class="hero__subtitle">
+            {{BUSINESS_NAME}} delivers professional {{SERVICE_TYPE}} with a focus on quality,
+            reliability, and outstanding customer care.
+          </p>
+          <div class="hero__actions">
+            <a href="pages/book.html" class="btn btn--primary">Get Your Free Quote</a>
+            <a href="pages/how-it-works.html" class="btn btn--ghost">How It Works</a>
+          </div>
+          <ul class="hero__bullets">
+            <li>Serving {{SERVICE_AREA}} since {{YEAR_STARTED}}</li>
+            <li>Licensed, insured, and highly rated</li>
+            <li>Fast response times & clear communication</li>
+          </ul>
+        </div>
+      </div>
+      <div class="hero__pane hero__pane--image">
+        <img src="images/logo/heroimage.png" alt="{{SERVICE_TYPE}} project example" />
+      </div>
+    </section>
+
+    <!-- ICON SERVICES -->
+    <section class="section section--light">
+      <div class="container">
+        <header class="section__header section__header--center">
+          <h2>Solutions Tailored to You</h2>
+          <p>Full-service {{SERVICE_TYPE}} for homeowners and businesses across {{SERVICE_AREA}}.</p>
+        </header>
+
+        <div class="icon-grid">
+          <article class="icon-box">
+            <div class="icon-box__icon">
+              <span class="icon-circle">1</span>
+            </div>
+            <h3>Core Service One</h3>
+            <p>Describe your primary {{SERVICE_TYPE}} offering and how it helps customers.</p>
+          </article>
+
+          <article class="icon-box">
+            <div class="icon-box__icon">
+              <span class="icon-circle">2</span>
+            </div>
+            <h3>Core Service Two</h3>
+            <p>Highlight another key service and the main benefit it delivers.</p>
+          </article>
+
+          <article class="icon-box">
+            <div class="icon-box__icon">
+              <span class="icon-circle">3</span>
+            </div>
+            <h3>Core Service Three</h3>
+            <p>Use this to showcase a premium or specialized service.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS STRIP -->
+    <section class="stats-strip">
+      <div class="container stats-strip__grid">
+        <div class="stat">
+          <div class="stat__number">500+</div>
+          <div class="stat__label">Projects Completed</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">4.9★</div>
+          <div class="stat__label">Average Rating</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">{{YEAR_STARTED}}</div>
+          <div class="stat__label">Established</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">24/7</div>
+          <div class="stat__label">Support</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALTERNATING FEATURES -->
+    <section class="section">
+      <div class="container feature feature--reverse">
+        <div class="feature__image">
+          <img src="images/Gemini_Generated_Image_3171973171973171.png" alt="Technician at work" />
+        </div>
+        <div class="feature__content">
+          <h2>Why {{BUSINESS_NAME}}?</h2>
+          <p>
+            We combine modern equipment, proven processes, and a customer-first mindset
+            to deliver unmatched {{SERVICE_TYPE}} in {{REGION}}.
+          </p>
+          <ul class="checklist">
+            <li>Transparent, upfront pricing</li>
+            <li>Fully vetted, trained technicians</li>
+            <li>Flexible scheduling options</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="container feature">
+        <div class="feature__content">
+          <h2>Our Simple Process</h2>
+          <ol class="numbered-steps">
+            <li>Request your free quote online or by phone.</li>
+            <li>Approve your custom plan & schedule service.</li>
+            <li>Relax while we handle the rest.</li>
+          </ol>
+          <a href="pages/how-it-works.html" class="btn btn--secondary">See Full Process</a>
+        </div>
+        <div class="feature__image">
+          <img src="images/Gemini_Generated_Image_6xm42n6xm42n6xm4.png" alt="Customer with technician" />
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCATIONS STRIP -->
+    <section class="section section--accent">
+      <div class="container">
+        <header class="section__header section__header--center">
+          <h2>Serving {{REGION}}</h2>
+          <p>Local experts you can trust in neighborhoods across {{SERVICE_AREA}}.</p>
+        </header>
+        <div class="pill-grid">
+          <a href="pages/cities/{{CITY_SLUG_1}}.html" class="pill">{{CITY_1}}</a>
+          <a href="pages/cities/{{CITY_SLUG_2}}.html" class="pill">{{CITY_2}}</a>
+          <a href="pages/cities/{{CITY_SLUG_3}}.html" class="pill">{{CITY_3}}</a>
+          <a href="pages/cities/{{CITY_SLUG_4}}.html" class="pill">{{CITY_4}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS CARDS -->
+    <section class="section">
+      <div class="container">
+        <header class="section__header section__header--center">
+          <h2>What Our Clients Say</h2>
+        </header>
+        <div class="card-grid card-grid--3">
+          <article class="card card--testimonial">
+            <p>"Outstanding experience from start to finish. Highly recommend {{BUSINESS_NAME}}!"</p>
+            <span class="card__meta">— Happy Customer, {{CITY_1}}</span>
+          </article>
+          <article class="card card--testimonial">
+            <p>"Professional, on time, and the results were better than we expected."</p>
+            <span class="card__meta">— Homeowner, {{CITY_2}}</span>
+          </article>
+          <article class="card card--testimonial">
+            <p>"We use {{BUSINESS_NAME}} for all of our {{SERVICE_TYPE}} needs."</p>
+            <span class="card__meta">— Business Owner, {{CITY_3}}</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER CTA -->
+    <section class="section section--dark footer-cta">
+      <div class="container footer-cta__inner">
+        <div>
+          <h2>Ready to schedule your {{SERVICE_TYPE}}?</h2>
+          <p>Request a free, no-obligation quote today.</p>
+        </div>
+        <div class="footer-cta__actions">
+          <a href="pages/book.html" class="btn btn--primary">Get Free Quote</a>
+          <a href="tel:{{PHONE}}" class="footer-cta__phone">{{PHONE}}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>&copy; {{YEAR_STARTED}}–{{CURRENT_YEAR}} {{BUSINESS_NAME}}. All rights reserved.</p>
+      <nav class="site-footer__nav">
+        <a href="pages/about.html">About</a>
+        <a href="pages/services.html">Services</a>
+        <a href="pages/locations.html">Locations</a>
+        <a href="pages/contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
+

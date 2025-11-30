@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7MX5CJ43F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R7MX5CJ43F');
+  </script>
+  <meta charset="UTF-8" />
+  <!-- TITLE TAG: 50-60 characters, format "Page Title | Site Name" -->
+  <title>PUT PAGE TITLE HERE | PUT SITE NAME HERE</title>
+  
+  <!-- META DESCRIPTION: 150-160 characters, compelling description for search results -->
+  <meta name="description" content="PUT YOUR PAGE DESCRIPTION HERE - This should be 150-160 characters and describe what this page is about. Include your main keywords naturally." />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- CANONICAL URL: Full URL to this page (helps prevent duplicate content issues) -->
+  <link rel="canonical" href="https://Place-website-domain-here/pages/PUT-PAGE-PATH-HERE" />
+  <link rel="icon" type="image/x-icon" href="../images/logo/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../images/logo/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/logo/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../images/logo/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="../images/logo/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../images/logo/android-chrome-512x512.png" />
+  <link rel="manifest" href="../images/logo/site.webmanifest" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/design-tokens-override.css" />
+  <link rel="stylesheet" href="/css/avada-enhancements.css" />
+</head>
+<body>
+    <!-- ======================================================================
+       STEP 9: HEADER / NAVIGATION
+       ======================================================================
+       The header is consistent across all pages. Update:
+       - Logo alt text (already set to placeholder)
+       - Navigation links (update hrefs and text)
+       - CTA button text/url
+       ====================================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo" aria-label="Go to homepage">
+        <img src="/images/logo/kingtutlogo.png" alt="PUT YOUR SITE NAME HERE" class="logo-img" />
+      </a>
+
+      <!-- Mobile nav toggle -->
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="main-nav">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav id="main-nav" class="main-nav" aria-label="Primary navigation">
+        <a href="services.html">Services</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="locations.html">Locations</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="about.html">About</a>
+        <a href="book.html" class="btn btn-primary">PUT YOUR MAIN CTA TEXT HERE</a>
+      </nav>
+    </div>
+  </header>
+
+    <!-- ======================================================================
+       STEP 10: MAIN CONTENT
+       ======================================================================
+       This is where your page content goes. Use semantic HTML and CSS
+       classes from styles.css. See KING-TUT-TEMPLATE-GUIDE.md for
+       component examples.
+       ====================================================================== -->
+<main>
+    <section class="directory-hero">
+      <div class="container">
+        <h1>Book a PUT YOUR PRIMARY SERVICE HERE</h1>
+        <p>Get a free, no-obligation quote for your PUT YOUR PRIMARY SERVICE HERE or maintenance service.</p>
+      </div>
+    </section>
+
+    <section class="how-it-works">
+      <div class="container" style="max-width: 800px;">
+        <form class="quote-form" style="position: static; max-width: 100%;">
+          <h2>Tell Us About Your PUT YOUR SERVICE TYPE HERE</h2>
+          
+          <label>
+            Your Name *
+            <input type="text" name="name" required />
+          </label>
+          
+          <label>
+            Email *
+            <input type="email" name="email" required />
+          </label>
+          
+          <label>
+            Phone *
+            <input type="tel" name="phone" required />
+          </label>
+          
+          <label>
+            City or ZIP Code *
+            <input type="text" name="location" placeholder="e.g. Austin, TX or 73301" required />
+          </label>
+          
+          <label>
+            PUT YOUR FIELD LABEL HERE *
+            <select name="PUT YOUR SERVICE TYPE HERE_type" required>
+              <option value="">Select PUT YOUR FIELD LABEL HERE</option>
+              <option value="koi">PUT YOUR SERVICE TYPE HERE</option>
+              <option value="decorative">Decorative PUT YOUR SERVICE TYPE HERE</option>
+              <option value="water-garden">PUT YOUR SERVICE TYPE HERE</option>
+              <option value="other">Other / not sure</option>
+            </select>
+          </label>
+          
+          <label>
+            PUT YOUR FIELD LABEL HERE *
+            <select name="service" required>
+              <option value="">Select service</option>
+              <option value="cleaning">PUT YOUR PRIMARY SERVICE HERE / PUT YOUR SERVICE TYPE HERE</option>
+              <option value="maintenance">Maintenance plan</option>
+              <option value="opening-closing">Opening / closing</option>
+              <option value="restoration">Deep clean / restoration</option>
+              <option value="not-sure">Not sure, need advice</option>
+            </select>
+          </label>
+          
+          <label>
+            PUT YOUR SERVICE TYPE HERE Size (approximate)
+            <select name="PUT YOUR SERVICE TYPE HERE_size">
+              <option value="">Select size</option>
+              <option value="small">Small (under 500 gallons)</option>
+              <option value="medium">Medium (500-2000 gallons)</option>
+              <option value="large">Large (2000-5000 gallons)</option>
+              <option value="xlarge">Extra Large (5000+ gallons)</option>
+              <option value="unknown">Not sure</option>
+            </select>
+          </label>
+          
+          <label>
+            What's going on with your PUT YOUR SERVICE TYPE HERE?
+            <textarea name="description" rows="4" placeholder="Describe any issues: murky water, algae, sludge, equipment problems, etc."></textarea>
+          </label>
+          
+          <label>
+            Preferred Contact Method
+            <select name="contact_method">
+              <option value="email">Email</option>
+              <option value="phone">Phone</option>
+              <option value="either">Either</option>
+            </select>
+          </label>
+          
+          <button type="submit" class="btn btn-primary btn-full">PUT YOUR CTA TEXT HERE</button>
+          <p style="font-size: var(--font-size-small); color: var(--color-text-light); text-align: center; margin-top: var(--spacing-sm);">
+            No obligation. We'll follow up with a clear, upfront quote.
+          </p>
+        </form>
+
+        <div style="background: var(--color-bg-light); padding: var(--spacing-md); border-radius: var(--border-radius-lg); margin-top: var(--spacing-lg);">
+          <h2>What Happens Next?</h2>
+          <ol style="padding-left: var(--spacing-md); color: var(--color-text-light);">
+            <li style="margin-bottom: var(--spacing-xs);">We'll review your information and match you with a PUT YOUR SITE NAME HERE tech in your area.</li>
+            <li style="margin-bottom: var(--spacing-xs);">You'll receive a clear, upfront quote with no surprise charges.</li>
+            <li style="margin-bottom: var(--spacing-xs);">Schedule your appointment at a time that works for you.</li>
+            <li>Enjoy a cleaner, healthier PUT YOUR SERVICE TYPE HERE!</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <!-- ======================================================================
+       STEP 11: FOOTER
+       ======================================================================
+       Footer is consistent across pages. Update:
+       - Copyright year and site name
+       - Footer navigation links
+       ====================================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2025 PUT YOUR SITE NAME HERE (Place-website-domain-here). All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="locations.html">Locations</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+  <!-- ======================================================================
+       MOBILE NAVIGATION SCRIPT
+       ====================================================================== -->
+  <script>
+    // Mobile navigation toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const mainNav = document.querySelector('#main-nav');
+    
+    if (navToggle && mainNav) {
+      navToggle.addEventListener('click', function() {
+        const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', !isExpanded);
+        mainNav.classList.toggle('nav-open');
+      });
+      
+      // Close nav when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!navToggle.contains(event.target) && !mainNav.contains(event.target)) {
+          navToggle.setAttribute('aria-expanded', 'false');
+          mainNav.classList.remove('nav-open');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+

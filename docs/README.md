@@ -12,6 +12,30 @@ A complete step-by-step guide that documents how to build the entire site from s
 - Best practices
 - Troubleshooting
 
+### Site Generator
+
+The King Tut template now includes a **Site Generator** that automates the entire site creation process. See `SITE-GENERATOR-README.md` in the root directory for complete documentation.
+
+**Quick Start:**
+```bash
+npm install
+npm run create-site
+```
+
+The generator will:
+- Prompt for business information
+- Let you choose from 5 distinct Avada-style templates
+- Apply your chosen color scheme
+- Generate all 80+ pages with tokens replaced
+- Create a ready-to-use website in minutes
+
+**Templates Available:**
+1. **King Tut Classic** - Service business template
+2. **Corporate Split** - Split-screen hero with icon boxes
+3. **One Page Parallax** - Single-page scrolling layout
+4. **Portfolio Grid** - Masonry grid with filterable projects
+5. **Agency Modern** - Full-width slider with overlapping cards
+
 ## Converting to PDF
 
 ### Option 1: Using Pandoc (Recommended)

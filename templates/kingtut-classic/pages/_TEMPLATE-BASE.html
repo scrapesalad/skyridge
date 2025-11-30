@@ -1,0 +1,255 @@
+<!--
+  ============================================================================
+  KING TUT TEMPLATE - BASE PAGE TEMPLATE
+  ============================================================================
+  
+  This is the base template for all pages. Copy this file and customize it
+  for your new page.
+  
+  USAGE:
+  1. Copy this file: cp _TEMPLATE-BASE.html my-new-page.html
+  2. Follow the STEP comments below to customize
+  3. Remove these comment blocks when done
+  
+  ============================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ======================================================================
+       ANALYTICS (Optional)
+       If you're using Google Analytics, update the tracking ID.
+       Get the ID from site.config.json → analytics.googleAnalytics.trackingId
+       If not using analytics, remove or comment out this section.
+       ====================================================================== -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=PUT-YOUR-GOOGLE-ANALYTICS-ID-HERE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'PUT-YOUR-GOOGLE-ANALYTICS-ID-HERE');
+  </script>
+
+  <!-- ======================================================================
+       STEP 2: META TAGS (Required)
+       ======================================================================
+       Update these for SEO. Title should be 50-60 characters.
+       Description should be 150-160 characters and compelling.
+       ====================================================================== -->
+  <meta charset="UTF-8" />
+  <!-- ======================================================================
+       TITLE TAG (Required for SEO)
+       Format: "Page Title | Site Name"
+       Length: 50-60 characters (including spaces and pipe)
+       Example: "About Us | Your Business Name"
+       ====================================================================== -->
+  <title>PUT PAGE TITLE HERE | PUT SITE NAME HERE</title>
+  
+  <!-- ======================================================================
+       META DESCRIPTION (Required for SEO)
+       Length: 150-160 characters
+       Should be compelling and include keywords naturally
+       This appears in search engine results
+       ====================================================================== -->
+  <meta name="description" content="PUT YOUR PAGE DESCRIPTION HERE - This should be 150-160 characters and describe what this page is about. Include your main keywords naturally." />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- ======================================================================
+       META KEYWORDS (Optional but helpful)
+       Add 5-10 relevant keywords separated by commas
+       ====================================================================== -->
+  <meta name="keywords" content="PUT KEYWORD 1 HERE, PUT KEYWORD 2 HERE, PUT KEYWORD 3 HERE" />
+  
+  <!-- ======================================================================
+       META ROBOTS (Optional)
+       "index, follow" = Allow search engines to index and follow links
+       "noindex, nofollow" = Don't index this page
+       ====================================================================== -->
+  <meta name="robots" content="index, follow" />
+  
+  <!-- ======================================================================
+       CANONICAL URL (Required for SEO)
+       This tells search engines the preferred URL for this page.
+       Use full URL: https://Place-website-domain-here/pages/your-page
+       ====================================================================== -->
+  <link rel="canonical" href="https://Place-website-domain-here/pages/PUT-PAGE-PATH-HERE" />
+  
+  <!-- ======================================================================
+       OPEN GRAPH TAGS (Recommended for Social Sharing)
+       These control how your page appears when shared on Facebook, LinkedIn, etc.
+       ====================================================================== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://Place-website-domain-here/pages/PUT-PAGE-PATH-HERE" />
+  <meta property="og:title" content="PUT PAGE TITLE HERE" />
+  <meta property="og:description" content="PUT PAGE DESCRIPTION HERE - Same as meta description above" />
+  <meta property="og:image" content="https://Place-website-domain-here/images/logo/heroimage.png" />
+  <meta property="og:site_name" content="PUT YOUR SITE NAME HERE" />
+  
+  <!-- ======================================================================
+       TWITTER CARD TAGS (Optional but recommended)
+       Controls how your page appears when shared on Twitter
+       ====================================================================== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PUT PAGE TITLE HERE" />
+  <meta name="twitter:description" content="PUT PAGE DESCRIPTION HERE" />
+  <meta name="twitter:image" content="https://Place-website-domain-here/images/logo/heroimage.png" />
+  
+  <!-- ======================================================================
+       FAVICONS (Required)
+       These are the favicon files for your site. All sizes are already set up.
+       Paths use ../ because pages are in pages/ subdirectory.
+       ====================================================================== -->
+  <link rel="icon" type="image/x-icon" href="../images/logo/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../images/logo/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/logo/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../images/logo/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="../images/logo/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../images/logo/android-chrome-512x512.png" />
+  <link rel="manifest" href="../images/logo/site.webmanifest" />
+  
+  <!-- ======================================================================
+       STEP 7: STYLESHEET (Required)
+       ======================================================================
+       This links to your main CSS files. The path uses / because these are
+       absolute paths from the root. Includes:
+       - styles.css: Main stylesheet
+       - design-tokens-override.css: Design tokens from site.config.json
+       - avada-enhancements.css: Premium Avada-inspired theme enhancements
+       ====================================================================== -->
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/design-tokens-override.css" />
+  <link rel="stylesheet" href="/css/avada-enhancements.css" />
+  
+  <!-- ======================================================================
+       STRUCTURED DATA (JSON-LD) - Optional but Highly Recommended for SEO
+       This helps search engines understand your content better.
+       
+       Common schema types:
+       - WebPage: For standard pages
+       - Organization: For about pages
+       - Service: For service pages
+       - LocalBusiness: For location pages
+       - FAQPage: For FAQ pages
+       ====================================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "PUT PAGE TITLE HERE",
+    "description": "PUT PAGE DESCRIPTION HERE",
+    "url": "https://Place-website-domain-here/pages/PUT-PAGE-PATH-HERE"
+  }
+  </script>
+</head>
+<body>
+  <!-- ======================================================================
+       STEP 9: HEADER / NAVIGATION
+       ======================================================================
+       The header is consistent across all pages. Update:
+       - Logo alt text
+       - Navigation links (if needed)
+       - CTA button text/url
+       ====================================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <!-- Logo - Update alt text with your site name -->
+      <a href="../index.html" class="logo">
+        <img src="/images/logo/kingtutlogo.png" alt="PUT YOUR SITE NAME HERE" class="logo-img" />
+      </a>
+      
+      <!-- Navigation - Update links as needed -->
+      <nav class="main-nav">
+        <a href="services.html">Services</a> <!-- REPLACE: Update navigation links -->
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <!-- Add more navigation items as needed -->
+        
+        <!-- CTA Button - Update text and URL -->
+        <a href="book.html" class="btn btn-primary">Get Started</a> <!-- REPLACE: Update CTA -->
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       STEP 10: MAIN CONTENT
+       ======================================================================
+       This is where your page content goes. Use semantic HTML and CSS
+       classes from styles.css. See KING-TUT-TEMPLATE-GUIDE.md for
+       component examples.
+       ====================================================================== -->
+  <main>
+    <!-- Hero Section - First thing users see -->
+    <section class="directory-hero">
+      <div class="container">
+        <h1>Your Main Headline</h1> <!-- REPLACE: Only one H1 per page -->
+        <p>Your compelling subtitle or description that explains what this page is about.</p> <!-- REPLACE: Update description -->
+      </div>
+    </section>
+
+    <!-- Content Section - Your main content -->
+    <section class="how-it-works">
+      <div class="container" style="max-width: 800px;">
+        <!-- Use H2 for major sections -->
+        <h2>Section Heading</h2> <!-- REPLACE: Update heading -->
+        <p>Your content paragraph. Keep paragraphs short (2-3 sentences) for better readability.</p> <!-- REPLACE: Add your content -->
+        
+        <!-- Example: List -->
+        <ul class="services-list">
+          <li>List item 1</li> <!-- REPLACE: Add your list items -->
+          <li>List item 2</li>
+          <li>List item 3</li>
+        </ul>
+        
+        <!-- Add more sections as needed -->
+        <h2>Another Section</h2>
+        <p>More content here...</p>
+      </div>
+    </section>
+
+    <!-- CTA Section - Call to action (optional) -->
+    <section class="bottom-cta" style="background-image: linear-gradient(rgba(0, 102, 204, 0.9), rgba(0, 163, 163, 0.85)), url('/images/Gemini_Generated_Image_3171973171973171.png'); background-size: cover; background-position: center;">
+      <div class="container">
+        <h2>Ready to Get Started?</h2> <!-- REPLACE: Update CTA heading -->
+        <p>Your call-to-action message that encourages users to take action.</p> <!-- REPLACE: Update CTA text -->
+        <a href="book.html" class="btn btn-primary">Get Started</a> <!-- REPLACE: Update button text and URL -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================
+       STEP 11: FOOTER
+       ======================================================================
+       Footer is consistent across pages. Update:
+       - Copyright year and site name
+       - Footer navigation links
+       ====================================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2025 Your Site Name. All rights reserved.</p> <!-- REPLACE: Update year and site name -->
+      <nav class="footer-nav">
+        <a href="about.html">About</a> <!-- REPLACE: Update footer links -->
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+        <!-- Add more footer links as needed -->
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       STEP 12: FINAL CHECKLIST
+       ======================================================================
+       Before publishing, make sure you've:
+       [ ] Updated all REPLACE comments
+       [ ] Removed or updated this comment block
+       [ ] Tested all links
+       [ ] Checked mobile responsiveness
+       [ ] Verified SEO elements (title, description, canonical)
+       [ ] Optimized images
+       [ ] Tested in multiple browsers
+       ====================================================================== -->
+</body>
+</html>
+
