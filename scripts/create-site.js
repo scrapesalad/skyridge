@@ -472,41 +472,84 @@ function getStateName(abbr) {
 }
 
 // Generate SEO content for a city
+/**
+ * Build SEO-optimized content for a city page
+ * @param {Object} cityData - City information {cityName, stateAbbr, stateName, citySlug, countyName?}
+ * @param {Object} vertical - Vertical/service type info from verticals.json
+ * @param {Object} business - Business information {name, phone, email, url, serviceAreaLabel?, yearsInBusiness?}
+ * @returns {Object} SEO content {title, metaDescription, h1, heroText, faq, serviceSlug, citySlug}
+ */
 function buildSeoForCity(cityData, vertical, business) {
-  const { cityName, stateAbbr, stateName } = cityData;
-  const serviceSlug = vertical.primaryService.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const citySlug = cityData.citySlug;
+  const { cityName, stateAbbr, stateName, citySlug, countyName } = cityData;
+  const state = stateAbbr.toUpperCase();
+  const cityState = `${cityName}, ${state}`;
+  
+  // Service information
+  const serviceLabel = vertical.primaryService;
+  const serviceType = vertical.serviceType || vertical.primaryService.toLowerCase();
+  
+  // Build SEO descriptor from vertical data
+  const seoDescriptor = vertical.homeDescription 
+    ? vertical.homeDescription.toLowerCase()
+    : `reliable ${serviceType} for local customers`;
+  
+  // Phone formatting
+  const phoneDisplay = business.phone || '';
+  const phoneShort = phoneDisplay.replace(/[^\d]/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+  const phoneSentence = phoneDisplay
+    ? ` Call ${phoneShort || phoneDisplay} for a free quote.`
+    : '';
+  
+  // Years in business / experience sentence
+  const yearsInBusiness = business.yearsInBusiness || null;
+  const serviceAreaLabel = business.serviceAreaLabel || countyName || cityState;
+  const yearsSentence = yearsInBusiness
+    ? ` With over ${yearsInBusiness}+ years of experience in the ${serviceAreaLabel} area,`
+    : ` As a local provider in ${serviceAreaLabel},`;
+  
+  // Benefit hook - use first service or generic benefit
+  const firstService = vertical.services && vertical.services.length > 0 
+    ? vertical.services[0].toLowerCase()
+    : serviceType;
+  const benefitHook = `We focus on quality workmanship, clear communication, and dependable scheduling.`;
+  
+  // Audience phrase (can be customized per vertical)
+  const audiencePhrase = ''; // Can be extended with vertical.audience if needed
   
   // Title: Service in City, State | Business Name
-  const title = `${vertical.primaryService} in ${cityName}, ${stateAbbr} | ${business.name}`;
+  const title = `${serviceLabel} in ${cityState} | ${business.name}`;
   
-  // Meta description
-  const shortBenefits = vertical.services && vertical.services.length > 0 
-    ? `${vertical.services[0]}, ${vertical.services[1] || vertical.services[0]}`
-    : vertical.primaryService.toLowerCase();
-  const metaDescription = `${business.name} provides ${vertical.primaryService.toLowerCase()} in ${cityName}, ${stateAbbr}. ${shortBenefits} and more. Call ${business.phone} for a free estimate today.`;
+  // Meta description: Business provides service in City, State. Description. Call for quote.
+  const metaDescription = `${business.name} provides ${serviceLabel.toLowerCase()} in ${cityState}. ${seoDescriptor}.${phoneSentence}`.trim();
   
-  // H1
-  const h1 = `${vertical.primaryService} in ${cityName}, ${stateAbbr}`;
+  // H1: Service in City, State
+  const h1 = `${serviceLabel} in ${cityState}`;
   
-  // Hero text
-  const heroText = `From ${vertical.services && vertical.services[0] ? vertical.services[0].toLowerCase() : vertical.primaryService.toLowerCase()} to comprehensive ${vertical.primaryService.toLowerCase()}, ${business.name} keeps your ${cityName} property looking its best.`;
+  // Hero text: Experience sentence + business delivers service + benefit hook
+  const heroText = `${yearsSentence} ${business.name} delivers ${serviceType} in ${cityName}${audiencePhrase}. ${benefitHook}`.replace(/\s+/g, ' ').trim();
   
-  // FAQ
+  // FAQ - 4 questions optimized for local SEO
   const faq = [
     {
-      q: `Do you offer free estimates for ${vertical.primaryService.toLowerCase()} in ${cityName}?`,
-      a: `Yes. We provide free, no-pressure estimates for all ${vertical.primaryService.toLowerCase()} services in the ${cityName} area.`
+      q: `Do you offer free estimates for ${serviceType} in ${cityName}?`,
+      a: `Yes. ${business.name} offers free, no-obligation estimates for ${serviceType} in ${cityName} and surrounding ${state} communities.${phoneSentence}`
     },
     {
-      q: `Which neighborhoods do you serve in ${cityName}?`,
-      a: `We serve most of ${cityName}${cityData.countyName ? ` and ${cityData.countyName}` : ''} including surrounding communities.`
+      q: `Which areas around ${cityName} do you serve?`,
+      a: `We primarily serve ${cityState}${serviceAreaLabel && serviceAreaLabel !== cityState ? ` and the wider ${serviceAreaLabel}` : ''}, along with nearby neighborhoods. If you're not sure whether we cover your area, contact us and we'll confirm.`
     },
     {
-      q: `How quickly can you respond to ${vertical.primaryService.toLowerCase()} requests in ${cityName}?`,
-      a: `We typically respond within 24 hours for ${cityName} area requests. Emergency services may be available same-day.`
+      q: `How soon can you schedule ${serviceType} in ${cityName}?`,
+      a: `Scheduling depends on the season and demand, but we work hard to provide fast turnaround times for customers in ${cityState}. Let us know your preferred dates and we'll do our best to accommodate you.`
+    },
+    {
+      q: `Why choose ${business.name} for ${serviceType} in ${cityName}?`,
+      a: `${business.name} combines local expertise with professional service. We focus on clear communication, fair pricing, and delivering consistent results for every ${serviceType} project in ${cityName}.`
     }
   ];
+  
+  // Service slug for URLs
+  const serviceSlug = vertical.primaryService.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   
   return {
     title,
