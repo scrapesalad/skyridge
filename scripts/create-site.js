@@ -408,6 +408,275 @@ async function generateSetupGuide(templatePath, outputPath, replacements) {
   console.log('   ✅ Generated SETUP.md');
 }
 
+// Load nationwide cities list
+function loadNationwideCities() {
+  try {
+    const citiesPath = path.join(__dirname, '..', 'nationwide-cities.json');
+    const citiesData = JSON.parse(fs.readFileSync(citiesPath, 'utf-8'));
+    return citiesData;
+  } catch (err) {
+    console.warn('⚠️  Warning: Could not load nationwide-cities.json, using fallback list');
+    return [
+      'New York, NY', 'Los Angeles, CA', 'Chicago, IL', 'Houston, TX',
+      'Phoenix, AZ', 'Philadelphia, PA', 'San Antonio, TX', 'San Diego, CA',
+      'Dallas, TX', 'San Jose, CA', 'Austin, TX', 'Jacksonville, FL'
+    ];
+  }
+}
+
+// Convert city name to slug
+function slugifyCity(name) {
+  return name.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// Parse city, state from string like "Denver, CO"
+function parseCityState(cityStateStr) {
+  const parts = cityStateStr.split(',').map(s => s.trim());
+  if (parts.length >= 2) {
+    return { cityName: parts[0], stateAbbr: parts[1] };
+  }
+  return { cityName: parts[0] || '', stateAbbr: '' };
+}
+
+// Get state name from abbreviation
+function getStateName(abbr) {
+  const states = {
+    'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas',
+    'CA': 'California', 'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware',
+    'FL': 'Florida', 'GA': 'Georgia', 'HI': 'Hawaii', 'ID': 'Idaho',
+    'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa', 'KS': 'Kansas',
+    'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland',
+    'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi',
+    'MO': 'Missouri', 'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada',
+    'NH': 'New Hampshire', 'NJ': 'New Jersey', 'NM': 'New Mexico', 'NY': 'New York',
+    'NC': 'North Carolina', 'ND': 'North Dakota', 'OH': 'Ohio', 'OK': 'Oklahoma',
+    'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island', 'SC': 'South Carolina',
+    'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah',
+    'VT': 'Vermont', 'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia',
+    'WI': 'Wisconsin', 'WY': 'Wyoming', 'DC': 'District of Columbia'
+  };
+  return states[abbr.toUpperCase()] || abbr;
+}
+
+// Generate SEO content for a city
+function buildSeoForCity(cityData, vertical, business) {
+  const { cityName, stateAbbr, stateName } = cityData;
+  const serviceSlug = vertical.primaryService.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const citySlug = cityData.citySlug;
+  
+  // Title: Service in City, State | Business Name
+  const title = `${vertical.primaryService} in ${cityName}, ${stateAbbr} | ${business.name}`;
+  
+  // Meta description
+  const shortBenefits = vertical.services && vertical.services.length > 0 
+    ? `${vertical.services[0]}, ${vertical.services[1] || vertical.services[0]}`
+    : vertical.primaryService.toLowerCase();
+  const metaDescription = `${business.name} provides ${vertical.primaryService.toLowerCase()} in ${cityName}, ${stateAbbr}. ${shortBenefits} and more. Call ${business.phone} for a free estimate today.`;
+  
+  // H1
+  const h1 = `${vertical.primaryService} in ${cityName}, ${stateAbbr}`;
+  
+  // Hero text
+  const heroText = `From ${vertical.services && vertical.services[0] ? vertical.services[0].toLowerCase() : vertical.primaryService.toLowerCase()} to comprehensive ${vertical.primaryService.toLowerCase()}, ${business.name} keeps your ${cityName} property looking its best.`;
+  
+  // FAQ
+  const faq = [
+    {
+      q: `Do you offer free estimates for ${vertical.primaryService.toLowerCase()} in ${cityName}?`,
+      a: `Yes. We provide free, no-pressure estimates for all ${vertical.primaryService.toLowerCase()} services in the ${cityName} area.`
+    },
+    {
+      q: `Which neighborhoods do you serve in ${cityName}?`,
+      a: `We serve most of ${cityName}${cityData.countyName ? ` and ${cityData.countyName}` : ''} including surrounding communities.`
+    },
+    {
+      q: `How quickly can you respond to ${vertical.primaryService.toLowerCase()} requests in ${cityName}?`,
+      a: `We typically respond within 24 hours for ${cityName} area requests. Emergency services may be available same-day.`
+    }
+  ];
+  
+  return {
+    title,
+    metaDescription,
+    h1,
+    heroText,
+    faq,
+    serviceSlug,
+    citySlug
+  };
+}
+
+// Build city data entries based on service area mode
+function buildCityEntries(answers, vertical, business) {
+  const cities = {};
+  const stateName = getStateName(answers.stateAbbr || answers.state);
+  
+  if (answers.serviceAreaMode === 'city') {
+    // Single city mode
+    const cityName = answers.cityName || answers.city;
+    const stateAbbr = answers.stateAbbr || answers.state;
+    const citySlug = slugifyCity(cityName);
+    
+    cities[citySlug] = {
+      cityName,
+      citySlug,
+      stateAbbr: stateAbbr.toUpperCase(),
+      stateName,
+      businessName: business.name,
+      primaryService: vertical.primaryService,
+      phoneNumber: business.phone,
+      email: business.email,
+      baseUrl: business.url,
+      ...buildSeoForCity({ cityName, citySlug, stateAbbr, stateName }, vertical, business)
+    };
+    
+  } else if (answers.serviceAreaMode === 'county') {
+    // County/metro mode - parse top cities
+    const cityNames = answers.countyTopCities
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean);
+    
+    const stateAbbr = answers.stateAbbr || answers.state;
+    
+    for (const cityName of cityNames) {
+      const citySlug = slugifyCity(cityName);
+      
+      cities[citySlug] = {
+        cityName,
+        citySlug,
+        countyName: answers.countyName,
+        stateAbbr: stateAbbr.toUpperCase(),
+        stateName,
+        businessName: business.name,
+        primaryService: vertical.primaryService,
+        phoneNumber: business.phone,
+        email: business.email,
+        baseUrl: business.url,
+        ...buildSeoForCity({ cityName, citySlug, stateAbbr, stateName, countyName: answers.countyName }, vertical, business)
+      };
+    }
+    
+  } else if (answers.serviceAreaMode === 'nationwide') {
+    // Nationwide mode - use nationwide cities list
+    const nationwideCities = loadNationwideCities();
+    
+    for (const cityStateStr of nationwideCities) {
+      const { cityName, stateAbbr } = parseCityState(cityStateStr);
+      if (!cityName || !stateAbbr) continue;
+      
+      const citySlug = slugifyCity(cityName);
+      const stateName = getStateName(stateAbbr);
+      
+      cities[citySlug] = {
+        cityName,
+        citySlug,
+        stateAbbr: stateAbbr.toUpperCase(),
+        stateName,
+        businessName: business.name,
+        primaryService: vertical.primaryService,
+        phoneNumber: business.phone,
+        email: business.email,
+        baseUrl: business.url,
+        ...buildSeoForCity({ cityName, citySlug, stateAbbr, stateName }, vertical, business)
+      };
+    }
+  }
+  
+  return cities;
+}
+
+// Generate city pages from city data
+async function generateCityPages(destDir, cityData, templateDir, replacements) {
+  const citiesDir = path.join(destDir, 'pages', 'cities');
+  
+  // Remove old city pages if they exist (we'll generate new ones)
+  if (fs.existsSync(citiesDir)) {
+    const oldFiles = await fsp.readdir(citiesDir);
+    for (const file of oldFiles) {
+      if (file.endsWith('.html') && file !== 'index.html') {
+        await fsp.unlink(path.join(citiesDir, file));
+      }
+    }
+  }
+  
+  await fsp.mkdir(citiesDir, { recursive: true });
+  
+  const cityTemplatePath = path.join(templateDir, 'pages', 'cities', 'salt-lake-city-ut.html');
+  let cityTemplate = '';
+  
+  if (fs.existsSync(cityTemplatePath)) {
+    cityTemplate = await fsp.readFile(cityTemplatePath, 'utf-8');
+  } else {
+    // Fallback: use _TEMPLATE-CITY.html if available
+    const fallbackTemplate = path.join(templateDir, 'pages', '_TEMPLATE-CITY.html');
+    if (fs.existsSync(fallbackTemplate)) {
+      cityTemplate = await fsp.readFile(fallbackTemplate, 'utf-8');
+    } else {
+      console.warn('   ⚠️  No city template found, skipping city page generation');
+      return;
+    }
+  }
+  
+  let generatedCount = 0;
+  for (const [citySlug, city] of Object.entries(cityData)) {
+    const cityReplacements = {
+      ...replacements,
+      // City-specific tokens (both old and new format)
+      'PUT CITY NAME HERE': city.cityName,
+      'PUT CITY NAME 1': city.cityName,
+      'PUT-CITY-SLUG-HERE': citySlug,
+      'PUT STATE CODE HERE': city.stateAbbr,
+      'PUT STATE HERE': city.stateAbbr,
+      'PUT STATE NAME HERE': city.stateName,
+      'PUT SERVICES HERE': city.primaryService,
+      'PUT YOUR CITY-SPECIFIC DESCRIPTION HERE': city.metaDescription,
+      'PUT SERVICE KEYWORD HERE': city.primaryService.toLowerCase(),
+      'PUT YOUR BUSINESS NAME HERE - PUT CITY NAME HERE': `${city.businessName} - ${city.cityName}`,
+      // SEO tokens (new format)
+      '{{CITY_NAME}}': city.cityName,
+      '{{CITY_SLUG}}': citySlug,
+      '{{STATE_ABBR}}': city.stateAbbr,
+      '{{STATE_NAME}}': city.stateName,
+      '{{CITY_TITLE}}': city.title,
+      '{{CITY_META_DESCRIPTION}}': city.metaDescription,
+      '{{CITY_H1}}': city.h1,
+      '{{CITY_HERO_TEXT}}': city.heroText,
+      '{{SERVICE_SLUG}}': city.serviceSlug,
+      '{{CANONICAL_URL}}': `${city.baseUrl}/pages/cities/${citySlug}-${city.stateAbbr.toLowerCase()}.html`,
+      // FAQ section (generate HTML)
+      '{{CITY_FAQ}}': city.faq && city.faq.length > 0 ? city.faq.map(item => 
+        `<div class="faq-item" style="margin-bottom: var(--spacing-md); padding: var(--spacing-md); background: var(--color-bg-light); border-radius: var(--border-radius);">
+          <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-xs); color: var(--color-primary);">${item.q}</h3>
+          <p style="margin: 0;">${item.a}</p>
+        </div>`
+      ).join('\n') : '<p>Have questions about ' + city.primaryService + ' in ' + city.cityName + '? <a href="../contact.html">Contact us</a> for more information.</p>'
+    };
+    
+    // Replace tokens in city template
+    let cityPageContent = cityTemplate;
+    for (const [token, value] of Object.entries(cityReplacements)) {
+      const regex = new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      cityPageContent = cityPageContent.replace(regex, value);
+    }
+    
+    // Also replace {{TOKEN}} format
+    for (const [token, value] of Object.entries(cityReplacements)) {
+      const regex = new RegExp(`{{${token}}}`, 'g');
+      cityPageContent = cityPageContent.replace(regex, value);
+    }
+    
+    // Write city page
+    const cityPagePath = path.join(citiesDir, `${citySlug}-${city.stateAbbr.toLowerCase()}.html`);
+    await fsp.writeFile(cityPagePath, cityPageContent, 'utf-8');
+    generatedCount++;
+  }
+  
+  console.log(`   ✅ Generated ${generatedCount} city pages`);
+}
+
 // Process template files (site.config.json.template, package.json.template, etc.)
 async function processTemplateFiles(rootDir, destDir, replacements) {
   const templateFiles = [
@@ -466,10 +735,71 @@ async function run() {
       validate: (v) => v.trim() ? true : 'Please enter a domain.'
     },
     {
+      type: 'list',
+      name: 'serviceAreaMode',
+      message: 'What is your primary service area?',
+      choices: [
+        { name: 'Single City', value: 'city' },
+        { name: 'County / Metro Area', value: 'county' },
+        { name: 'Nationwide', value: 'nationwide' }
+      ]
+    },
+    {
+      type: 'input',
+      name: 'cityName',
+      message: 'City name (e.g. Denver):',
+      when: (ans) => ans.serviceAreaMode === 'city',
+      validate: (v, ans) => {
+        if (ans.serviceAreaMode === 'city' && !v.trim()) {
+          return 'Please enter a city name.';
+        }
+        return true;
+      }
+    },
+    {
+      type: 'input',
+      name: 'stateAbbr',
+      message: 'State abbreviation (e.g. CO):',
+      when: (ans) => ans.serviceAreaMode !== 'nationwide',
+      validate: (v, ans) => {
+        if (ans.serviceAreaMode !== 'nationwide' && !v.trim()) {
+          return 'Please enter a state abbreviation.';
+        }
+        return true;
+      }
+    },
+    {
+      type: 'input',
+      name: 'countyName',
+      message: 'County / metro name (e.g. Denver County):',
+      when: (ans) => ans.serviceAreaMode === 'county',
+      default: (ans) => ans.cityName ? `${ans.cityName} County` : ''
+    },
+    {
+      type: 'input',
+      name: 'countyTopCities',
+      message: 'Top cities in this county/metro (comma separated, e.g. Denver, Aurora, Lakewood):',
+      when: (ans) => ans.serviceAreaMode === 'county',
+      default: (ans) => ans.cityName || '',
+      validate: (v, ans) => {
+        if (ans.serviceAreaMode === 'county' && !v.trim()) {
+          return 'Please enter at least one city name.';
+        }
+        return true;
+      }
+    },
+    {
       type: 'input',
       name: 'serviceArea',
-      message: 'Primary Service Area (e.g. Denver Metro Area):',
-      default: 'Your Area'
+      message: 'Service area description (for display, e.g. Denver Metro Area):',
+      default: (ans) => {
+        if (ans.serviceAreaMode === 'city') {
+          return `${ans.cityName || 'Your City'}, ${ans.stateAbbr || 'ST'}`;
+        } else if (ans.serviceAreaMode === 'county') {
+          return `${ans.countyName || 'Your County'}, ${ans.stateAbbr || 'ST'}`;
+        }
+        return 'Nationwide';
+      }
     },
     {
       type: 'input',
@@ -833,8 +1163,27 @@ async function run() {
   await fixPathsRecursively(destSiteDir, destSiteDir);
   console.log('   ✅ Fixed absolute paths to relative paths');
 
+  // Generate city pages based on service area mode
+  console.log('🏙️  Generating city pages...');
+  const business = {
+    name: answers.businessName,
+    phone: answers.phone,
+    email: answers.email,
+    url: fullUrl
+  };
+  
+  const cityData = buildCityEntries(answers, vertical, business);
+  const cityCount = Object.keys(cityData).length;
+  await generateCityPages(destSiteDir, cityData, srcTemplateDir, replacements);
+  
+  // Generate city data JSON file for reference
+  const cityDataPath = path.join(destSiteDir, 'city-data.json');
+  await fsp.writeFile(cityDataPath, JSON.stringify(cityData, null, 2), 'utf-8');
+  console.log('   ✅ Generated city-data.json');
+
   console.log('\n✅ Done! Generated site at:', answers.outputFolder);
   console.log(`   Generated ${htmlFiles.length} pages with all tokens replaced.`);
+  console.log(`   Generated ${cityCount} city pages (${answers.serviceAreaMode} mode)`);
   console.log(`   Vertical: ${vertical.primaryService}`);
   console.log(`   Domain: ${fullUrl}`);
   console.log('   Open index.html in your browser or serve the folder with any static server.\n');

@@ -11,44 +11,61 @@
   </script>
   <meta charset="UTF-8" />
   <!-- TITLE TAG: 50-60 characters, include city name and state -->
-  <title>PUT SERVICES HERE in PUT CITY NAME HERE, PUT STATE HERE | PUT SITE NAME HERE</title>
+  <title>{{CITY_TITLE}}</title>
   
   <!-- META DESCRIPTION: 150-160 characters, include city name and services -->
-  <meta name="description" content="PUT YOUR CITY-SPECIFIC DESCRIPTION HERE - Include city name, state, neighborhoods served, and services offered. Make it compelling for local search." />
+  <meta name="description" content="{{CITY_META_DESCRIPTION}}" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <!-- META KEYWORDS: Include city-specific keywords -->
-  <meta name="keywords" content="PUT SERVICE KEYWORD HERE PUT CITY NAME HERE, PUT CITY NAME HERE PUT STATE HERE, PUT SERVICE KEYWORD HERE near me" />
+  <meta name="keywords" content="{{PRIMARY_SERVICE}} {{CITY_NAME}}, {{CITY_NAME}} {{STATE_ABBR}}, {{PRIMARY_SERVICE}} near me, {{SERVICE_TYPE}} {{CITY_NAME}}" />
   
   <meta name="robots" content="index, follow" />
   
   <!-- CANONICAL URL: Full URL to this city page -->
-  <link rel="canonical" href="https://Place-website-domain-here/pages/cities/PUT-CITY-SLUG-HERE" />
+  <link rel="canonical" href="{{CANONICAL_URL}}" />
   
   <!-- OPEN GRAPH TAGS: For social media sharing -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://Place-website-domain-here/pages/cities/PUT-CITY-SLUG-HERE" />
-  <meta property="og:title" content="PUT SERVICES HERE in PUT CITY NAME HERE, PUT STATE HERE" />
-  <meta property="og:description" content="PUT YOUR CITY-SPECIFIC DESCRIPTION HERE" />
-  <meta property="og:image" content="https://Place-website-domain-here/images/logo/heroimage.png" />
+  <meta property="og:url" content="{{CANONICAL_URL}}" />
+  <meta property="og:title" content="{{CITY_TITLE}}" />
+  <meta property="og:description" content="{{CITY_META_DESCRIPTION}}" />
+  <meta property="og:image" content="{{FULL_URL}}/images/logo/heroimage.png" />
   
   <!-- STRUCTURED DATA (JSON-LD) - LocalBusiness Schema for local SEO -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "PUT YOUR BUSINESS NAME HERE - PUT CITY NAME HERE",
-    "description": "PUT SERVICES HERE in PUT CITY NAME HERE, PUT STATE HERE",
+    "name": "{{BUSINESS_NAME}} - {{CITY_NAME}}",
+    "description": "{{PRIMARY_SERVICE}} in {{CITY_NAME}}, {{STATE_ABBR}}",
+    "url": "{{CANONICAL_URL}}",
+    "telephone": "{{PHONE}}",
+    "email": "{{EMAIL}}",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "PUT CITY NAME HERE",
-      "addressRegion": "PUT STATE CODE HERE",
-      "addressCountry": "US"
+      "streetAddress": "{{STREET}}",
+      "addressLocality": "{{CITY_NAME}}",
+      "addressRegion": "{{STATE_ABBR}}",
+      "postalCode": "{{ZIP}}",
+      "addressCountry": "{{COUNTRY}}"
     },
     "areaServed": {
       "@type": "City",
-      "name": "PUT CITY NAME HERE"
+      "name": "{{CITY_NAME}}, {{STATE_ABBR}}"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "addressLocality": "{{CITY_NAME}}",
+      "addressRegion": "{{STATE_ABBR}}"
+    },
+    "priceRange": "$$",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:00",
+      "closes": "17:00"
     }
   }
   </script>
@@ -104,8 +121,13 @@
 <main>
     <section class="directory-hero">
       <div class="container">
-        <h1>PUT YOUR SERVICE TYPE HERE Services in Salt Lake City, UT</h1>
-        <p>Top-rated PUT YOUR SERVICE TYPE HERE service, maintenance, and repair contractors serving Salt Lake City and surrounding areas.</p>
+        <h1>{{CITY_H1}}</h1>
+        <p>{{CITY_HERO_TEXT}}</p>
+        <p style="margin-top: var(--spacing-md);">Serving {{CITY_NAME}}, {{STATE_ABBR}} and surrounding areas.</p>
+        <div style="margin-top: var(--spacing-lg);">
+          <a href="tel:{{PHONE}}" class="btn btn-primary">Call {{PHONE}}</a>
+          <a href="../book.html" class="btn btn-secondary" style="margin-left: var(--spacing-sm);">Request a Free Quote</a>
+        </div>
       </div>
     </section>
 
@@ -186,19 +208,26 @@
         </div>
 
         <div style="background: var(--color-bg-light); padding: var(--spacing-md); border-radius: var(--border-radius-lg); margin-top: var(--spacing-lg);">
-          <h2>Why Choose PUT YOUR SERVICE TYPE HERE Services in Salt Lake City?</h2>
-          <p>Salt Lake City's unique climate and elevation require specialized knowledge for PUT YOUR SERVICE TYPE HERE maintenance. Local contractors understand:</p>
+          <h2>Why Choose {{PRIMARY_SERVICE}} in {{CITY_NAME}}?</h2>
+          <p>{{CITY_NAME}}'s unique characteristics require specialized knowledge for {{PRIMARY_SERVICE}} services. {{BUSINESS_NAME}} understands local needs and provides:</p>
           <ul class="services-list">
-            <li>High-altitude PUT YOUR SERVICE TYPE HERE care and water chemistry</li>
-            <li>Seasonal temperature variations and winterization</li>
-            <li>Utah's hard water conditions and treatment</li>
-            <li>Local regulations and water feature requirements</li>
-            <li>Drought-resistant PUT YOUR SERVICE TYPE HERE design and maintenance</li>
+            <li>{{SERVICE_1}} - Professional service tailored to {{CITY_NAME}} area</li>
+            <li>{{SERVICE_2}} - Expert solutions for {{STATE_NAME}} residents</li>
+            <li>{{SERVICE_3}} - Comprehensive services throughout {{CITY_NAME}}</li>
+            <li>{{SERVICE_4}} - Quality workmanship and guaranteed satisfaction</li>
+            <li>{{SERVICE_5}} - Licensed, insured, and locally trusted</li>
           </ul>
         </div>
 
+        <section class="faq-section" style="padding: var(--spacing-xl) 0;">
+          <div class="container" style="max-width: 800px;">
+            <h2>Frequently Asked Questions About {{PRIMARY_SERVICE}} in {{CITY_NAME}}</h2>
+            {{CITY_FAQ}}
+          </div>
+        </section>
+
         <div style="text-align: center; margin-top: var(--spacing-lg);">
-          <a href="../../pages/find-a-contractor.html?location=Salt+Lake+City,+UT" class="btn btn-primary">Find Professionals in Salt Lake City</a>
+          <a href="../book.html" class="btn btn-primary">Get Free Quote for {{CITY_NAME}}</a>
         </div>
       </div>
     </section>
