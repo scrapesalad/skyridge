@@ -1,0 +1,28 @@
+{
+  "name": "marketing-landing",
+  "description": "A modern, responsive marketing landing page template built with Next.js and Tailwind CSS. Perfect for service-based businesses, local companies, and lead generation sites.",
+  "version": "1.0.0",
+  "engine": "nextjs",
+  "entry": "app/page.tsx",
+  "placeholders": {
+    "siteTitle": "Example Site Title",
+    "tagline": "Example tagline here",
+    "primaryColor": "#0d9488",
+    "secondaryColor": "#ffffff",
+    "accentColor": "#f97316",
+    "heroHeading": "Example hero heading",
+    "heroSubheading": "Example hero subheading",
+    "heroImage": "/images/hero-image.jpg",
+    "ctaLabel": "Get Started",
+    "phoneNumber": "(555) 123-4567",
+    "phoneLink": "tel:+15551234567",
+    "email": "info@example.com",
+    "footerText": "© 2025 Example Company. All Rights Reserved.",
+    "logoPath": "/images/logo.png",
+    "logoAlt": "Company Logo",
+    "siteUrl": "https://example.com",
+    "metaDescription": "Example meta description for SEO",
+    "metaKeywords": "example, keywords, seo"
+  }
+}
+

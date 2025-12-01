@@ -1,4 +1,40 @@
 {
+  "personal": {
+    "label": "Personal / Portfolio",
+    "primaryService": "Personal Website",
+    "serviceType": "personal-site",
+    "homeDescription": "Clean, modern personal or portfolio website.",
+    "keywords": ["portfolio", "personal site", "creator"],
+    "services": ["About Me", "Projects", "Blog", "Contact"]
+  },
+  "services": {
+    "label": "Service Business (Choose Industry Next)",
+    "primaryService": "Service Business Website",
+    "serviceType": "services",
+    "homeDescription": "A lead generation site for a service business.",
+    "keywords": ["services", "home services", "local service"]
+  },
+  "corporate": {
+    "label": "Corporate / SaaS / Startup",
+    "primaryService": "Corporate Website",
+    "serviceType": "corporate",
+    "homeDescription": "Modern corporate or SaaS marketing site.",
+    "keywords": ["saas", "startup", "b2b"]
+  },
+  "local-business": {
+    "label": "Local Business (Brick & Mortar)",
+    "primaryService": "Local Business Website",
+    "serviceType": "local-business",
+    "homeDescription": "A local business site with hours, location & contact.",
+    "keywords": ["restaurant", "store", "local business"]
+  },
+  "custom": {
+    "label": "Custom / Other",
+    "primaryService": "Custom Website",
+    "serviceType": "custom",
+    "homeDescription": "Flexible layout for any type of site.",
+    "keywords": ["custom", "misc"]
+  },
   "landscaping": {
     "label": "Landscaping & Lawn Care",
     "primaryService": "Landscaping & Lawn Care",

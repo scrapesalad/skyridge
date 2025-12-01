@@ -4,7 +4,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const fsp = require('fs/promises');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, spawn } = require('child_process');
 
 // --------- CONFIG: TEMPLATES & COLOR SCHEMES -----------------
 
@@ -26,13 +26,35 @@ try {
   };
 }
 
+// High-level site types shown in the first prompt
+const SITE_TYPE_KEYS = ['personal', 'services', 'corporate', 'local-business', 'custom'];
+
+const siteTypeChoices = SITE_TYPE_KEYS
+  .filter(key => verticals[key]) // only show ones that exist in verticals.json
+  .map(key => ({
+    name: verticals[key].label || verticals[key].primaryService,
+    value: key
+  }));
+
+// Helper to get the selected vertical given the answers
+function getVerticalFromAnswers(ans) {
+  // If they picked "services", use the detailed vertical they chose (landscaping, roofing, etc.)
+  const key =
+    ans.siteType === 'services' && ans.verticalKey
+      ? ans.verticalKey
+      : ans.siteType || ans.verticalKey; // fallback for older runs
+
+  return verticals[key];
+}
+
 const TEMPLATES = [
   { name: 'King Tut Classic – Service Business', folder: 'kingtut-classic' },
   { name: 'Corporate Split – Split-screen Hero & Icon Boxes', folder: 'corporate-split' },
   { name: 'One Page Parallax – Single-page Scrolling', folder: 'onepage-parallax' },
   { name: 'Portfolio Grid – Masonry Grid & Case Studies', folder: 'portfolio-grid' },
   { name: 'Agency Modern – Full-width Slider & Overlapping Cards', folder: 'agency-modern' },
-  { name: 'Marketing Landing – Next.js & Tailwind CSS', folder: 'king-tut-templates/marketing-landing' }
+  { name: 'Marketing Landing – Next.js & Tailwind CSS', folder: 'king-tut-templates/marketing-landing' },
+  { name: 'Full Stack App – Next.js with Admin, Payments, Email & SMS', folder: 'fullstack-app-1' }
 ];
 
 const COLOR_SCHEMES = {
@@ -85,17 +107,220 @@ async function copyDir(src, dest) {
   }
 }
 
+// Smart merge: copy files but preserve existing node_modules, .git, and other important directories
+async function mergeDir(src, dest, preserveDirs = ['node_modules', '.git', '.next', 'dist', 'build', '.cache', '.vscode', '.idea']) {
+  await fsp.mkdir(dest, { recursive: true });
+
+  const entries = await fsp.readdir(src, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    const entryNameLower = entry.name.toLowerCase();
+
+    // Skip preserved directories
+    if (entry.isDirectory() && preserveDirs.some(preserve => entryNameLower === preserve.toLowerCase())) {
+      continue;
+    }
+
+    if (entry.isDirectory()) {
+      await mergeDir(srcPath, destPath, preserveDirs);
+    } else {
+      // For package.json, merge dependencies instead of overwriting
+      if (entry.name === 'package.json' && fs.existsSync(destPath)) {
+        try {
+          const srcPackage = JSON.parse(await fsp.readFile(srcPath, 'utf-8'));
+          const destPackage = JSON.parse(await fsp.readFile(destPath, 'utf-8'));
+          
+          // Merge dependencies and devDependencies
+          const mergedPackage = {
+            ...destPackage,
+            ...srcPackage,
+            dependencies: { ...destPackage.dependencies, ...srcPackage.dependencies },
+            devDependencies: { ...destPackage.devDependencies, ...srcPackage.devDependencies },
+            scripts: { ...destPackage.scripts, ...srcPackage.scripts }
+          };
+          
+          await fsp.writeFile(destPath, JSON.stringify(mergedPackage, null, 2), 'utf-8');
+          continue;
+        } catch (err) {
+          // If merge fails, just copy
+          console.warn(`   ⚠️  Could not merge package.json, overwriting: ${err.message}`);
+        }
+      }
+      
+      await fsp.copyFile(srcPath, destPath);
+    }
+  }
+}
+
+// Detect framework type from package.json
+function detectFramework(packageJson) {
+  if (!packageJson || !packageJson.dependencies) {
+    return null;
+  }
+  
+  const deps = { ...packageJson.dependencies, ...(packageJson.devDependencies || {}) };
+  
+  if (deps.next || deps['next.js']) {
+    return 'nextjs';
+  }
+  if (deps.vite) {
+    return 'vite';
+  }
+  if (deps.react && deps['react-scripts']) {
+    return 'create-react-app';
+  }
+  if (deps.react) {
+    return 'react';
+  }
+  if (deps.vue) {
+    return 'vue';
+  }
+  if (deps.svelte) {
+    return 'svelte';
+  }
+  
+  return 'unknown';
+}
+
+// Find component directories for any framework
+async function findComponentDirs(rootDir) {
+  const componentDirs = [];
+  const commonComponentPaths = [
+    'app/components',
+    'src/components',
+    'components',
+    'src/app/components',
+    'app/src/components',
+    'lib/components',
+    'shared/components'
+  ];
+  
+  for (const compPath of commonComponentPaths) {
+    const fullPath = path.join(rootDir, compPath);
+    if (fs.existsSync(fullPath)) {
+      componentDirs.push({ path: compPath, fullPath });
+    }
+  }
+  
+  return componentDirs;
+}
+
+// Convert HTML component to TSX for Next.js
+function convertHtmlToTsx(htmlContent, componentName) {
+  // Remove HTML comments (but keep the content)
+  let tsx = htmlContent.replace(/<!--[\s\S]*?-->/g, '');
+  
+  // Convert class to className
+  tsx = tsx.replace(/\bclass=/g, 'className=');
+  
+  // Convert for to htmlFor
+  tsx = tsx.replace(/\bfor=/g, 'htmlFor=');
+  
+  // Convert self-closing tags that need to be closed in JSX
+  tsx = tsx.replace(/<img([^>]*?)>/gi, '<img$1 />');
+  tsx = tsx.replace(/<input([^>]*?)>/gi, '<input$1 />');
+  tsx = tsx.replace(/<br>/gi, '<br />');
+  tsx = tsx.replace(/<hr>/gi, '<hr />');
+  tsx = tsx.replace(/<meta([^>]*?)>/gi, '<meta$1 />');
+  tsx = tsx.replace(/<link([^>]*?)>/gi, '<link$1 />');
+  
+  // Convert image paths to Next.js format (/images/ -> /images/)
+  // Note: Next.js serves from public/, so /images/ is correct
+  
+  // Clean up extra whitespace
+  tsx = tsx.trim();
+  
+  // Wrap in React component
+  const componentCode = `export default function ${componentName}() {
+  return (
+    <>
+${tsx.split('\n').map(line => line.trim() ? '      ' + line : '').filter(line => line || line === '').join('\n')}
+    </>
+  );
+}
+`;
+  
+  return componentCode;
+}
+
+// Convert all HTML component files to TSX in a directory (recursive)
+async function convertHtmlComponentsToTsx(componentsDir) {
+  const convertedFiles = [];
+  
+  async function processDirectory(dir) {
+    let entries;
+    try {
+      entries = await fsp.readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      
+      if (entry.isDirectory()) {
+        // Skip node_modules and other build directories
+        if (!['node_modules', '.next', '.git', 'dist', 'build', '.cache'].includes(entry.name)) {
+          await processDirectory(fullPath);
+        }
+      } else if (entry.isFile() && entry.name.endsWith('.html')) {
+        try {
+          const htmlContent = await fsp.readFile(fullPath, 'utf-8');
+          
+          // Convert filename: header.html -> Header.tsx, global-head.html -> GlobalHead.tsx
+          const componentName = entry.name
+            .replace(/\.html$/, '')
+            .split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join('');
+          
+          const tsxContent = convertHtmlToTsx(htmlContent, componentName);
+          const tsxPath = fullPath.replace(/\.html$/, '.tsx');
+          
+          await fsp.writeFile(tsxPath, tsxContent, 'utf-8');
+          await fsp.unlink(fullPath); // Remove original HTML file
+          
+          convertedFiles.push({ from: entry.name, to: `${componentName}.tsx` });
+        } catch (err) {
+          console.warn(`   ⚠️  Could not convert ${entry.name}: ${err.message}`);
+        }
+      }
+    }
+  }
+  
+  if (fs.existsSync(componentsDir)) {
+    await processDirectory(componentsDir);
+  }
+  
+  return convertedFiles;
+}
+
 async function replaceTokensInFile(filePath, replacements) {
   let content = await fsp.readFile(filePath, 'utf-8');
 
   // Replace new token format: {{TOKEN_NAME}}
+  // Escape special regex characters in token names
   for (const [token, value] of Object.entries(replacements)) {
-    const regex = new RegExp(`{{${token}}}`, 'g');
+    // Escape special regex characters in the token name
+    const escapedToken = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\{\\{${escapedToken}\\}\\}`, 'g');
+    
     // Special handling for KEYWORDS_ARRAY - don't escape quotes in JSON
     if (token === 'KEYWORDS_ARRAY') {
       content = content.replace(regex, value);
     } else {
-      content = content.replace(regex, value);
+      // For URL values, ensure they're properly formatted
+      let replacementValue = value;
+      if (typeof value === 'string' && (token.includes('URL') || token.includes('Url') || token === 'siteUrl' || token === 'WEBSITE_URL' || token === 'FULL_URL')) {
+        // Ensure the URL is properly formatted (should already be, but double-check)
+        if (!replacementValue.match(/^https?:\/\//)) {
+          replacementValue = `https://${replacementValue}`;
+        }
+      }
+      // Replace all occurrences
+      content = content.replace(regex, replacementValue);
     }
   }
 
@@ -156,21 +381,70 @@ async function replaceTokensInFile(filePath, replacements) {
     content = content.replace(regex, value);
   }
 
+  // Check for any remaining unreplaced tokens (warn but don't fail)
+  const remainingTokens = content.match(/\{\{[A-Z_]+\}\}/g);
+  if (remainingTokens && remainingTokens.length > 0) {
+    const uniqueTokens = [...new Set(remainingTokens)];
+    // Only warn if it's a .tsx or .ts file (Next.js files that need tokens)
+    if (/\.(tsx|ts|jsx|js)$/i.test(filePath)) {
+      console.warn(`   ⚠️  Unreplaced tokens in ${path.relative(process.cwd(), filePath)}: ${uniqueTokens.join(', ')}`);
+    }
+  }
+
   await fsp.writeFile(filePath, content, 'utf-8');
 }
 
-async function replaceTokensRecursively(rootDir, replacements) {
+// Global counter for progress tracking
+let tokenReplacementCount = 0;
+
+async function replaceTokensRecursively(rootDir, replacements, showProgress = false) {
+  // Directories to skip (common build/cache/dependency folders)
+  const skipDirs = new Set([
+    'node_modules',
+    '.next',
+    '.git',
+    '.vscode',
+    '.idea',
+    'dist',
+    'build',
+    '.cache',
+    'coverage',
+    '.nyc_output',
+    '.sass-cache',
+    'tmp',
+    'temp',
+    '__pycache__',
+    '.pytest_cache',
+    '.turbo'
+  ]);
+
   const entries = await fsp.readdir(rootDir, { withFileTypes: true });
 
   for (const entry of entries) {
+    // Skip hidden files/directories starting with . (except specific ones we want)
+    if (entry.name.startsWith('.') && !['.env', '.gitignore', '.eslintrc', '.prettierrc'].includes(entry.name)) {
+      continue;
+    }
+
+    // Skip common directories that shouldn't be processed
+    if (entry.isDirectory() && skipDirs.has(entry.name.toLowerCase())) {
+      continue;
+    }
+
     const fullPath = path.join(rootDir, entry.name);
 
     if (entry.isDirectory()) {
-      await replaceTokensRecursively(fullPath, replacements);
+      await replaceTokensRecursively(fullPath, replacements, showProgress);
     } else if (entry.isFile()) {
       // Only replace in text-like files (including templates and Next.js files)
       if (/\.(html|htm|css|js|json|txt|md|template|tsx|ts|jsx)$/i.test(entry.name)) {
         await replaceTokensInFile(fullPath, replacements);
+        if (showProgress) {
+          tokenReplacementCount++;
+          if (tokenReplacementCount % 50 === 0) {
+            process.stdout.write(`   Processed ${tokenReplacementCount} files...\r`);
+          }
+        }
       }
     }
   }
@@ -188,15 +462,11 @@ async function fixAbsolutePaths(filePath, siteRootDir) {
   // Build relative path prefix (e.g., "" for root, "../" for depth 1, "../../" for depth 2)
   const relativePrefix = depth > 0 ? '../'.repeat(depth) : '';
 
-  // Only fix if file is in a subdirectory (depth > 0) or if it has absolute paths
   if (depth === 0) {
-    // Root level files should use relative paths without ../
-    // Check if they already have relative paths, if not, they might be fine
-    return; // Root files should already have correct paths
+    // Root level files are fine
+    return;
   }
 
-  // Fix CSS paths: /css/ -> ../css/ or ../../css/ (depending on depth)
-  // Also fix invalid patterns like /../css/ or /css/ that should be relative
   const cssHrefPattern = /href=["']\/\.\.\/css\//g;
   if (cssHrefPattern.test(content)) {
     content = content.replace(cssHrefPattern, `href="${relativePrefix}css/`);
@@ -208,21 +478,18 @@ async function fixAbsolutePaths(filePath, siteRootDir) {
     modified = true;
   }
 
-  // Fix image src paths: /images/ -> ../images/ or ../../images/
   const imageSrcPattern = /src=["']\/images\//g;
   if (imageSrcPattern.test(content)) {
     content = content.replace(imageSrcPattern, `src="${relativePrefix}images/`);
     modified = true;
   }
 
-  // Fix image URLs in CSS url(): /images/ -> ../images/
   const imageUrlPattern = /url\(["']?\/images\//g;
   if (imageUrlPattern.test(content)) {
     content = content.replace(imageUrlPattern, `url(${relativePrefix}images/`);
     modified = true;
   }
 
-  // Fix background-image URLs: url('/images/...') -> url('../images/...')
   const bgImagePattern = /background-image:\s*url\(["']?\/images\//g;
   if (bgImagePattern.test(content)) {
     content = content.replace(bgImagePattern, `background-image: url(${relativePrefix}images/`);
@@ -266,165 +533,397 @@ async function writeColorTokens(cssFilePath, scheme) {
   await fsp.writeFile(cssFilePath, cssContent.trim() + '\n', 'utf-8');
 }
 
-// Fetch images with wget (if URL provided)
-async function fetchImagesWithWget(sourceUrl, destDir) {
-  try {
-    console.log(`📸 Fetching images from: ${sourceUrl}`);
-    console.log('   Note: Ensure you have rights to use these images.');
-    
-    // Check if wget is available
-    let wgetPath = 'wget';
+/**
+ * Recursively list all image files under a directory.
+ * Returns [{ name, path }]
+ */
+async function listImageFilesRecursive(rootDir) {
+  const results = [];
+
+  async function walk(currentDir) {
+    let entries;
     try {
-      // Try to find wget.exe on Windows
-      if (process.platform === 'win32') {
-        try {
-          const wgetCheck = execSync('where.exe wget', { encoding: 'utf-8' }).trim();
-          if (wgetCheck) {
-            wgetPath = wgetCheck.split('\n')[0].trim();
-          }
-        } catch (e) {
-          // Fall back to just 'wget'
-        }
-      }
-      execSync(`"${wgetPath}" --version`, { stdio: 'ignore' });
-    } catch (err) {
-      console.warn('   ⚠️  wget not found. Skipping image fetch.');
-      console.warn('   Install wget:');
-      console.warn('     Windows: choco install wget');
-      console.warn('     macOS: brew install wget');
-      console.warn('     Linux: apt-get install wget');
-      console.warn('   Or manually add images to images/stock/');
+      entries = await fsp.readdir(currentDir, { withFileTypes: true });
+    } catch {
       return;
     }
 
-    // Improved wget command for higher quality images
-    // Reject social media icons, logos, and small images - be very aggressive
-    const rejectPatterns = [
-      'icon', 'logo', 'favicon', 'thumbnail', 'thumb', 'small', 'avatar',
-      'instagram', 'facebook', 'twitter', 'linkedin', 'pinterest', 'social', 'share',
-      'sprite', 'button', 'badge', 'widget', 'emoji', 'smiley', 'cdninstagram',
-      'static.cdninstagram', 'wixstatic', 'rsrc.php', 'index.html', '.tmp',
-      'VsNE', 'lam-', 'aM-g', 'H1l_', '-7Z_', 'De-Dw', 'base_logo'
-    ].join(',');
+    for (const entry of entries) {
+      const fullPath = path.join(currentDir, entry.name);
+      if (entry.isDirectory()) {
+        await walk(fullPath);
+      } else if (
+        entry.isFile() &&
+        /\.(jpg|jpeg|png|gif|webp)$/i.test(entry.name)
+      ) {
+        results.push({ name: entry.name, path: fullPath });
+      }
+    }
+  }
 
-    const cmd = [
-      `"${wgetPath}"`,
-      '-r',               // recursive
-      '-l2',              // depth 2 (increased from 1 to get more images)
-      '-H',               // span hosts (follow links to other domains)
-      '-t3',              // tries 3 (increased for reliability)
-      '-nd',              // no directory structure (flat output)
-      '-N',               // only new files
-      '-np',              // no parent (don't go up directories)
-      '-A', 'jpg,jpeg,png,gif,webp',  // accept image extensions
-      '-R', rejectPatterns,  // reject social icons, logos, thumbnails
-      '--no-check-certificate',  // skip SSL verification (for some sites)
-      '-e', 'robots=off', // ignore robots.txt (use carefully)
-      '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',  // better user agent
-      '--timeout=30',     // timeout for each request
-      '--tries=3',        // retry failed downloads
-      '--page-requisites', // get page requisites (CSS, images, etc.)
-      `"${sourceUrl}"`,
-      '-P', `"${destDir}"`
-    ].join(' ');
+  await walk(rootDir);
+  return results;
+}
 
-    console.log('   🔍 Scraping for high-quality images...');
-    execSync(cmd, { stdio: 'inherit' });
-    
-    // Filter out small/blurry images, social icons, and logos by file size and filename
-    console.log('   🎨 Filtering for high-quality content images (min 50KB, excluding social icons/logos)...');
-    const scrapedFiles = await fsp.readdir(destDir);
-    const imageFiles = [];
-    
-    // Patterns to identify social media icons, logos, and non-content images - be very aggressive
-    const socialIconPatterns = [
-      /instagram/i, /facebook/i, /twitter/i, /linkedin/i, /pinterest/i,
-      /social/i, /share/i, /icon/i, /logo/i, /favicon/i, /avatar/i,
-      /sprite/i, /button/i, /badge/i, /widget/i, /emoji/i, /smiley/i,
-      /cdninstagram/i, /static\.cdninstagram/i, /wixstatic/i, // CDN patterns
-      /^[a-z0-9]{1,2}[_-]/i,  // Very short filenames (often icons)
-      /^[A-Z][a-z]-[A-Z]/i,   // Pattern like "De-Dwpd5CHc.png" (social icons)
-      /^[a-z]+-[a-z]+-[a-z]+/i, // Pattern like "lam-fZmwmvn.png"
-      /^-[A-Z]/i,              // Pattern like "-7Z_RkdLJUX.png" (Instagram)
-      /^[A-Z][a-z]-[A-Z][a-z]/i, // Pattern like "De-Dwpd5CHc.png"
-      /rsrc\.php/i,            // Instagram resource URLs
-      /\.tmp$/i,               // Temporary files
-      /^VsNE/i, /^lam-/i, /^aM-g/i, /^H1l_/i, /^-7Z_/i, /^De-Dw/i, // Specific Instagram patterns
-      /base_logo/i,            // Logo files
-      /index\.html/i           // HTML files that shouldn't be images
+// Fetch images for a single/high-value page with wget (no full-site mirror)
+async function fetchImagesWithWget(sourceUrl, destDir) {
+  try {
+    console.log(`📸 Downloading images from: ${sourceUrl}`);
+    console.log('   (Single-page mode: only this URL and its direct image assets)');
+    console.log('   Note: Ensure you have rights to download assets from this URL.');
+
+    // Ensure destination directory exists (this SHOULD be images/scraped)
+    await fsp.mkdir(destDir, { recursive: true });
+
+    // Detect wget
+    let wgetPath = 'wget';
+    let wgetFound = false;
+
+    try {
+      if (process.platform === 'win32') {
+        const possiblePaths = [
+          'wget.exe',
+          'wget',
+          path.join(process.env.ProgramFiles || 'C:\\Program Files', 'Git', 'usr', 'bin', 'wget.exe'),
+          path.join(process.env['ProgramFiles(x86)'] || 'C:\\Program Files (x86)', 'Git', 'usr', 'bin', 'wget.exe'),
+          path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Git', 'usr', 'bin', 'wget.exe')
+        ];
+
+        for (const testPath of possiblePaths) {
+          try {
+            execSync(`"${testPath}" --version`, {
+              stdio: 'ignore',
+              timeout: 5000,
+              shell: true
+            });
+            wgetPath = testPath;
+            wgetFound = true;
+            console.log(`   ✅ Found wget at: ${wgetPath}`);
+            break;
+          } catch (_) {
+            // try next
+          }
+        }
+
+        if (!wgetFound) {
+          try {
+            const wgetCheck = execSync('where.exe wget', {
+              encoding: 'utf-8',
+              timeout: 5000,
+              shell: true
+            }).trim();
+            if (wgetCheck && !wgetCheck.includes('not found')) {
+              wgetPath = wgetCheck.split('\n')[0].trim();
+              wgetFound = true;
+              console.log(`   ✅ Found wget via where.exe: ${wgetPath}`);
+            }
+          } catch (_) {
+            // ignore
+          }
+        }
+      } else {
+        try {
+          execSync('wget --version', {
+            stdio: 'ignore',
+            timeout: 5000
+          });
+          wgetFound = true;
+          console.log('   ✅ Found wget');
+        } catch (_) {
+          // ignore
+        }
+      }
+
+      if (wgetFound) {
+        execSync(`"${wgetPath}" --version`, {
+          stdio: 'ignore',
+          timeout: 5000,
+          shell: process.platform === 'win32'
+        });
+      }
+    } catch (_) {
+      wgetFound = false;
+    }
+
+    if (!wgetFound) {
+      console.warn('   ⚠️  wget not found. Skipping image fetch.');
+      console.warn('   Install wget:');
+      console.warn('     Windows: choco install wget  (or install Git for Windows which includes wget)');
+      console.warn('     macOS: brew install wget');
+      console.warn('     Linux: apt-get install wget  (or yum install wget)');
+      return;
+    }
+
+    // Try to parse domain (we no longer clamp wget to this domain,
+    // so CDN/asset hosts are allowed)
+    let sourceDomain = '';
+    try {
+      const urlObj = sourceUrl.startsWith('http') ? new URL(sourceUrl) : new URL(`https://${sourceUrl}`);
+      sourceDomain = urlObj.hostname;
+    } catch (_) {
+      // If URL parsing fails, continue without domain info
+    }
+
+    // Test connection first with a simple HEAD/spider request
+    console.log('   🔍 Testing connection to source URL...');
+    try {
+      const testArgs = [
+        '--spider',
+        '--timeout=10',
+        '--tries=1',
+        '--no-check-certificate',
+        sourceUrl
+      ];
+
+      execSync(`"${wgetPath}" ${testArgs.join(' ')}`, {
+        stdio: 'ignore',
+        shell: process.platform === 'win32',
+        timeout: 15000
+      });
+      console.log('   ✅ Connection test successful');
+    } catch (testErr) {
+      console.warn('   ⚠️  Connection test failed, but continuing anyway...');
+      console.warn('   The URL might require authentication or have restrictions.');
+    }
+
+    // Multi-level image scraping: get images from the page and linked pages
+    // Prioritize webp and larger images, exclude generic icons and gradients
+    let wgetArgs = [
+      '--page-requisites',                // grab assets needed for pages
+      '--adjust-extension',
+      '--convert-links',
+      '--no-parent',
+      '--no-check-certificate',
+      '--no-directories',                // put files directly in destDir (no deep tree)
+      '--level=3',                       // follow links up to 3 levels deep to get more images
+      '--recursive',                     // enable recursion
+      '--accept=webp,jpg,jpeg,png,gif',  // prioritize webp, then other formats (exclude SVG to avoid icons)
+      '--reject=favicon.ico,favicon.png,apple-touch-icon.png,googleg_gradient*.png,standard_*dp.png,icon_*.png', // reject common icon patterns
+      '--reject-regex=.*(?:favicon|apple-touch|googleg|standard_\\d+dp|icon_\\d+x\\d+|\\d+x\\d+\\.png|gradient).*', // reject icon patterns via regex
+      '--span-hosts',                    // allow CDN/asset hosts
+      '-e', 'robots=off',
+      '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      '--timeout=30',
+      '--tries=3',
+      '--wait=1',                        // wait 1 second between requests to be polite
+      '--random-wait',                   // randomize wait time
+      '--directory-prefix', destDir,
+      sourceUrl
     ];
-    
-    // First pass: Remove all non-image files (HTML, CSS, JS, etc.)
-    for (const file of scrapedFiles) {
-      const filePath = path.join(destDir, file);
+
+    // IMPORTANT: we do NOT add "--domains" now so CDN/asset hosts will be included.
+    // If you want to partially restrict domains, you can manually add a small whitelist here.
+
+    console.log('   🔍 Running wget (single-page image mode)...');
+    console.log(`   Destination root: ${destDir}`);
+
+    try {
+      const wgetProcess = spawn(wgetPath, wgetArgs, {
+        shell: false,
+        stdio: 'inherit',
+        cwd: process.cwd()
+      });
+
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          wgetProcess.kill();
+          reject(new Error('Wget operation timed out after 10 minutes'));
+        }, 600000); // 10 minutes
+
+        wgetProcess.on('close', (code) => {
+          clearTimeout(timeout);
+          if (code === 0) {
+            resolve();
+          } else {
+            console.warn(`   ⚠️  wget exited with code ${code}, continuing (files may still have been downloaded).`);
+            resolve();
+          }
+        });
+
+        wgetProcess.on('error', (err) => {
+          clearTimeout(timeout);
+          reject(err);
+        });
+      });
+
+      console.log('   ✅ wget download completed');
+    } catch (execErr) {
+      console.warn(`   ⚠️  Wget encountered errors: ${execErr.message}`);
+    }
+
+    // Filter out small images, generic icons, gradients, and other unimportant images
+    const allImages = await listImageFilesRecursive(destDir);
+    const MIN_IMAGE_SIZE = 20 * 1024; // 20KB minimum - filters out most small icons and favicons
+    const goodImages = [];
+    const rejectedImages = [];
+
+    // Patterns to reject (generic icons, gradients, small dimension indicators)
+    const rejectPatterns = [
+      /favicon/i,
+      /apple-touch/i,
+      /googleg[_-]?gradient/i,
+      /standard[_-]?\d+dp/i,
+      /icon[_-]?\d+x\d+/i,
+      /\d+x\d+\.(png|jpg|jpeg|gif|webp)$/i, // dimension-based filenames like "16x16.png"
+      /gradient/i,
+      /^icon[_-]/i,
+      /^logo[_-]?small/i,
+      /^small[_-]?icon/i,
+      /^tiny[_-]?icon/i
+    ];
+
+    for (const img of allImages) {
+      const fileName = img.name.toLowerCase();
+      const filePath = img.path;
+
+      // Check against rejection patterns
+      const shouldReject = rejectPatterns.some(pattern => pattern.test(fileName));
+      
+      if (shouldReject) {
+        rejectedImages.push(img);
+        try {
+          await fsp.unlink(filePath);
+        } catch (_) {
+          // ignore deletion errors
+        }
+        continue;
+      }
+
+      // Check file size - reject small files (likely icons/favicons)
       try {
-        // Remove HTML files, CSS, JS, and other non-image files
-        if (/\.(html|htm|css|js|json|txt|xml|svg)$/i.test(file) || file.includes('index') || file.includes('.tmp')) {
+        const stats = await fsp.stat(filePath);
+        if (stats.size < MIN_IMAGE_SIZE) {
+          rejectedImages.push(img);
           await fsp.unlink(filePath);
           continue;
         }
-      } catch (err) {
-        // Skip if file can't be accessed
+        
+        // Prefer webp files, but accept all formats that pass size check
+        goodImages.push(img);
+      } catch (_) {
+        // If we can't stat the file, skip it
+        rejectedImages.push(img);
       }
     }
-    
-    // Re-read directory after cleanup
-    const cleanedFiles = await fsp.readdir(destDir);
-    
-    // Collect all image files with their sizes
-    for (const file of cleanedFiles) {
-      if (/\.(jpg|jpeg|png|gif|webp)$/i.test(file)) {
-        const filePath = path.join(destDir, file);
-        try {
-          const stats = await fsp.stat(filePath);
-          const fileSizeKB = stats.size / 1024;
+
+    console.log('   📊 Image scrape summary:');
+    console.log(`      ✅ Found ${goodImages.length} good image(s) (${rejectedImages.length} rejected: icons/gradients/small files)`);
+    if (goodImages.length > 0) {
+      const webpCount = goodImages.filter(img => img.name.toLowerCase().endsWith('.webp')).length;
+      if (webpCount > 0) {
+        console.log(`      📸 Including ${webpCount} WebP image(s) (preferred format)`);
+      }
+    }
+
+    // If we don't have enough images, try a deeper scrape
+    if (goodImages.length < 20) {
+      console.log(`   ⚠️  Only ${goodImages.length} images found, attempting deeper scrape...`);
+
+      // Try scraping with even more depth and broader acceptance
+      const deeperArgs = [
+        '--page-requisites',
+        '--adjust-extension',
+        '--convert-links',
+        '--no-parent',
+        '--no-check-certificate',
+        '--no-directories',
+        '--level=5',                      // go deeper
+        '--recursive',
+        '--accept=webp,jpg,jpeg,png,gif',  // prioritize webp
+        '--reject=favicon.ico,favicon.png,apple-touch-icon.png,googleg_gradient*.png,standard_*dp.png,icon_*.png',
+        '--reject-regex=.*(?:favicon|apple-touch|googleg|standard_\\d+dp|icon_\\d+x\\d+|\\d+x\\d+\\.png|gradient).*',
+        '--span-hosts',
+        '-e', 'robots=off',
+        '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        '--timeout=30',
+        '--tries=2',
+        '--wait=0.5',
+        '--random-wait',
+        '--directory-prefix', destDir,
+        sourceUrl
+      ];
+
+      try {
+        const deeperProcess = spawn(wgetPath, deeperArgs, {
+          shell: false,
+          stdio: 'inherit',
+          cwd: process.cwd()
+        });
+
+        await new Promise((resolve) => {
+          const timeout = setTimeout(() => {
+            deeperProcess.kill();
+            resolve();
+          }, 300000); // 5 minutes for deeper scrape
+
+          deeperProcess.on('close', () => {
+            clearTimeout(timeout);
+            resolve();
+          });
+
+          deeperProcess.on('error', () => {
+            clearTimeout(timeout);
+            resolve();
+          });
+        });
+
+        // Re-filter after deeper scrape using the same improved patterns
+        const allImagesAfter = await listImageFilesRecursive(destDir);
+        const finalGoodImages = [];
+        
+        const rejectPatternsAfter = [
+          /favicon/i,
+          /apple-touch/i,
+          /googleg[_-]?gradient/i,
+          /standard[_-]?\d+dp/i,
+          /icon[_-]?\d+x\d+/i,
+          /\d+x\d+\.(png|jpg|jpeg|gif|webp)$/i,
+          /gradient/i,
+          /^icon[_-]/i,
+          /^logo[_-]?small/i,
+          /^small[_-]?icon/i,
+          /^tiny[_-]?icon/i
+        ];
+
+        for (const img of allImagesAfter) {
+          const fileName = img.name.toLowerCase();
+          const filePath = img.path;
+
+          // Check against rejection patterns
+          const shouldReject = rejectPatternsAfter.some(pattern => pattern.test(fileName));
           
-          // Check if filename indicates it's a social icon or logo
-          const isSocialIcon = socialIconPatterns.some(pattern => pattern.test(file));
-          
-          // Only keep images that are:
-          // 1. Larger than 50KB (increased threshold for better quality)
-          // 2. Not identified as social icons/logos by filename
-          if (fileSizeKB >= 50 && !isSocialIcon) {
-            imageFiles.push({ name: file, path: filePath, size: stats.size });
-          } else {
-            // Remove small images or social icons
-            await fsp.unlink(filePath);
+          if (shouldReject) {
+            try {
+              await fsp.unlink(filePath);
+            } catch (_) {}
+            continue;
           }
-        } catch (err) {
-          // Skip if file can't be accessed
+
+          try {
+            const stats = await fsp.stat(filePath);
+            if (stats.size >= MIN_IMAGE_SIZE) {
+              finalGoodImages.push(img);
+            } else {
+              await fsp.unlink(filePath);
+            }
+          } catch (_) {}
         }
+
+        console.log(`   📊 After deeper scrape: ${finalGoodImages.length} good image(s) found`);
+      } catch (err) {
+        console.warn(`   ⚠️  Deeper scrape failed: ${err.message}`);
       }
     }
-    
-    // Sort by file size (largest first) to prioritize high-quality images
-    imageFiles.sort((a, b) => b.size - a.size);
-    
-    // Keep top 30 largest images (reduced to focus on best quality)
-    const maxImages = 30;
-    let removedCount = 0;
-    if (imageFiles.length > maxImages) {
-      for (let i = maxImages; i < imageFiles.length; i++) {
-        await fsp.unlink(imageFiles[i].path);
-        removedCount++;
-      }
-      imageFiles.splice(maxImages);
-    }
-    
-    const keptCount = imageFiles.length;
-    const totalRemoved = scrapedFiles.length - keptCount;
-    
-    console.log(`   ✅ Images fetched: ${keptCount} high-quality content images kept`);
-    console.log(`   🗑️  Removed: ${totalRemoved} social icons, logos, and small images`);
-    if (keptCount > 0) {
-      const avgSize = Math.round(imageFiles.reduce((sum, img) => sum + (img.size / 1024), 0) / keptCount);
-      console.log(`   📊 Average image size: ${avgSize}KB`);
-    } else {
-      console.warn('   ⚠️  No suitable content images found. Consider using stock images or providing a gallery/media page URL.');
+
+    const finalImages = await listImageFilesRecursive(destDir);
+    const finalCount = finalImages.length;
+    console.log(`   ✅ Final count: ${finalCount} image file(s) ready to use`);
+
+    if (finalCount < 10) {
+      console.warn(`   ⚠️  Warning: Only ${finalCount} images found. Consider providing a gallery/media page URL instead of the homepage.`);
     }
   } catch (err) {
-    console.warn('   ⚠️  Error fetching images:', err.message);
-    console.warn('   You can manually add images to images/stock/');
+    console.warn('   ⚠️  Error downloading images with wget:', err.message);
   }
 }
 
@@ -498,6 +997,149 @@ function getStateName(abbr) {
   return states[abbr.toUpperCase()] || abbr;
 }
 
+// Get common county/metro names for a state
+function getCountiesForState(stateAbbr) {
+  const state = stateAbbr ? stateAbbr.toUpperCase() : '';
+  const countiesByState = {
+    'UT': ['Salt Lake County', 'Utah County', 'Davis County', 'Weber County', 'Cache County', 'Washington County'],
+    'CO': ['Denver County', 'Arapahoe County', 'Jefferson County', 'Adams County', 'El Paso County', 'Boulder County'],
+    'CA': ['Los Angeles County', 'San Diego County', 'Orange County', 'Riverside County', 'San Bernardino County', 'Santa Clara County'],
+    'TX': ['Harris County', 'Dallas County', 'Tarrant County', 'Bexar County', 'Travis County', 'Collin County'],
+    'FL': ['Miami-Dade County', 'Broward County', 'Palm Beach County', 'Hillsborough County', 'Orange County', 'Pinellas County'],
+    'NY': ['New York County', 'Kings County', 'Queens County', 'Suffolk County', 'Nassau County', 'Westchester County'],
+    'IL': ['Cook County', 'DuPage County', 'Lake County', 'Will County', 'Kane County', 'McHenry County'],
+    'PA': ['Philadelphia County', 'Allegheny County', 'Montgomery County', 'Bucks County', 'Delaware County', 'Chester County'],
+    'OH': ['Cuyahoga County', 'Franklin County', 'Hamilton County', 'Summit County', 'Montgomery County', 'Lucas County'],
+    'NC': ['Mecklenburg County', 'Wake County', 'Guilford County', 'Forsyth County', 'Durham County', 'Cumberland County'],
+    'GA': ['Fulton County', 'Gwinnett County', 'Cobb County', 'DeKalb County', 'Clayton County', 'Chatham County'],
+    'MI': ['Wayne County', 'Oakland County', 'Macomb County', 'Kent County', 'Genesee County', 'Washtenaw County'],
+    'NJ': ['Bergen County', 'Middlesex County', 'Essex County', 'Hudson County', 'Monmouth County', 'Ocean County'],
+    'VA': ['Fairfax County', 'Prince William County', 'Loudoun County', 'Chesterfield County', 'Henrico County', 'Arlington County'],
+    'WA': ['King County', 'Pierce County', 'Snohomish County', 'Spokane County', 'Clark County', 'Thurston County'],
+    'AZ': ['Maricopa County', 'Pima County', 'Pinal County', 'Yavapai County', 'Yuma County', 'Coconino County'],
+    'MA': ['Middlesex County', 'Worcester County', 'Suffolk County', 'Essex County', 'Norfolk County', 'Bristol County'],
+    'TN': ['Davidson County', 'Shelby County', 'Knox County', 'Hamilton County', 'Rutherford County', 'Williamson County'],
+    'IN': ['Marion County', 'Lake County', 'Allen County', 'Hamilton County', 'St. Joseph County', 'Elkhart County'],
+    'MO': ['St. Louis County', 'Jackson County', 'St. Charles County', 'Greene County', 'Clay County', 'Platte County'],
+    'MD': ['Montgomery County', 'Prince George\'s County', 'Baltimore County', 'Anne Arundel County', 'Howard County', 'Baltimore City'],
+    'WI': ['Milwaukee County', 'Dane County', 'Waukesha County', 'Brown County', 'Racine County', 'Outagamie County'],
+    'MN': ['Hennepin County', 'Ramsey County', 'Dakota County', 'Anoka County', 'Washington County', 'Olmsted County'],
+    'OR': ['Multnomah County', 'Washington County', 'Clackamas County', 'Lane County', 'Marion County', 'Jackson County'],
+    'LA': ['Orleans Parish', 'Jefferson Parish', 'East Baton Rouge Parish', 'St. Tammany Parish', 'Lafayette Parish', 'Calcasieu Parish'],
+    'AL': ['Jefferson County', 'Mobile County', 'Madison County', 'Montgomery County', 'Shelby County', 'Tuscaloosa County'],
+    'KY': ['Jefferson County', 'Fayette County', 'Kenton County', 'Boone County', 'Warren County', 'Hardin County'],
+    'OK': ['Oklahoma County', 'Tulsa County', 'Cleveland County', 'Canadian County', 'Rogers County', 'Comanche County'],
+    'CT': ['Fairfield County', 'Hartford County', 'New Haven County', 'Middlesex County', 'New London County', 'Litchfield County'],
+    'IA': ['Polk County', 'Linn County', 'Scott County', 'Johnson County', 'Black Hawk County', 'Dubuque County'],
+    'SC': ['Greenville County', 'Richland County', 'Charleston County', 'Spartanburg County', 'York County', 'Lexington County'],
+    'NV': ['Clark County', 'Washoe County', 'Carson City', 'Elko County', 'Douglas County', 'Lyon County'],
+    'AR': ['Pulaski County', 'Benton County', 'Washington County', 'Sebastian County', 'Craighead County', 'Saline County'],
+    'MS': ['Hinds County', 'Harrison County', 'DeSoto County', 'Rankin County', 'Madison County', 'Jackson County'],
+    'KS': ['Johnson County', 'Sedgwick County', 'Shawnee County', 'Wyandotte County', 'Douglas County', 'Riley County'],
+    'NM': ['Bernalillo County', 'Dona Ana County', 'Santa Fe County', 'Sandoval County', 'San Juan County', 'Valencia County'],
+    'NE': ['Douglas County', 'Lancaster County', 'Sarpy County', 'Hall County', 'Buffalo County', 'Platte County'],
+    'WV': ['Kanawha County', 'Berkeley County', 'Cabell County', 'Monongalia County', 'Raleigh County', 'Jefferson County'],
+    'ID': ['Ada County', 'Canyon County', 'Kootenai County', 'Bannock County', 'Bonner County', 'Twin Falls County'],
+    'HI': ['Honolulu County', 'Hawaii County', 'Maui County', 'Kauai County'],
+    'NH': ['Hillsborough County', 'Rockingham County', 'Merrimack County', 'Strafford County', 'Grafton County', 'Belknap County'],
+    'ME': ['Cumberland County', 'York County', 'Penobscot County', 'Kennebec County', 'Androscoggin County', 'Aroostook County'],
+    'RI': ['Providence County', 'Kent County', 'Washington County', 'Newport County', 'Bristol County'],
+    'MT': ['Yellowstone County', 'Missoula County', 'Gallatin County', 'Flathead County', 'Cascade County', 'Lewis and Clark County'],
+    'DE': ['New Castle County', 'Kent County', 'Sussex County'],
+    'SD': ['Minnehaha County', 'Pennington County', 'Lincoln County', 'Brown County', 'Brookings County', 'Codington County'],
+    'ND': ['Cass County', 'Burleigh County', 'Grand Forks County', 'Ward County', 'Morton County', 'Stark County'],
+    'AK': ['Anchorage Municipality', 'Fairbanks North Star Borough', 'Matanuska-Susitna Borough', 'Kenai Peninsula Borough'],
+    'VT': ['Chittenden County', 'Rutland County', 'Washington County', 'Windham County', 'Windsor County', 'Franklin County'],
+    'WY': ['Laramie County', 'Natrona County', 'Campbell County', 'Sweetwater County', 'Fremont County', 'Albany County'],
+    'DC': ['District of Columbia']
+  };
+  
+  return countiesByState[state] || [];
+}
+
+// Get common cities for a state (and optionally filter by county)
+function getCitiesForState(stateAbbr, countyName = null) {
+  const state = stateAbbr ? stateAbbr.toUpperCase() : '';
+  const citiesByState = {
+    'UT': ['Salt Lake City', 'West Valley City', 'Provo', 'West Jordan', 'Orem', 'Sandy', 'Ogden', 'St. George', 'Layton', 'Taylorsville', 'Murray', 'Draper', 'Lehi', 'Logan', 'Spanish Fork'],
+    'CO': ['Denver', 'Colorado Springs', 'Aurora', 'Fort Collins', 'Lakewood', 'Thornton', 'Arvada', 'Westminster', 'Pueblo', 'Centennial', 'Boulder', 'Greeley', 'Longmont', 'Loveland', 'Grand Junction'],
+    'CA': ['Los Angeles', 'San Diego', 'San Jose', 'San Francisco', 'Fresno', 'Sacramento', 'Long Beach', 'Oakland', 'Bakersfield', 'Anaheim', 'Santa Ana', 'Riverside', 'Stockton', 'Irvine', 'Chula Vista'],
+    'TX': ['Houston', 'San Antonio', 'Dallas', 'Austin', 'Fort Worth', 'El Paso', 'Arlington', 'Corpus Christi', 'Plano', 'Laredo', 'Lubbock', 'Garland', 'Irving', 'Amarillo', 'Grand Prairie'],
+    'FL': ['Jacksonville', 'Miami', 'Tampa', 'Orlando', 'St. Petersburg', 'Hialeah', 'Tallahassee', 'Fort Lauderdale', 'Port St. Lucie', 'Cape Coral', 'Pembroke Pines', 'Hollywood', 'Miramar', 'Gainesville', 'Coral Springs'],
+    'NY': ['New York City', 'Buffalo', 'Rochester', 'Yonkers', 'Syracuse', 'Albany', 'New Rochelle', 'Mount Vernon', 'Schenectady', 'Utica', 'White Plains', 'Hempstead', 'Troy', 'Niagara Falls', 'Binghamton'],
+    'IL': ['Chicago', 'Aurora', 'Naperville', 'Joliet', 'Rockford', 'Springfield', 'Elgin', 'Peoria', 'Champaign', 'Waukegan', 'Cicero', 'Bloomington', 'Arlington Heights', 'Evanston', 'Schaumburg'],
+    'PA': ['Philadelphia', 'Pittsburgh', 'Allentown', 'Erie', 'Reading', 'Scranton', 'Bethlehem', 'Lancaster', 'Harrisburg', 'Altoona', 'York', 'State College', 'Wilkes-Barre', 'Chester', 'Williamsport'],
+    'OH': ['Columbus', 'Cleveland', 'Cincinnati', 'Toledo', 'Akron', 'Dayton', 'Parma', 'Canton', 'Youngstown', 'Lorain', 'Hamilton', 'Springfield', 'Kettering', 'Elyria', 'Lakewood'],
+    'NC': ['Charlotte', 'Raleigh', 'Greensboro', 'Durham', 'Winston-Salem', 'Fayetteville', 'Cary', 'Wilmington', 'High Point', 'Concord', 'Asheville', 'Gastonia', 'Jacksonville', 'Chapel Hill', 'Rocky Mount'],
+    'GA': ['Atlanta', 'Augusta', 'Columbus', 'Savannah', 'Athens', 'Sandy Springs', 'Roswell', 'Macon', 'Johns Creek', 'Albany', 'Warner Robins', 'Alpharetta', 'Marietta', 'Valdosta', 'Smyrna'],
+    'MI': ['Detroit', 'Grand Rapids', 'Warren', 'Sterling Heights', 'Lansing', 'Ann Arbor', 'Flint', 'Dearborn', 'Livonia', 'Troy', 'Westland', 'Farmington Hills', 'Kalamazoo', 'Wyoming', 'Southfield'],
+    'NJ': ['Newark', 'Jersey City', 'Paterson', 'Elizabeth', 'Edison', 'Woodbridge', 'Lakewood', 'Toms River', 'Hamilton', 'Trenton', 'Clifton', 'Camden', 'Brick', 'Cherry Hill', 'Passaic'],
+    'VA': ['Virginia Beach', 'Norfolk', 'Chesapeake', 'Richmond', 'Newport News', 'Alexandria', 'Hampton', 'Portsmouth', 'Suffolk', 'Roanoke', 'Lynchburg', 'Harrisonburg', 'Leesburg', 'Charlottesville', 'Danville'],
+    'WA': ['Seattle', 'Spokane', 'Tacoma', 'Vancouver', 'Bellevue', 'Kent', 'Everett', 'Renton', 'Yakima', 'Federal Way', 'Spokane Valley', 'Bellingham', 'Kennewick', 'Auburn', 'Pasco'],
+    'AZ': ['Phoenix', 'Tucson', 'Mesa', 'Chandler', 'Scottsdale', 'Glendale', 'Gilbert', 'Tempe', 'Peoria', 'Surprise', 'Yuma', 'Avondale', 'Goodyear', 'Flagstaff', 'Buckeye'],
+    'MA': ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford', 'Brockton', 'Quincy', 'Lynn', 'Fall River', 'Newton', 'Lawrence', 'Somerville', 'Framingham', 'Haverhill'],
+    'TN': ['Nashville', 'Memphis', 'Knoxville', 'Chattanooga', 'Clarksville', 'Murfreesboro', 'Franklin', 'Jackson', 'Johnson City', 'Bartlett', 'Hendersonville', 'Kingsport', 'Collierville', 'Smyrna', 'Cleveland'],
+    'IN': ['Indianapolis', 'Fort Wayne', 'Evansville', 'South Bend', 'Carmel', 'Fishers', 'Bloomington', 'Hammond', 'Gary', 'Muncie', 'Terre Haute', 'Kokomo', 'Anderson', 'Noblesville', 'Greenwood'],
+    'MO': ['Kansas City', 'St. Louis', 'Springfield', 'Columbia', 'Independence', 'Lee\'s Summit', 'O\'Fallon', 'St. Joseph', 'St. Charles', 'St. Peters', 'Blue Springs', 'Florissant', 'Joplin', 'Chesterfield', 'Jefferson City'],
+    'MD': ['Baltimore', 'Frederick', 'Rockville', 'Gaithersburg', 'Bowie', 'Annapolis', 'College Park', 'Salisbury', 'Laurel', 'Greenbelt', 'Cumberland', 'Westminster', 'Hagerstown', 'Hyattsville', 'Takoma Park'],
+    'WI': ['Milwaukee', 'Madison', 'Green Bay', 'Kenosha', 'Racine', 'Appleton', 'Waukesha', 'Oshkosh', 'Eau Claire', 'Janesville', 'West Allis', 'La Crosse', 'Sheboygan', 'Wauwatosa', 'Fond du Lac'],
+    'MN': ['Minneapolis', 'St. Paul', 'Rochester', 'Duluth', 'Bloomington', 'Brooklyn Park', 'Plymouth', 'St. Cloud', 'Eagan', 'Woodbury', 'Maple Grove', 'Eden Prairie', 'Coon Rapids', 'Burnsville', 'Mankato'],
+    'OR': ['Portland', 'Eugene', 'Salem', 'Gresham', 'Hillsboro', 'Bend', 'Beaverton', 'Medford', 'Springfield', 'Corvallis', 'Albany', 'Tigard', 'Lake Oswego', 'Keizer', 'Grants Pass'],
+    'LA': ['New Orleans', 'Baton Rouge', 'Shreveport', 'Lafayette', 'Lake Charles', 'Kenner', 'Bossier City', 'Monroe', 'Alexandria', 'Houma', 'Marrero', 'Central', 'Laplace', 'Prairieville', 'Metairie'],
+    'AL': ['Birmingham', 'Montgomery', 'Mobile', 'Huntsville', 'Tuscaloosa', 'Hoover', 'Dothan', 'Auburn', 'Decatur', 'Madison', 'Florence', 'Gadsden', 'Vestavia Hills', 'Prattville', 'Opelika'],
+    'KY': ['Louisville', 'Lexington', 'Bowling Green', 'Owensboro', 'Covington', 'Hopkinsville', 'Richmond', 'Florence', 'Georgetown', 'Henderson', 'Elizabethtown', 'Nicholasville', 'Jeffersontown', 'Frankfort', 'Paducah'],
+    'OK': ['Oklahoma City', 'Tulsa', 'Norman', 'Broken Arrow', 'Lawton', 'Edmond', 'Moore', 'Midwest City', 'Enid', 'Stillwater', 'Muskogee', 'Bartlesville', 'Owasso', 'Shawnee', 'Ponca City'],
+    'CT': ['Bridgeport', 'New Haven', 'Hartford', 'Stamford', 'Waterbury', 'Norwalk', 'Danbury', 'New Britain', 'West Hartford', 'Greenwich', 'Hamden', 'West Haven', 'Bristol', 'Meriden', 'Milford'],
+    'IA': ['Des Moines', 'Cedar Rapids', 'Davenport', 'Sioux City', 'Iowa City', 'Waterloo', 'Council Bluffs', 'Ames', 'West Des Moines', 'Cedar Falls', 'Marion', 'Bettendorf', 'Mason City', 'Marshalltown', 'Ottumwa'],
+    'SC': ['Columbia', 'Charleston', 'North Charleston', 'Greenville', 'Rock Hill', 'Mount Pleasant', 'Spartanburg', 'Sumter', 'Hilton Head Island', 'Summerville', 'Florence', 'Aiken', 'Myrtle Beach', 'Greer', 'Anderson'],
+    'NV': ['Las Vegas', 'Henderson', 'Reno', 'North Las Vegas', 'Sparks', 'Carson City', 'Fernley', 'Elko', 'Mesquite', 'Boulder City', 'Fallon', 'Winnemucca', 'West Wendover', 'Ely', 'Yerington'],
+    'AR': ['Little Rock', 'Fort Smith', 'Fayetteville', 'Springdale', 'Jonesboro', 'North Little Rock', 'Conway', 'Rogers', 'Pine Bluff', 'Bentonville', 'Hot Springs', 'Texarkana', 'Sherwood', 'Jacksonville', 'Russellville'],
+    'MS': ['Jackson', 'Gulfport', 'Southaven', 'Hattiesburg', 'Biloxi', 'Meridian', 'Tupelo', 'Greenville', 'Olive Branch', 'Horn Lake', 'Clinton', 'Madison', 'Pearl', 'Ridgeland', 'Starkville'],
+    'KS': ['Wichita', 'Overland Park', 'Kansas City', 'Olathe', 'Topeka', 'Lawrence', 'Shawnee', 'Manhattan', 'Lenexa', 'Salina', 'Hutchinson', 'Leavenworth', 'Leawood', 'Dodge City', 'Garden City'],
+    'NM': ['Albuquerque', 'Las Cruces', 'Rio Rancho', 'Santa Fe', 'Roswell', 'Farmington', 'Clovis', 'Hobbs', 'Alamogordo', 'Carlsbad', 'Gallup', 'Deming', 'Los Lunas', 'Chaparral', 'Sunland Park'],
+    'NE': ['Omaha', 'Lincoln', 'Bellevue', 'Grand Island', 'Kearney', 'Fremont', 'Hastings', 'North Platte', 'Norfolk', 'Columbus', 'Papillion', 'La Vista', 'Scottsbluff', 'South Sioux City', 'Beatrice'],
+    'WV': ['Charleston', 'Huntington', 'Parkersburg', 'Morgantown', 'Wheeling', 'Martinsburg', 'Fairmont', 'Beckley', 'Clarksburg', 'South Charleston', 'St. Albans', 'Vienna', 'Hurricane', 'Bridgeport', 'Martinsburg'],
+    'ID': ['Boise', 'Nampa', 'Meridian', 'Idaho Falls', 'Pocatello', 'Caldwell', 'Coeur d\'Alene', 'Twin Falls', 'Lewiston', 'Post Falls', 'Rexburg', 'Chubbuck', 'Moscow', 'Eagle', 'Ammon'],
+    'HI': ['Honolulu', 'Hilo', 'Kailua', 'Kaneohe', 'Kahului', 'Ewa Beach', 'Mililani', 'Pearl City', 'Waipahu', 'Kihei', 'Makawao', 'Lahaina', 'Kailua-Kona', 'Kapaa', 'Wailuku'],
+    'NH': ['Manchester', 'Nashua', 'Concord', 'Derry', 'Rochester', 'Dover', 'Salem', 'Merrimack', 'Londonderry', 'Hudson', 'Keene', 'Bedford', 'Portsmouth', 'Goffstown', 'Laconia'],
+    'ME': ['Portland', 'Lewiston', 'Bangor', 'South Portland', 'Auburn', 'Biddeford', 'Saco', 'Sanford', 'Augusta', 'Scarborough', 'Westbrook', 'Waterville', 'Gorham', 'Windham', 'York'],
+    'RI': ['Providence', 'Warwick', 'Cranston', 'Pawtucket', 'East Providence', 'Woonsocket', 'Newport', 'Central Falls', 'Westerly', 'Cumberland', 'North Providence', 'South Kingstown', 'Barrington', 'Portsmouth', 'Middletown'],
+    'MT': ['Billings', 'Missoula', 'Great Falls', 'Bozeman', 'Butte', 'Helena', 'Kalispell', 'Havre', 'Anaconda', 'Miles City', 'Livingston', 'Laurel', 'Whitefish', 'Sidney', 'Glendive'],
+    'DE': ['Wilmington', 'Dover', 'Newark', 'Middletown', 'Smyrna', 'Milford', 'Seaford', 'Georgetown', 'Elsmere', 'Laurel', 'Harrington', 'Camden', 'Clayton', 'Lewes', 'Rehoboth Beach'],
+    'SD': ['Sioux Falls', 'Rapid City', 'Aberdeen', 'Brookings', 'Watertown', 'Mitchell', 'Yankton', 'Pierre', 'Huron', 'Vermillion', 'Spearfish', 'Madison', 'Sturgis', 'Lead', 'Hot Springs'],
+    'ND': ['Fargo', 'Bismarck', 'Grand Forks', 'Minot', 'West Fargo', 'Williston', 'Dickinson', 'Mandan', 'Jamestown', 'Wahpeton', 'Devils Lake', 'Valley City', 'Grafton', 'Beulah', 'Rugby'],
+    'AK': ['Anchorage', 'Fairbanks', 'Juneau', 'Wasilla', 'Sitka', 'Ketchikan', 'Kenai', 'Kodiak', 'Bethel', 'Palmer', 'Homer', 'Barrow', 'Nome', 'Unalaska', 'Soldotna'],
+    'VT': ['Burlington', 'Essex', 'South Burlington', 'Colchester', 'Rutland', 'Montpelier', 'Barre', 'St. Albans', 'Winooski', 'Brattleboro', 'Milton', 'Hartford', 'Williston', 'Middlebury', 'Bennington'],
+    'WY': ['Cheyenne', 'Casper', 'Laramie', 'Gillette', 'Rock Springs', 'Sheridan', 'Green River', 'Evanston', 'Riverton', 'Jackson', 'Cody', 'Rawlins', 'Lander', 'Torrington', 'Douglas'],
+    'DC': ['Washington']
+  };
+  
+  let cities = citiesByState[state] || [];
+  
+  // If county name is provided, try to filter or prioritize cities in that county
+  // This is a simple heuristic - in a real implementation, you'd have a proper city-to-county mapping
+  if (countyName && cities.length > 0) {
+    // Extract county name without "County" suffix for matching
+    const countyBase = countyName.replace(/\s+County$/, '').toLowerCase();
+    
+    // Try to find cities that might be in this county (simple name matching)
+    const countyCities = cities.filter(city => {
+      const cityLower = city.toLowerCase();
+      // Check if city name appears in county name or vice versa
+      return countyBase.includes(cityLower) || cityLower.includes(countyBase);
+    });
+    
+    // If we found matches, prioritize them, otherwise return all cities
+    if (countyCities.length > 0) {
+      // Put county cities first, then add others
+      const otherCities = cities.filter(c => !countyCities.includes(c));
+      return [...countyCities, ...otherCities];
+    }
+  }
+  
+  return cities;
+}
+
 // Generate SEO content for a city
 /**
  * Build SEO-optimized content for a city page
@@ -534,28 +1176,19 @@ function buildSeoForCity(cityData, vertical, business) {
     ? ` With over ${yearsInBusiness}+ years of experience in the ${serviceAreaLabel} area,`
     : ` As a local provider in ${serviceAreaLabel},`;
   
-  // Benefit hook - use first service or generic benefit
-  const firstService = vertical.services && vertical.services.length > 0 
-    ? vertical.services[0].toLowerCase()
-    : serviceType;
+  // Benefit hook
   const benefitHook = `We focus on quality workmanship, clear communication, and dependable scheduling.`;
   
-  // Audience phrase (can be customized per vertical)
-  const audiencePhrase = ''; // Can be extended with vertical.audience if needed
+  const audiencePhrase = '';
   
-  // Title: Service in City, State | Business Name
   const title = `${serviceLabel} in ${cityState} | ${business.name}`;
   
-  // Meta description: Business provides service in City, State. Description. Call for quote.
   const metaDescription = `${business.name} provides ${serviceLabel.toLowerCase()} in ${cityState}. ${seoDescriptor}.${phoneSentence}`.trim();
   
-  // H1: Service in City, State
   const h1 = `${serviceLabel} in ${cityState}`;
   
-  // Hero text: Experience sentence + business delivers service + benefit hook
   const heroText = `${yearsSentence} ${business.name} delivers ${serviceType} in ${cityName}${audiencePhrase}. ${benefitHook}`.replace(/\s+/g, ' ').trim();
   
-  // FAQ - 4 questions optimized for local SEO
   const faq = [
     {
       q: `Do you offer free estimates for ${serviceType} in ${cityName}?`,
@@ -575,7 +1208,6 @@ function buildSeoForCity(cityData, vertical, business) {
     }
   ];
   
-  // Service slug for URLs
   const serviceSlug = vertical.primaryService.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   
   return {
@@ -595,7 +1227,6 @@ function buildCityEntries(answers, vertical, business) {
   const stateName = getStateName(answers.stateAbbr || answers.state);
   
   if (answers.serviceAreaMode === 'city') {
-    // Single city mode
     const cityName = answers.cityName || answers.city;
     const stateAbbr = answers.stateAbbr || answers.state;
     const citySlug = slugifyCity(cityName);
@@ -614,7 +1245,6 @@ function buildCityEntries(answers, vertical, business) {
     };
     
   } else if (answers.serviceAreaMode === 'county') {
-    // County/metro mode - parse top cities
     const cityNames = answers.countyTopCities
       .split(',')
       .map(s => s.trim())
@@ -641,7 +1271,6 @@ function buildCityEntries(answers, vertical, business) {
     }
     
   } else if (answers.serviceAreaMode === 'nationwide') {
-    // Nationwide mode - use nationwide cities list
     const nationwideCities = loadNationwideCities();
     
     for (const cityStateStr of nationwideCities) {
@@ -649,19 +1278,19 @@ function buildCityEntries(answers, vertical, business) {
       if (!cityName || !stateAbbr) continue;
       
       const citySlug = slugifyCity(cityName);
-      const stateName = getStateName(stateAbbr);
+      const stateNameInner = getStateName(stateAbbr);
       
       cities[citySlug] = {
         cityName,
         citySlug,
         stateAbbr: stateAbbr.toUpperCase(),
-        stateName,
+        stateName: stateNameInner,
         businessName: business.name,
         primaryService: vertical.primaryService,
         phoneNumber: business.phone,
         email: business.email,
         baseUrl: business.url,
-        ...buildSeoForCity({ cityName, citySlug, stateAbbr, stateName }, vertical, business)
+        ...buildSeoForCity({ cityName, citySlug, stateAbbr, stateName: stateNameInner }, vertical, business)
       };
     }
   }
@@ -669,93 +1298,483 @@ function buildCityEntries(answers, vertical, business) {
   return cities;
 }
 
-// Generate city pages from city data
-async function generateCityPages(destDir, cityData, templateDir, replacements) {
-  const citiesDir = path.join(destDir, 'pages', 'cities');
-  
-  // Remove old city pages if they exist (we'll generate new ones)
-  if (fs.existsSync(citiesDir)) {
-    const oldFiles = await fsp.readdir(citiesDir);
-    for (const file of oldFiles) {
-      if (file.endsWith('.html') && file !== 'index.html') {
-        await fsp.unlink(path.join(citiesDir, file));
+// Generate city pages from city data (supports both HTML and Next.js templates)
+async function generateCityPages(destDir, cityData, templateDir, replacements, isNextJs = false) {
+  if (isNextJs) {
+    await generateNextJsCityPages(destDir, cityData, replacements);
+  } else {
+    const citiesDir = path.join(destDir, 'pages', 'cities');
+
+    if (fs.existsSync(citiesDir)) {
+      const oldFiles = await fsp.readdir(citiesDir);
+      for (const file of oldFiles) {
+        if (file.endsWith('.html') && file !== 'index.html') {
+          await fsp.unlink(path.join(citiesDir, file));
+        }
       }
     }
-  }
-  
-  await fsp.mkdir(citiesDir, { recursive: true });
-  
-  const cityTemplatePath = path.join(templateDir, 'pages', 'cities', 'salt-lake-city-ut.html');
-  let cityTemplate = '';
-  
-  if (fs.existsSync(cityTemplatePath)) {
-    cityTemplate = await fsp.readFile(cityTemplatePath, 'utf-8');
-  } else {
-    // Fallback: use _TEMPLATE-CITY.html if available
-    const fallbackTemplate = path.join(templateDir, 'pages', '_TEMPLATE-CITY.html');
-    if (fs.existsSync(fallbackTemplate)) {
-      cityTemplate = await fsp.readFile(fallbackTemplate, 'utf-8');
+
+    await fsp.mkdir(citiesDir, { recursive: true });
+
+    const cityTemplatePath = path.join(templateDir, 'pages', 'cities', 'salt-lake-city-ut.html');
+    let cityTemplate = '';
+
+    if (fs.existsSync(cityTemplatePath)) {
+      cityTemplate = await fsp.readFile(cityTemplatePath, 'utf-8');
     } else {
-      console.warn('   ⚠️  No city template found, skipping city page generation');
-      return;
+      const fallbackTemplate = path.join(templateDir, 'pages', '_TEMPLATE-CITY.html');
+      if (fs.existsSync(fallbackTemplate)) {
+        cityTemplate = await fsp.readFile(fallbackTemplate, 'utf-8');
+      } else {
+        console.warn('   ⚠️  No city template found, using generic city page layout instead');
+
+        cityTemplate = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{CITY_TITLE}}</title>
+  <meta name="description" content="{{CITY_META_DESCRIPTION}}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>{{CITY_H1}}</h1>
+      <p>{{CITY_HERO_TEXT}}</p>
+      <a href="/contact.html" class="btn-primary">GET FREE QUOTE</a>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <section class="section">
+      <div class="container">
+        <h2>About Our Services in {{CITY_NAME}}, {{STATE_ABBR}}</h2>
+        <p>{{CITY_HERO_TEXT}}</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Frequently Asked Questions</h2>
+        {{CITY_FAQ}}
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© {{CURRENT_YEAR}} {{BUSINESS_NAME}}. All Rights Reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>`;
+      }
     }
+
+    let generatedCount = 0;
+    for (const [citySlug, city] of Object.entries(cityData)) {
+      const cityReplacements = {
+        ...replacements,
+        'PUT CITY NAME HERE': city.cityName,
+        'PUT CITY NAME 1': city.cityName,
+        'PUT-CITY-SLUG-HERE': citySlug,
+        'PUT STATE CODE HERE': city.stateAbbr,
+        'PUT STATE HERE': city.stateAbbr,
+        'PUT STATE NAME HERE': city.stateName,
+        'PUT SERVICES HERE': city.primaryService,
+        'PUT YOUR CITY-SPECIFIC DESCRIPTION HERE': city.metaDescription,
+        'PUT SERVICE KEYWORD HERE': city.primaryService.toLowerCase(),
+        'PUT YOUR BUSINESS NAME HERE - PUT CITY NAME HERE': `${city.businessName} - ${city.cityName}`,
+        '{{CITY_NAME}}': city.cityName,
+        '{{CITY_SLUG}}': citySlug,
+        '{{STATE_ABBR}}': city.stateAbbr,
+        '{{STATE_NAME}}': city.stateName,
+        '{{CITY_TITLE}}': city.title,
+        '{{CITY_META_DESCRIPTION}}': city.metaDescription,
+        '{{CITY_H1}}': city.h1,
+        '{{CITY_HERO_TEXT}}': city.heroText,
+        '{{SERVICE_SLUG}}': city.serviceSlug,
+        '{{CANONICAL_URL}}': `${city.baseUrl}/pages/cities/${citySlug}-${city.stateAbbr.toLowerCase()}.html`,
+        '{{CITY_FAQ}}': city.faq && city.faq.length > 0
+          ? city.faq
+              .map(
+                (item) => `
+          <div class="faq-item">
+            <h3>${item.q}</h3>
+            <p>${item.a}</p>
+          </div>`
+              )
+              .join('\n')
+          : `<p>Have questions about ${city.primaryService} in ${city.cityName}? <a href="../contact.html">Contact us</a> for more information.</p>`
+      };
+
+      let cityPageContent = cityTemplate;
+
+      for (const [token, value] of Object.entries(cityReplacements)) {
+        const regex = new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        cityPageContent = cityPageContent.replace(regex, value);
+      }
+
+      for (const [token, value] of Object.entries(cityReplacements)) {
+        const bareToken = token.replace(/^\{\{|\}\}$/g, '');
+        const regex = new RegExp(`{{${bareToken}}}`, 'g');
+        cityPageContent = cityPageContent.replace(regex, value);
+      }
+
+      const cityPagePath = path.join(citiesDir, `${citySlug}-${city.stateAbbr.toLowerCase()}.html`);
+      await fsp.writeFile(cityPagePath, cityPageContent, 'utf-8');
+      generatedCount++;
+    }
+
+    console.log(`   ✅ Generated ${generatedCount} city pages`);
   }
+}
+
+// Generate Next.js city pages as React components
+async function generateNextJsCityPages(destDir, cityData, replacements) {
+  const citiesAppDir = path.join(destDir, 'app', 'cities');
+  await fsp.mkdir(citiesAppDir, { recursive: true });
   
   let generatedCount = 0;
   for (const [citySlug, city] of Object.entries(cityData)) {
-    const cityReplacements = {
-      ...replacements,
-      // City-specific tokens (both old and new format)
-      'PUT CITY NAME HERE': city.cityName,
-      'PUT CITY NAME 1': city.cityName,
-      'PUT-CITY-SLUG-HERE': citySlug,
-      'PUT STATE CODE HERE': city.stateAbbr,
-      'PUT STATE HERE': city.stateAbbr,
-      'PUT STATE NAME HERE': city.stateName,
-      'PUT SERVICES HERE': city.primaryService,
-      'PUT YOUR CITY-SPECIFIC DESCRIPTION HERE': city.metaDescription,
-      'PUT SERVICE KEYWORD HERE': city.primaryService.toLowerCase(),
-      'PUT YOUR BUSINESS NAME HERE - PUT CITY NAME HERE': `${city.businessName} - ${city.cityName}`,
-      // SEO tokens (new format)
-      '{{CITY_NAME}}': city.cityName,
-      '{{CITY_SLUG}}': citySlug,
-      '{{STATE_ABBR}}': city.stateAbbr,
-      '{{STATE_NAME}}': city.stateName,
-      '{{CITY_TITLE}}': city.title,
-      '{{CITY_META_DESCRIPTION}}': city.metaDescription,
-      '{{CITY_H1}}': city.h1,
-      '{{CITY_HERO_TEXT}}': city.heroText,
-      '{{SERVICE_SLUG}}': city.serviceSlug,
-      '{{CANONICAL_URL}}': `${city.baseUrl}/pages/cities/${citySlug}-${city.stateAbbr.toLowerCase()}.html`,
-      // FAQ section (generate HTML)
-      '{{CITY_FAQ}}': city.faq && city.faq.length > 0 ? city.faq.map(item => 
-        `<div class="faq-item" style="margin-bottom: var(--spacing-md); padding: var(--spacing-md); background: var(--color-bg-light); border-radius: var(--border-radius);">
-          <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-xs); color: var(--color-primary);">${item.q}</h3>
-          <p style="margin: 0;">${item.a}</p>
-        </div>`
-      ).join('\n') : '<p>Have questions about ' + city.primaryService + ' in ' + city.cityName + '? <a href="../contact.html">Contact us</a> for more information.</p>'
-    };
+    const cityDir = path.join(citiesAppDir, `${citySlug}-${city.stateAbbr.toLowerCase()}`);
+    await fsp.mkdir(cityDir, { recursive: true });
     
-    // Replace tokens in city template
-    let cityPageContent = cityTemplate;
-    for (const [token, value] of Object.entries(cityReplacements)) {
-      const regex = new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-      cityPageContent = cityPageContent.replace(regex, value);
-    }
+    const redirectDir = path.join(destDir, 'app', citySlug);
+    await fsp.mkdir(redirectDir, { recursive: true });
+    const redirectContent = `import { redirect } from 'next/navigation';
+
+export default function ${citySlug.charAt(0).toUpperCase() + citySlug.slice(1).replace(/-/g, '')}Redirect() {
+  redirect('/cities/${citySlug}-${city.stateAbbr.toLowerCase()}');
+}
+`;
+    await fsp.writeFile(path.join(redirectDir, 'page.tsx'), redirectContent, 'utf-8');
     
-    // Also replace {{TOKEN}} format
-    for (const [token, value] of Object.entries(cityReplacements)) {
-      const regex = new RegExp(`{{${token}}}`, 'g');
-      cityPageContent = cityPageContent.replace(regex, value);
-    }
+    const cityPageContent = `import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "${city.title}",
+  description: "${city.metaDescription}",
+  alternates: { canonical: '${city.baseUrl}/cities/${citySlug}-${city.stateAbbr.toLowerCase()}' },
+  openGraph: {
+    locale: 'en_US',
+    siteName: '${city.businessName}',
+    title: '${city.title}',
+    description: '${city.metaDescription}',
+    url: '${city.baseUrl}/cities/${citySlug}-${city.stateAbbr.toLowerCase()}',
+    type: 'website'
+  },
+  robots: { index: true, follow: true }
+};
+
+export default function CityPage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            ${city.h1}
+          </h1>
+          <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            ${city.heroText}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="#contact"
+              className="inline-block bg-teal-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-700 transition-colors shadow-lg"
+            >
+              GET FREE QUOTE
+            </a>
+            <a
+              href="tel:+1${(city.phoneNumber || '').replace(/[^\\d]/g, '')}"
+              className="inline-block bg-white text-teal-600 border-2 border-teal-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-50 transition-colors"
+            >
+              Call ${city.phoneNumber || 'us'}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      ${city.faq && city.faq.length > 0 ? `
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-12">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-6">
+            ${city.faq.map(item => `
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">${item.q}</h3>
+              <p className="text-gray-600">${item.a}</p>
+            </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
+      ` : ''}
+
+      {/* CTA Section */}
+      <section className="bg-gradient-to-r from-teal-600 to-teal-700 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Ready to Get Started?
+          </h2>
+          <p className="text-xl text-teal-100 mb-8 max-w-3xl mx-auto">
+            Contact ${city.businessName} today for ${city.primaryService.toLowerCase()} in ${city.cityName}, ${city.stateAbbr}.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="#contact"
+              className="inline-block bg-white text-teal-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-50 transition-colors shadow-lg"
+            >
+              GET FREE QUOTE
+            </a>
+            <a 
+              href="tel:+1${(city.phoneNumber || '').replace(/[^\\d]/g, '')}"
+              className="inline-block bg-transparent text-white border-2 border-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
+            >
+              Call ${city.phoneNumber || 'us'}
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+`;
     
-    // Write city page
-    const cityPagePath = path.join(citiesDir, `${citySlug}-${city.stateAbbr.toLowerCase()}.html`);
+    const cityPagePath = path.join(cityDir, 'page.tsx');
     await fsp.writeFile(cityPagePath, cityPageContent, 'utf-8');
     generatedCount++;
   }
   
-  console.log(`   ✅ Generated ${generatedCount} city pages`);
+  console.log(`   ✅ Generated ${generatedCount} Next.js city pages`);
+  console.log(`   ✅ Generated ${generatedCount} city redirect pages`);
+}
+
+// Generate standard pages (about, services, contact) for Next.js templates
+async function generateNextJsStandardPages(destDir, replacements) {
+  const pages = [
+    {
+      slug: 'about',
+      title: `About Us | ${replacements.SITE_NAME}`,
+      description: `Learn about ${replacements.BUSINESS_NAME} - ${replacements.BUSINESS_DESCRIPTION}`,
+      h1: `About ${replacements.BUSINESS_NAME}`,
+      content: `
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            About ${replacements.BUSINESS_NAME}
+          </h1>
+          <p className="text-xl sm:text-2xl text-gray-600 mb-8">
+            ${replacements.BUSINESS_DESCRIPTION}
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Our Mission</h2>
+          <p className="text-lg text-gray-600 mb-6">
+            At ${replacements.BUSINESS_NAME}, we believe in delivering exceptional ${replacements.SERVICE_TYPE} services. We're a ${replacements.SERVICE_AREA} service that connects you with professional ${replacements.SERVICE_TYPE} providers who understand quality workmanship and customer satisfaction.
+          </p>
+
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 mt-12">What We Do</h2>
+          <p className="text-lg text-gray-600 mb-6">
+            We provide ${replacements.BUSINESS_DESCRIPTION}. Whether you need ${replacements.SERVICE_1 || replacements.SERVICE_TYPE} or ${replacements.SERVICE_2 || replacements.SERVICE_TYPE}, we match you with experienced professionals in your area who follow our standards for quality and customer service.
+          </p>
+
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 mt-12">Why Choose ${replacements.BUSINESS_NAME}</h2>
+          <ul className="list-disc list-inside text-lg text-gray-600 space-y-3">
+            <li>Quality workmanship guaranteed</li>
+            <li>Competitive pricing</li>
+            <li>Experienced professionals</li>
+            <li>Customer satisfaction focus</li>
+            <li>Local expertise in ${replacements.SERVICE_AREA}</li>
+          </ul>
+        </div>
+      </section>
+      `
+    },
+    {
+      slug: 'services',
+      title: `Our Services | ${replacements.SITE_NAME}`,
+      description: `${replacements.PRIMARY_SERVICE} services in ${replacements.SERVICE_AREA}. Get a free quote today.`,
+      h1: 'Our Services',
+      getContent: (repl) => {
+        const services = [repl.SERVICE_1, repl.SERVICE_2, repl.SERVICE_3, repl.SERVICE_4, repl.SERVICE_5, repl.SERVICE_6].filter(s => s && s.trim());
+        const servicesHtml = services.length > 0 
+          ? services.map((service) => `
+            <div className="bg-gray-50 rounded-lg p-6 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">${service}</h3>
+              <p className="text-gray-600">Professional ${service.toLowerCase()} services with quality workmanship and competitive pricing.</p>
+            </div>
+            `).join('')
+          : `
+            <div className="bg-gray-50 rounded-lg p-6 shadow-lg col-span-2">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">${repl.PRIMARY_SERVICE}</h3>
+              <p className="text-gray-600">Professional ${repl.PRIMARY_SERVICE.toLowerCase()} services with quality workmanship and competitive pricing.</p>
+            </div>
+          `;
+        
+        return `
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            Our Services
+          </h1>
+          <p className="text-xl sm:text-2xl text-gray-600 mb-8">
+            ${repl.PRIMARY_SERVICE} services in ${repl.SERVICE_AREA}
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            ${servicesHtml}
+          </div>
+        </div>
+      </section>
+      `;
+      }
+    },
+    {
+      slug: 'contact',
+      title: `Contact Us | ${replacements.SITE_NAME}`,
+      description: `Contact ${replacements.BUSINESS_NAME} for ${replacements.PRIMARY_SERVICE} services in ${replacements.SERVICE_AREA}. Get a free quote today.`,
+      h1: 'Contact Us',
+      content: `
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            Contact Us
+          </h1>
+          <p className="text-xl sm:text-2xl text-gray-600 mb-8">
+            Have questions? We're here to help.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+              <p className="text-lg text-gray-600 mb-6">
+                Have a question about our service? Need help with your ${replacements.SERVICE_TYPE}? Want to provide feedback? We'd love to hear from you.
+              </p>
+              
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Email</h3>
+                <p>
+                  <a href="mailto:${replacements.EMAIL}" className="text-teal-600 hover:text-teal-700">
+                    ${replacements.EMAIL}
+                  </a>
+                </p>
+              </div>
+              
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Phone</h3>
+                <p>
+                  <a href="${replacements.PHONE_LINK || `tel:+1${replacements.PHONE.replace(/[^\\d]/g, '')}`}" className="text-teal-600 hover:text-teal-700">
+                    ${replacements.PHONE}
+                  </a>
+                </p>
+                <p className="text-sm text-gray-500 mt-1">Monday - Friday, 9am - 5pm</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Address</h3>
+                <p className="text-gray-600">
+                  ${replacements.STREET}<br />
+                  ${replacements.CITY_ADDRESS}, ${replacements.STATE} ${replacements.ZIP}<br />
+                  ${replacements.COUNTRY}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      `
+    }
+  ];
+  
+  for (const page of pages) {
+    const pageDir = path.join(destDir, 'app', page.slug);
+    await fsp.mkdir(pageDir, { recursive: true });
+    
+    // Get content - use getContent function if available, otherwise use content string
+    const pageContentString = page.getContent ? page.getContent(replacements) : page.content;
+    
+    // Build phone link safely
+    const phoneDigits = (replacements.PHONE || '').replace(/[^\d]/g, '');
+    const phoneLink = replacements.PHONE_LINK || (phoneDigits ? `tel:+1${phoneDigits}` : '#');
+    
+    // Escape strings for use in template literals (only escape quotes, not template syntax)
+    const escapeForJsString = (str) => {
+      if (!str) return '';
+      return String(str).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/'/g, "\\'");
+    };
+    
+    const pageContent = `import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "${escapeForJsString(page.title)}",
+  description: "${escapeForJsString(page.description)}",
+  alternates: { canonical: '${replacements.WEBSITE_URL}/${page.slug}' },
+  openGraph: {
+    locale: 'en_US',
+    siteName: '${escapeForJsString(replacements.SITE_NAME)}',
+    title: '${escapeForJsString(page.title)}',
+    description: '${escapeForJsString(page.description)}',
+    url: '${replacements.WEBSITE_URL}/${page.slug}',
+    type: 'website'
+  },
+  robots: { index: true, follow: true }
+};
+
+export default function ${page.slug.charAt(0).toUpperCase() + page.slug.slice(1)}Page() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      ${pageContentString}
+
+      <section className="bg-gradient-to-r from-teal-600 to-teal-700 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Ready to Get Started?
+          </h2>
+          <p className="text-xl text-teal-100 mb-8 max-w-3xl mx-auto">
+            Contact us today to learn more about our services.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="/contact"
+              className="inline-block bg-white text-teal-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-50 transition-colors shadow-lg"
+            >
+              ${replacements.ctaLabel || 'GET FREE QUOTE'}
+            </a>
+            <a 
+              href="${phoneLink}"
+              className="inline-block bg-transparent text-white border-2 border-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
+            >
+              Call ${replacements.PHONE || 'us'}
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+`;
+    
+    await fsp.writeFile(path.join(pageDir, 'page.tsx'), pageContent, 'utf-8');
+  }
+  
+  console.log(`   ✅ Generated standard pages (about, services, contact)`);
 }
 
 // Generate cities list HTML organized by region for locations page
@@ -764,7 +1783,6 @@ function generateCitiesListHTML(cityData) {
     return '<p>No cities available at this time.</p>';
   }
   
-  // Organize cities by region
   const regions = {
     'West Coast': ['CA', 'WA', 'OR', 'AZ', 'NV'],
     'Southwest & Texas': ['TX', 'NM', 'OK'],
@@ -779,7 +1797,6 @@ function generateCitiesListHTML(cityData) {
   }
   citiesByRegion['More Cities'] = [];
   
-  // Sort cities into regions
   for (const [citySlug, city] of Object.entries(cityData)) {
     const stateAbbr = city.stateAbbr.toUpperCase();
     let assigned = false;
@@ -797,12 +1814,10 @@ function generateCitiesListHTML(cityData) {
     }
   }
   
-  // Sort cities within each region by city name
   for (const region in citiesByRegion) {
     citiesByRegion[region].sort((a, b) => a.cityName.localeCompare(b.cityName));
   }
   
-  // Generate HTML
   let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">';
   
   for (const [region, cities] of Object.entries(citiesByRegion)) {
@@ -822,7 +1837,6 @@ function generateCitiesListHTML(cityData) {
     html += '</div>';
   }
   
-  // Add "View all cities" link if there are many cities
   if (Object.keys(cityData).length > 20) {
     html += '<div>';
     html += '<h3>More Cities</h3>';
@@ -842,16 +1856,13 @@ async function updateLocationsPage(destDir, cityData) {
   const locationsPath = path.join(destDir, 'pages', 'locations.html');
   
   if (!fs.existsSync(locationsPath)) {
-    return; // Locations page doesn't exist, skip
+    return;
   }
   
   let content = await fsp.readFile(locationsPath, 'utf-8');
   
-  // Generate cities list HTML
   const citiesListHTML = generateCitiesListHTML(cityData);
   
-  // Replace the cities list section - look for the "Areas We Serve" section
-  // Pattern: <h2>Areas We Serve</h2> followed by a div with grid, ending before next section or </main>
   const areasWeServePattern = /(<h2>Areas We Serve<\/h2>\s*<div[^>]*>)[\s\S]*?(<\/div>\s*<\/div>\s*<\/section>)/;
   
   if (areasWeServePattern.test(content)) {
@@ -860,10 +1871,8 @@ async function updateLocationsPage(destDir, cityData) {
       `$1\n${citiesListHTML}\n$2`
     );
   } else {
-    // Fallback: try to find a token placeholder
     content = content.replace(/{{CITIES_LIST}}/g, citiesListHTML);
     
-    // If still no match, try a simpler pattern - replace the entire grid div
     const simplePattern = /(<h2>Areas We Serve<\/h2>)[\s\S]*?(<\/div>\s*<\/div>\s*<\/section>)/;
     if (simplePattern.test(content)) {
       content = content.replace(
@@ -877,10 +1886,10 @@ async function updateLocationsPage(destDir, cityData) {
 }
 
 // Process template files (site.config.json.template, package.json.template, etc.)
-async function processTemplateFiles(rootDir, destDir, replacements) {
+async function processTemplateFiles(rootDir, destDir, replacements, isNextJs = false) {
   const templateFiles = [
     { src: 'site.config.json.template', dest: 'site.config.json' },
-    { src: 'package.json.template', dest: 'package.json' }
+    ...(isNextJs ? [] : [{ src: 'package.json.template', dest: 'package.json' }])
   ];
   
   for (const template of templateFiles) {
@@ -899,38 +1908,41 @@ async function processTemplateFiles(rootDir, destDir, replacements) {
       console.log(`   ✅ Generated ${template.dest}`);
     }
   }
+  
+  if (isNextJs) {
+    const packageJsonPath = path.join(destDir, 'package.json');
+    if (fs.existsSync(packageJsonPath)) {
+      let content = await fsp.readFile(packageJsonPath, 'utf-8');
+      
+      for (const [token, value] of Object.entries(replacements)) {
+        const regex = new RegExp(`{{${token}}}`, 'g');
+        content = content.replace(regex, value);
+      }
+      
+      await fsp.writeFile(packageJsonPath, content, 'utf-8');
+      console.log('   ✅ Updated package.json with tokens');
+    }
+  }
 }
 
 // --------- SEO & STRUCTURED DATA HELPERS -----------------------
 
-/**
- * Generate sitemap.xml and robots.txt based on generated HTML files
- * @param {string} destSiteDir - root output directory
- * @param {string} fullUrl - canonical site URL (e.g. https://example.com)
- * @param {string[]} htmlFiles - absolute paths to all generated HTML files
- */
 async function generateSitemapAndRobots(destSiteDir, fullUrl, htmlFiles) {
   try {
-    // Normalize domain (no trailing slash)
     const baseUrl = fullUrl.replace(/\/+$/, '');
 
-    // Build URL list from htmlFiles
     const urls = htmlFiles
       .map((filePath) => {
         const rel = path.relative(destSiteDir, filePath).replace(/\\/g, '/');
         return rel;
       })
-      // ignore partials or template-like files if any
       .filter((rel) => !rel.startsWith('_') && rel.toLowerCase().endsWith('.html'));
 
     const now = new Date().toISOString();
 
     const sitemapEntries = urls
       .map((rel) => {
-        // index.html at root → /
-        // pages/about.html → /pages/about.html
         let loc = `${baseUrl}/${rel}`;
-        // Normalize index.html to trailing slash
         if (rel === 'index.html') {
           loc = `${baseUrl}/`;
         }
@@ -968,10 +1980,6 @@ Sitemap: ${baseUrl}/sitemap.xml
   }
 }
 
-/**
- * Inject a JSON-LD <script> into an HTML file (before </head> if possible)
- * If </head> is not found, inject before </body>.
- */
 async function injectJsonLdScript(htmlPath, jsonLdObjectOrArray) {
   if (!fs.existsSync(htmlPath)) return;
 
@@ -988,16 +1996,12 @@ async function injectJsonLdScript(htmlPath, jsonLdObjectOrArray) {
   } else if (html.includes('</BODY>')) {
     html = html.replace('</BODY>', `${scriptTag}</BODY>`);
   } else {
-    // Fallback: just append
     html += scriptTag;
   }
 
   await fsp.writeFile(htmlPath, html, 'utf-8');
 }
 
-/**
- * Add LocalBusiness structured data to the home page (index.html)
- */
 async function addHomeStructuredData(destSiteDir, answers, vertical, fullUrl) {
   try {
     const homePath = path.join(destSiteDir, 'index.html');
@@ -1048,9 +2052,6 @@ async function addHomeStructuredData(destSiteDir, answers, vertical, fullUrl) {
   }
 }
 
-/**
- * Add LocalBusiness + FAQPage JSON-LD to each generated city page
- */
 async function addCityStructuredData(destSiteDir, cityData) {
   try {
     const pagesDir = path.join(destSiteDir, 'pages', 'cities');
@@ -1114,9 +2115,6 @@ async function addCityStructuredData(destSiteDir, cityData) {
   }
 }
 
-/**
- * High-level helper to add all SEO enhancements
- */
 async function addSeoEnhancements(destSiteDir, fullUrl, htmlFiles, answers, vertical, cityData) {
   console.log('🧩 Adding SEO enhancements (sitemap, robots, structured data)...');
   await generateSitemapAndRobots(destSiteDir, fullUrl, htmlFiles);
@@ -1144,12 +2142,24 @@ async function run() {
     },
     {
       type: 'list',
-      name: 'verticalKey',
+      name: 'siteType',
       message: 'What type of site is this?',
-      choices: Object.keys(verticals).map(key => ({
-        name: verticals[key].label || verticals[key].primaryService,
-        value: key
-      }))
+      choices: siteTypeChoices
+    },
+    {
+      // This is your old "Landscaping / Roofing / Plumbing / …" prompt,
+      // now only shown when they picked "Service Business".
+      type: 'list',
+      name: 'verticalKey',
+      message: 'What industry is this service business in?',
+      when: (ans) => ans.siteType === 'services',
+      choices: Object.keys(verticals)
+        // treat any non top-level key as a niche service vertical
+        .filter(key => !SITE_TYPE_KEYS.includes(key))
+        .map(key => ({
+          name: verticals[key].label || verticals[key].primaryService,
+          value: key
+        }))
     },
     {
       type: 'input',
@@ -1192,23 +2202,98 @@ async function run() {
       }
     },
     {
-      type: 'input',
+      type: 'list',
       name: 'countyName',
-      message: 'County / metro name (e.g. Denver County):',
+      message: 'County / metro name:',
       when: (ans) => ans.serviceAreaMode === 'county',
-      default: (ans) => ans.cityName ? `${ans.cityName} County` : ''
+      choices: (ans) => {
+        const stateAbbr = ans.stateAbbr || ans.state || '';
+        const counties = getCountiesForState(stateAbbr);
+        const cityBasedDefault = ans.cityName ? `${ans.cityName} County` : '';
+        
+        // If we have counties for this state, show them
+        if (counties.length > 0) {
+          const choices = [...counties];
+          // Add city-based default if it's not already in the list
+          if (cityBasedDefault && !counties.includes(cityBasedDefault)) {
+            choices.unshift(cityBasedDefault);
+          }
+          choices.push('Other (enter custom name)');
+          return choices;
+        }
+        
+        // If no counties found for state, show city-based default and Other
+        const choices = [];
+        if (cityBasedDefault) {
+          choices.push(cityBasedDefault);
+        }
+        choices.push('Other (enter custom name)');
+        return choices;
+      },
+      default: (ans) => {
+        const stateAbbr = ans.stateAbbr || ans.state || '';
+        const counties = getCountiesForState(stateAbbr);
+        const cityBasedDefault = ans.cityName ? `${ans.cityName} County` : '';
+        
+        // Prefer city-based default if it exists
+        if (cityBasedDefault) {
+          return cityBasedDefault;
+        }
+        // Otherwise return first county if available
+        return counties.length > 0 ? counties[0] : null;
+      }
     },
     {
       type: 'input',
+      name: 'countyNameCustom',
+      message: 'Enter custom county / metro name:',
+      when: (ans) => ans.serviceAreaMode === 'county' && ans.countyName === 'Other (enter custom name)',
+      validate: (v) => v.trim() ? true : 'Please enter a county or metro name.'
+    },
+    {
+      type: 'checkbox',
       name: 'countyTopCities',
-      message: 'Top cities in this county/metro (comma separated, e.g. Denver, Aurora, Lakewood):',
+      message: 'Select top cities in this county/metro (use space to select, enter to confirm):',
       when: (ans) => ans.serviceAreaMode === 'county',
-      default: (ans) => ans.cityName || '',
-      validate: (v, ans) => {
-        if (ans.serviceAreaMode === 'county' && !v.trim()) {
-          return 'Please enter at least one city name.';
+      choices: (ans) => {
+        const stateAbbr = ans.stateAbbr || ans.state || '';
+        const countyName = ans.countyName;
+        const cities = getCitiesForState(stateAbbr, countyName);
+        
+        // If we have city suggestions, show them
+        if (cities.length > 0) {
+          return cities;
+        }
+        
+        // Fallback: return empty array (user will need to use "Other" option)
+        return [];
+      },
+      validate: (selected) => {
+        if (!selected || selected.length === 0) {
+          return 'Please select at least one city.';
         }
         return true;
+      },
+      default: (ans) => {
+        // Pre-select the cityName if it exists in the list
+        if (ans.cityName) {
+          const stateAbbr = ans.stateAbbr || ans.state || '';
+          const cities = getCitiesForState(stateAbbr, ans.countyName);
+          if (cities.includes(ans.cityName)) {
+            return [ans.cityName];
+          }
+        }
+        return [];
+      }
+    },
+    {
+      type: 'input',
+      name: 'countyTopCitiesCustom',
+      message: 'Enter additional cities (comma separated, or press enter to skip):',
+      when: (ans) => ans.serviceAreaMode === 'county',
+      filter: (input) => {
+        // Allow user to add custom cities that weren't in the list
+        return input ? input.trim() : '';
       }
     },
     {
@@ -1324,12 +2409,12 @@ async function run() {
       name: 'customServices',
       message: 'List up to 6 core services (comma separated). Press enter to use defaults:',
       default: (ans) => {
-        const vertical = verticals[ans.verticalKey];
+        const vertical = getVerticalFromAnswers(ans);
         return vertical && vertical.services ? vertical.services.join(', ') : '';
       },
       when: (ans) => {
-        const vertical = verticals[ans.verticalKey];
-        return vertical && vertical.services && vertical.services.length > 0;
+        const vertical = getVerticalFromAnswers(ans);
+        return vertical && Array.isArray(vertical.services) && vertical.services.length > 0;
       }
     },
     {
@@ -1347,41 +2432,74 @@ async function run() {
     }
   ]);
 
-  // Get vertical preset
-  const vertical = verticals[answers.verticalKey];
+  // Normalize countyName - use custom value if "Other" was selected
+  if (answers.countyName === 'Other (enter custom name)' && answers.countyNameCustom) {
+    answers.countyName = answers.countyNameCustom;
+  }
+
+  // Normalize countyTopCities - combine checkbox selections with custom cities
+  if (answers.serviceAreaMode === 'county' && answers.countyTopCities) {
+    let cityList = [];
+    
+    // countyTopCities is now an array from checkbox
+    if (Array.isArray(answers.countyTopCities)) {
+      cityList = [...answers.countyTopCities];
+    } else if (typeof answers.countyTopCities === 'string') {
+      // Fallback for old format (comma-separated string)
+      cityList = answers.countyTopCities.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    
+    // Add custom cities if provided
+    if (answers.countyTopCitiesCustom && answers.countyTopCitiesCustom.trim()) {
+      const customCities = answers.countyTopCitiesCustom
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+      cityList = [...cityList, ...customCities];
+    }
+    
+    // Remove duplicates and convert back to comma-separated string for compatibility
+    answers.countyTopCities = [...new Set(cityList)].join(', ');
+  }
+
+  // Determine the actual vertical key we're using
+  const chosenVertical =
+    answers.siteType === 'services' && answers.verticalKey
+      ? answers.verticalKey      // niche industry (landscaping, roofing, etc.)
+      : answers.siteType;        // personal, corporate, local-business, custom
+
+  const vertical = verticals[chosenVertical];
+
   if (!vertical) {
-    console.error(`❌ Vertical "${answers.verticalKey}" not found in verticals.json`);
+    console.error(`❌ Vertical "${chosenVertical}" not found in verticals.json`);
     process.exit(1);
   }
 
-  // Parse services (use custom if provided, otherwise use vertical defaults)
   let finalServices = [];
   if (answers.customServices && answers.customServices.trim()) {
     finalServices = answers.customServices
       .split(',')
       .map(s => s.trim())
       .filter(Boolean)
-      .slice(0, 6); // Limit to 6 services
+      .slice(0, 6);
   } else if (vertical.services && Array.isArray(vertical.services)) {
-    finalServices = vertical.services.slice(0, 6); // Limit to 6 services
+    finalServices = vertical.services.slice(0, 6);
   }
 
   const siteName = answers.siteName.trim() || answers.businessName.trim();
 
   const templateFolder = TEMPLATES.find((t) => t.name === answers.template).folder;
 
-  const rootDir = process.cwd();
-  const srcTemplateDir = path.join(rootDir, 'templates', templateFolder);
-  const destSiteDir = path.join(rootDir, answers.outputFolder);
+  const rootDir = path.normalize(process.cwd());
+  const srcTemplateDir = path.normalize(path.join(rootDir, 'templates', templateFolder));
+  const destSiteDir = path.normalize(path.join(rootDir, answers.outputFolder));
 
-  // Check if template exists
   if (!fs.existsSync(srcTemplateDir)) {
     console.error(`❌ Template folder not found: ${srcTemplateDir}`);
     console.error('   Available templates:', TEMPLATES.map(t => t.folder).join(', '));
     process.exit(1);
   }
 
-  // Build color scheme
   const scheme = answers.colorScheme === 'Custom'
     ? {
         primary: answers.customPrimary,
@@ -1392,7 +2510,6 @@ async function run() {
       }
     : COLOR_SCHEMES[answers.colorScheme];
 
-  // Tokens to replace in templates
   const currentYear = new Date().getFullYear().toString();
   const domain = answers.domain.trim();
   const domainSlug = domain.replace(/\./g, '-');
@@ -1410,7 +2527,6 @@ async function run() {
     REGION: answers.serviceArea,
     YEAR_STARTED: answers.yearStarted,
     CURRENT_YEAR: currentYear,
-    // Default values for optional tokens
     TARGET_AUDIENCE: 'your needs',
     CITY: answers.city || answers.serviceArea.split(',')[0] || answers.serviceArea,
     CITY_1: answers.serviceArea.split(',')[0] || answers.city || 'City 1',
@@ -1425,7 +2541,6 @@ async function run() {
     KEYWORDS: vertical.keywords ? vertical.keywords.join(', ') : `${vertical.serviceType}, ${answers.businessName}, ${answers.serviceArea}`,
     KEYWORDS_ARRAY: vertical.keywords ? `"${vertical.keywords.join('", "')}"` : `"${vertical.serviceType}", "${answers.businessName}"`,
     WEBSITE_URL: fullUrl,
-    // Next.js template tokens (from template.json placeholders)
     siteUrl: fullUrl,
     siteTitle: siteName,
     metaDescription: vertical.homeDescription || `Professional ${vertical.primaryService} services in ${answers.serviceArea}. Quality service, competitive pricing, guaranteed results.`,
@@ -1461,7 +2576,6 @@ async function run() {
     ACCENT_COLOR: scheme.accent,
     BACKGROUND_COLOR: scheme.background,
     TEXT_COLOR: scheme.text,
-    // Service tokens (up to 6 services)
     SERVICE_1: finalServices[0] || '',
     SERVICE_2: finalServices[1] || '',
     SERVICE_3: finalServices[2] || '',
@@ -1471,17 +2585,98 @@ async function run() {
   };
 
   console.log('\n📂 Creating site at:', destSiteDir);
-  await copyDir(srcTemplateDir, destSiteDir);
   
-  // Check if this is a Next.js template and install dependencies
+  // Check if destination already exists
+  const destExists = fs.existsSync(destSiteDir);
+  const existingPackageJsonPath = path.join(destSiteDir, 'package.json');
+  const hasExistingProject = destExists && fs.existsSync(existingPackageJsonPath);
+  
+  let existingFramework = null;
+  let existingPackageJson = null;
+  let needsInstall = false;
+  
+  if (hasExistingProject) {
+    try {
+      existingPackageJson = JSON.parse(await fsp.readFile(existingPackageJsonPath, 'utf-8'));
+      existingFramework = detectFramework(existingPackageJson);
+      const hasNodeModules = fs.existsSync(path.join(destSiteDir, 'node_modules'));
+      
+      console.log(`   ℹ️  Existing project detected (${existingFramework || 'unknown'} framework)`);
+      console.log(`   📦 ${hasNodeModules ? 'node_modules found' : 'node_modules not found'}`);
+      
+      // Use smart merge to preserve node_modules and other important directories
+      console.log('   🔄 Merging template files (preserving node_modules, .git, etc.)...');
+      await mergeDir(srcTemplateDir, destSiteDir);
+      
+      // Check if package.json changed (simple comparison)
+      const newPackageJsonPath = path.join(destSiteDir, 'package.json');
+      if (fs.existsSync(newPackageJsonPath)) {
+        try {
+          const newPackageJson = JSON.parse(await fsp.readFile(newPackageJsonPath, 'utf-8'));
+          const depsChanged = JSON.stringify(existingPackageJson.dependencies) !== JSON.stringify(newPackageJson.dependencies);
+          const devDepsChanged = JSON.stringify(existingPackageJson.devDependencies || {}) !== JSON.stringify(newPackageJson.devDependencies || {});
+          
+          if (depsChanged || devDepsChanged) {
+            needsInstall = true;
+            console.log('   📝 package.json dependencies changed, will reinstall');
+          } else if (!hasNodeModules) {
+            needsInstall = true;
+            console.log('   📝 node_modules missing, will install');
+          } else {
+            console.log('   ✅ Dependencies unchanged, skipping npm install');
+          }
+        } catch (err) {
+          needsInstall = !hasNodeModules;
+        }
+      }
+    } catch (err) {
+      console.warn(`   ⚠️  Could not read existing package.json: ${err.message}`);
+      // Fall back to regular copy
+      await copyDir(srcTemplateDir, destSiteDir);
+      needsInstall = true;
+    }
+  } else {
+    // Fresh install - use regular copy
+    await copyDir(srcTemplateDir, destSiteDir);
+    needsInstall = true;
+  }
+  
+  // Detect framework from template
+  let framework = null;
+  let isNextJs = false;
   const packageJsonPath = path.join(destSiteDir, 'package.json');
   if (fs.existsSync(packageJsonPath)) {
     try {
       const packageJson = JSON.parse(await fsp.readFile(packageJsonPath, 'utf-8'));
-      const isNextJs = packageJson.dependencies && (packageJson.dependencies.next || packageJson.dependencies['next.js']);
+      framework = detectFramework(packageJson);
+      isNextJs = framework === 'nextjs';
       
-      if (isNextJs) {
-        console.log('⚙️  Detected Next.js template - installing dependencies...');
+      if (framework) {
+        console.log(`⚙️  Detected ${framework} framework`);
+      }
+      
+      // Handle framework-specific setup
+      if (isNextJs || framework === 'nextjs') {
+        const envExampleSrc = path.join(destSiteDir, 'ENV_EXAMPLE.txt');
+        const envExampleDest = path.join(destSiteDir, '.env.example');
+        if (fs.existsSync(envExampleSrc)) {
+          try {
+            await fsp.copyFile(envExampleSrc, envExampleDest);
+            console.log('   ✅ Created .env.example from ENV_EXAMPLE.txt');
+            await fsp.unlink(envExampleSrc);
+          } catch (err) {
+            console.warn(`   ⚠️  Could not copy ENV_EXAMPLE.txt: ${err.message}`);
+          }
+        }
+        
+        const publicImagesDir = path.join(destSiteDir, 'public', 'images');
+        await fsp.mkdir(publicImagesDir, { recursive: true });
+        console.log('   ✅ Created public/images directory for Next.js static assets');
+      }
+      
+      // Install dependencies FIRST for Next.js so we can properly process components
+      if (needsInstall && framework) {
+        console.log(`⚙️  Installing ${framework} dependencies (needed for component processing)...`);
         try {
           execSync('npm install', { 
             cwd: destSiteDir, 
@@ -1491,34 +2686,295 @@ async function run() {
           console.log('   ✅ Dependencies installed successfully');
         } catch (err) {
           console.warn('   ⚠️  Failed to install dependencies automatically.');
-          console.warn('   Please run "npm install" in the generated folder manually.');
+          console.warn('   Component conversion may not work correctly.');
+        }
+      } else if (framework && !needsInstall) {
+        console.log(`   ✅ Dependencies already installed`);
+      }
+
+      // SPECIAL CASE: Full Stack App template (Icon Dumpsters stack)
+      // For this template we want a direct clone of the stack without King Tut
+      // token replacement, static HTML generation, or component rewiring.
+      if (templateFolder === 'fullstack-app-1') {
+        console.log('   🧱 Full Stack App template selected – using template exactly as provided (no King Tut overrides).');
+        console.log('\n✅ Done! Generated full stack app at:', answers.outputFolder);
+        console.log('   This is a direct copy of the Icon Dumpsters stack template (Next.js full app).');
+        console.log('\n   🚀 To run the Next.js app:');
+        console.log(`      cd ${answers.outputFolder}`);
+        console.log('      npm run dev');
+        console.log('   Then open http://localhost:3000 in your browser\n');
+        return;
+      }
+
+      // Copy and convert components from root components folder (HTML to TSX for Next.js)
+      // Only convert for the two full stack Next.js templates
+      const fullStackTemplates = ['king-tut-templates/marketing-landing', 'fullstack-app-1'];
+      const isFullStackTemplate = fullStackTemplates.includes(templateFolder);
+      
+      if (isNextJs && isFullStackTemplate) {
+        const rootComponentsDir = path.join(rootDir, 'components');
+        if (fs.existsSync(rootComponentsDir)) {
+          const componentFiles = await fsp.readdir(rootComponentsDir);
+          const htmlComponents = componentFiles.filter(f => f.endsWith('.html'));
+          
+          if (htmlComponents.length > 0) {
+            const destComponentsDir = path.join(destSiteDir, 'app', 'components');
+            await fsp.mkdir(destComponentsDir, { recursive: true });
+            
+            console.log(`   📦 Converting ${htmlComponents.length} HTML component(s) to TSX...`);
+            
+            for (const htmlFile of htmlComponents) {
+              try {
+                const htmlPath = path.join(rootComponentsDir, htmlFile);
+                const htmlContent = await fsp.readFile(htmlPath, 'utf-8');
+                
+                // Convert filename: header.html -> Header.tsx
+                const componentName = htmlFile
+                  .replace(/\.html$/, '')
+                  .split('-')
+                  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join('');
+                
+                const tsxContent = convertHtmlToTsx(htmlContent, componentName);
+                const tsxPath = path.join(destComponentsDir, `${componentName}.tsx`);
+                
+                await fsp.writeFile(tsxPath, tsxContent, 'utf-8');
+                console.log(`   ✅ Converted ${htmlFile} → ${componentName}.tsx`);
+              } catch (err) {
+                console.warn(`   ⚠️  Could not convert ${htmlFile}: ${err.message}`);
+              }
+            }
+          }
         }
       }
+      
+      // Copy components from template (works for any framework)
+      // Always copy components to ensure they're up to date, even if they already exist
+      const templateComponentDirs = await findComponentDirs(srcTemplateDir);
+      let componentsCopied = false;
+      
+      if (templateComponentDirs.length > 0) {
+        for (const compDir of templateComponentDirs) {
+          const destCompDir = path.join(destSiteDir, compDir.path);
+          try {
+            // Use mergeDir to preserve any customizations, but ensure components are copied
+            await mergeDir(compDir.fullPath, destCompDir, ['node_modules', '.git', '.next', 'dist', 'build', '.cache']);
+            console.log(`   ✅ Copied/updated components from ${compDir.path}`);
+            componentsCopied = true;
+          } catch (err) {
+            console.warn(`   ⚠️  Could not copy components from ${compDir.path}: ${err.message}`);
+          }
+        }
+      } else {
+        // Fallback: try common component locations within template
+        const commonComponentPaths = [
+          { src: path.join(srcTemplateDir, 'app', 'components'), dest: path.join(destSiteDir, 'app', 'components') },
+          { src: path.join(srcTemplateDir, 'src', 'components'), dest: path.join(destSiteDir, 'src', 'components') },
+          { src: path.join(srcTemplateDir, 'components'), dest: path.join(destSiteDir, 'components') },
+          { src: path.join(srcTemplateDir, 'components', 'ui'), dest: path.join(destSiteDir, 'components', 'ui') },
+          { src: path.join(srcTemplateDir, 'app', 'components', 'ui'), dest: path.join(destSiteDir, 'app', 'components', 'ui') }
+        ];
+        
+        for (const compPath of commonComponentPaths) {
+          if (fs.existsSync(compPath.src)) {
+            const entries = await fsp.readdir(compPath.src).catch(() => []);
+            if (entries.length > 0) {
+              try {
+                await mergeDir(compPath.src, compPath.dest, ['node_modules', '.git', '.next', 'dist', 'build', '.cache']);
+                console.log(`   ✅ Copied/updated components from ${path.relative(srcTemplateDir, compPath.src)}`);
+                componentsCopied = true;
+                break;
+              } catch (err) {
+                // Try next path
+              }
+            }
+          }
+        }
+      }
+      
+      // If no components were found in template, try marketing-landing template as fallback
+      if (!componentsCopied) {
+        const marketingComponentsDir = path.join(rootDir, 'templates', 'king-tut-templates', 'marketing-landing', 'app', 'components');
+        if (fs.existsSync(marketingComponentsDir)) {
+          const entries = await fsp.readdir(marketingComponentsDir).catch(() => []);
+          if (entries.length > 0) {
+            const fallbackDest = path.join(destSiteDir, 'app', 'components');
+            try {
+              await mergeDir(marketingComponentsDir, fallbackDest, ['node_modules', '.git', '.next', 'dist', 'build', '.cache']);
+              console.log('   ✅ Copied components from marketing-landing template (fallback)');
+              componentsCopied = true;
+            } catch (err) {
+              console.warn(`   ⚠️  Could not copy marketing-landing components: ${err.message}`);
+            }
+          }
+        }
+      }
+      
+      // For Next.js: Convert any HTML component files to TSX after copying
+      // Only convert for the two full stack Next.js templates
+      if (isNextJs && isFullStackTemplate && componentsCopied) {
+        console.log('   🔄 Converting HTML components to TSX for Next.js...');
+        const destComponentDirs = await findComponentDirs(destSiteDir);
+        
+        for (const compDir of destComponentDirs) {
+          const convertedFiles = await convertHtmlComponentsToTsx(compDir.fullPath);
+          if (convertedFiles.length > 0) {
+            console.log(`   ✅ Converted ${convertedFiles.length} HTML component(s) to TSX in ${compDir.path}:`);
+            convertedFiles.forEach(({ from, to }) => {
+              console.log(`      ${from} → ${to}`);
+            });
+          }
+        }
+      }
+      
+      // Verify components were copied
+      const destComponentDirs = await findComponentDirs(destSiteDir);
+      if (destComponentDirs.length > 0) {
+        console.log(`   ✅ Verified ${destComponentDirs.length} component directory(ies) exist`);
+        
+        // List component files for Next.js and update imports
+        // Only for full stack templates
+        if (isNextJs && isFullStackTemplate) {
+          const appComponentsDir = path.join(destSiteDir, 'app', 'components');
+          const availableComponents = [];
+          
+          if (fs.existsSync(appComponentsDir)) {
+            try {
+              const componentFiles = await fsp.readdir(appComponentsDir);
+              for (const file of componentFiles) {
+                if (file.endsWith('.tsx') || file.endsWith('.ts')) {
+                  const componentName = file.replace(/\.(tsx|ts)$/, '');
+                  availableComponents.push(componentName);
+                }
+              }
+            } catch (err) {
+              // ignore
+            }
+          }
+          
+          if (availableComponents.length > 0) {
+            console.log(`   📄 Found ${availableComponents.length} component(s): ${availableComponents.join(', ')}`);
+            
+            // Update layout.tsx to import Header if it exists
+            const layoutPath = path.join(destSiteDir, 'app', 'layout.tsx');
+            if (fs.existsSync(layoutPath) && availableComponents.some(c => /^Header$/i.test(c))) {
+              try {
+                let layoutContent = await fsp.readFile(layoutPath, 'utf-8');
+                const headerComponent = availableComponents.find(c => /^Header$/i.test(c));
+                
+                // Check if Header is already imported
+                const headerImportRegex = new RegExp(`import\\s+.*?\\b${headerComponent}\\b.*?from`, 'i');
+                if (headerComponent && !headerImportRegex.test(layoutContent)) {
+                  // Add import after other imports
+                  const importMatch = layoutContent.match(/(import\s+.*?from\s+['"][^'"]+['"];?\s*\n)/);
+                  if (importMatch) {
+                    const lastImport = importMatch[importMatch.length - 1];
+                    const importIndex = layoutContent.lastIndexOf(lastImport) + lastImport.length;
+                    layoutContent = layoutContent.slice(0, importIndex) + 
+                      `import ${headerComponent} from "./components/${headerComponent}";\n` + 
+                      layoutContent.slice(importIndex);
+                  } else {
+                    // Add at the top after type imports
+                    const typeImportMatch = layoutContent.match(/(import\s+type\s+.*?;?\s*\n)/);
+                    if (typeImportMatch) {
+                      const lastTypeImport = typeImportMatch[typeImportMatch.length - 1];
+                      const importIndex = layoutContent.lastIndexOf(lastTypeImport) + lastTypeImport.length;
+                      layoutContent = layoutContent.slice(0, importIndex) + 
+                        `import ${headerComponent} from "./components/${headerComponent}";\n` + 
+                        layoutContent.slice(importIndex);
+                    } else {
+                      // Add after first import line
+                      const firstLineEnd = layoutContent.indexOf('\n');
+                      layoutContent = layoutContent.slice(0, firstLineEnd + 1) + 
+                        `import ${headerComponent} from "./components/${headerComponent}";\n` + 
+                        layoutContent.slice(firstLineEnd + 1);
+                    }
+                  }
+                  
+                  // Add Header component to body if not already present
+                  const headerUsageRegex = new RegExp(`<${headerComponent}[\\s/>]`, 'i');
+                  if (!headerUsageRegex.test(layoutContent)) {
+                    // Find the body tag and add Header after it
+                    const bodyMatch = layoutContent.match(/(<body[^>]*>)/);
+                    if (bodyMatch) {
+                      const bodyIndex = bodyMatch.index + bodyMatch[0].length;
+                      layoutContent = layoutContent.slice(0, bodyIndex) + 
+                        `\n        <${headerComponent} />\n` + 
+                        layoutContent.slice(bodyIndex);
+                    }
+                  }
+                  
+                  await fsp.writeFile(layoutPath, layoutContent, 'utf-8');
+                  console.log(`   ✅ Updated layout.tsx to import and use ${headerComponent}`);
+                }
+              } catch (err) {
+                console.warn(`   ⚠️  Could not update layout.tsx: ${err.message}`);
+              }
+            }
+            
+            // Update page.tsx to import Footer if it exists
+            const pagePath = path.join(destSiteDir, 'app', 'page.tsx');
+            if (fs.existsSync(pagePath) && availableComponents.some(c => /^Footer$/i.test(c))) {
+              try {
+                let pageContent = await fsp.readFile(pagePath, 'utf-8');
+                const footerComponent = availableComponents.find(c => /^Footer$/i.test(c));
+                
+                // Check if Footer is already imported
+                const footerImportRegex = new RegExp(`import\\s+.*?\\b${footerComponent}\\b.*?from`, 'i');
+                if (footerComponent && !footerImportRegex.test(pageContent)) {
+                  // Add import at the top
+                  const firstLineEnd = pageContent.indexOf('\n');
+                  pageContent = pageContent.slice(0, firstLineEnd + 1) + 
+                    `import ${footerComponent} from "./components/${footerComponent}";\n` + 
+                    pageContent.slice(firstLineEnd + 1);
+                  
+                  // Add Footer component before closing div if not already present
+                  const footerUsageRegex = new RegExp(`<${footerComponent}[\\s/>]`, 'i');
+                  if (!footerUsageRegex.test(pageContent)) {
+                    // Find the last closing div before the function closing
+                    const lastDivClose = pageContent.lastIndexOf('</div>');
+                    if (lastDivClose > 0) {
+                      pageContent = pageContent.slice(0, lastDivClose) + 
+                        `      </div>\n      <${footerComponent} />\n    ` + 
+                        pageContent.slice(lastDivClose);
+                    }
+                  }
+                  
+                  await fsp.writeFile(pagePath, pageContent, 'utf-8');
+                  console.log(`   ✅ Updated page.tsx to import and use ${footerComponent}`);
+                }
+              } catch (err) {
+                console.warn(`   ⚠️  Could not update page.tsx: ${err.message}`);
+              }
+            }
+          }
+        }
+      } else {
+        console.warn('   ⚠️  No component directories found after copy - components may be missing');
+      }
     } catch (err) {
-      // If we can't parse package.json, just continue
-      console.warn('   ⚠️  Could not check for Next.js template:', err.message);
+      console.warn('   ⚠️  Could not check for framework:', err.message);
     }
   }
 
-  // Copy CSS files from root directory (template CSS folder may be empty)
-  const rootCssDir = path.join(rootDir, 'css');
-  const destCssDir = path.join(destSiteDir, 'css');
+  const rootCssDir = path.normalize(path.join(rootDir, 'css'));
+  const destCssDir = path.normalize(path.join(destSiteDir, 'css'));
   
   if (fs.existsSync(rootCssDir)) {
     const rootCssFiles = await fsp.readdir(rootCssDir);
     let copiedCount = 0;
     for (const file of rootCssFiles) {
       if (file.endsWith('.css') && file !== 'design-tokens-override.css') {
-        // Skip design-tokens-override.css as we'll generate it
-        const srcFile = path.join(rootCssDir, file);
-        const destFile = path.join(destCssDir, file);
-        // Check if source file exists before copying
+        const srcFile = path.normalize(path.join(rootCssDir, file));
+        const destFile = path.normalize(path.join(destCssDir, file));
         if (fs.existsSync(srcFile)) {
           try {
             await fsp.copyFile(srcFile, destFile);
             copiedCount++;
           } catch (err) {
             console.warn(`   ⚠️  Could not copy ${file}: ${err.message}`);
+            console.warn(`      Source: ${srcFile}`);
+            console.warn(`      Dest: ${destFile}`);
           }
         }
       }
@@ -1532,19 +2988,16 @@ async function run() {
   const cssTokensFile = path.join(destSiteDir, 'css', 'design-tokens-override.css');
   await writeColorTokens(cssTokensFile, scheme);
 
-  // Process template files (site.config.json, package.json)
   console.log('📄 Generating config files...');
-  await processTemplateFiles(rootDir, destSiteDir, replacements);
+  await processTemplateFiles(rootDir, destSiteDir, replacements, isNextJs);
 
-  // Generate setup guide
   console.log('📖 Generating setup guide...');
   const setupTemplatePath = path.join(rootDir, 'SETUP.template.md');
   const setupOutputPath = path.join(destSiteDir, 'SETUP.md');
   await generateSetupGuide(setupTemplatePath, setupOutputPath, replacements);
 
-  // Handle images
   console.log('🖼️  Handling images...');
-  const imagesStockDir = path.join(rootDir, 'stock-images', answers.verticalKey);
+  const imagesStockDir = path.join(rootDir, 'stock-images', chosenVertical);
   const imagesStockDest = path.join(destSiteDir, 'images', 'stock');
   
   if (fs.existsSync(imagesStockDir)) {
@@ -1554,84 +3007,159 @@ async function run() {
     console.log('   ℹ️  No stock images found for this vertical');
   }
 
-  // Optionally fetch images from URL
+  // Optionally fetch images from URL using wget mirror
   if (answers.imageSourceUrl && answers.imageSourceUrl.trim()) {
     const imagesScrapedDest = path.join(destSiteDir, 'images', 'scraped');
     await fsp.mkdir(imagesScrapedDest, { recursive: true });
+    console.log('   🔗 Connecting to WGET for image scraping...');
     await fetchImagesWithWget(answers.imageSourceUrl.trim(), imagesScrapedDest);
-    console.log(`   📁 Scraped images saved to: images/scraped/`);
+    console.log(`   📁 Scraped site mirror saved under: images/scraped/`);
     
-    // Copy scraped images to main images folder to replace template/stock images
-    const mainImagesDir = path.join(destSiteDir, 'images');
-    const scrapedFiles = await fsp.readdir(imagesScrapedDest);
-    const imageFiles = scrapedFiles.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f));
+    // Collect all image files from the mirrored tree
+    const scrapedImages = await listImageFilesRecursive(imagesScrapedDest);
     
-    if (imageFiles.length > 0) {
-      // Get list of images in main images folder (from template) that need to be replaced
-      let existingImageNames = [];
-      if (fs.existsSync(mainImagesDir)) {
-        const mainFiles = await fsp.readdir(mainImagesDir, { withFileTypes: true });
-        // Only get image files, exclude directories like 'logo' and 'stock'
-        existingImageNames = mainFiles
-          .filter(f => f.isFile() && /\.(jpg|jpeg|png|gif|webp)$/i.test(f.name))
-          .map(f => f.name);
+    if (scrapedImages.length > 0) {
+      console.log(`   🔄 Replacing all King Tut stock images with ${scrapedImages.length} scraped images...`);
+      
+      const kingTutImagePatterns = [
+        /Gemini_Generated_Image_/i,
+        /kingtut/i,
+        /heroimage/i
+      ];
+      
+      async function findImageFiles(dir, fileList = []) {
+        const entries = await fsp.readdir(dir, { withFileTypes: true }).catch(() => []);
+        
+        for (const entry of entries) {
+          const fullPath = path.join(dir, entry.name);
+          
+          if (entry.isDirectory()) {
+            const dirName = entry.name.toLowerCase();
+            if (!['node_modules', '.next', '.git', 'dist', 'build', '.cache'].includes(dirName)) {
+              await findImageFiles(fullPath, fileList);
+            }
+          } else if (entry.isFile()) {
+            if (/\.(jpg|jpeg|png|gif|webp)$/i.test(entry.name)) {
+              const isKingTutImage = kingTutImagePatterns.some(pattern => 
+                pattern.test(entry.name) && !entry.name.toLowerCase().includes('logo')
+              );
+              
+              if (isKingTutImage) {
+                fileList.push({
+                  name: entry.name,
+                  path: fullPath,
+                  dir: dir
+                });
+              }
+            }
+          }
+        }
+        
+        return fileList;
       }
       
-      // If no existing images in main folder, check stock folder
-      if (existingImageNames.length === 0) {
-        const stockImagesDir = path.join(destSiteDir, 'images', 'stock');
-        if (fs.existsSync(stockImagesDir)) {
-          const stockFiles = await fsp.readdir(stockImagesDir);
-          existingImageNames = stockFiles.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f));
+      const kingTutImages = await findImageFiles(destSiteDir);
+      console.log(`   📋 Found ${kingTutImages.length} King Tut stock images to replace`);
+      
+      if (kingTutImages.length > 0) {
+        let replacedCount = 0;
+        
+        for (let i = 0; i < kingTutImages.length; i++) {
+          const kingTutImage = kingTutImages[i];
+          const scrapedIndex = i % scrapedImages.length;
+          const scrapedFile = scrapedImages[scrapedIndex].path;
+          
+          try {
+            await fsp.copyFile(scrapedFile, kingTutImage.path);
+            replacedCount++;
+            
+            if (replacedCount <= 15) {
+              const relativePath = path.relative(destSiteDir, kingTutImage.path);
+              console.log(`   📸 Replaced ${relativePath}`);
+            }
+          } catch (err) {
+            console.warn(`   ⚠️  Could not replace ${kingTutImage.name}: ${err.message}`);
+          }
+        }
+        
+        console.log(`   ✅ Successfully replaced ${replacedCount} King Tut stock images with scraped images`);
+      } else {
+        console.log('   ℹ️  No King Tut stock images found to replace');
+      }
+      
+      if (isNextJs) {
+        const publicImagesDir = path.join(destSiteDir, 'public', 'images');
+        await fsp.mkdir(publicImagesDir, { recursive: true });
+        
+        // Copy all scraped images into public/images (flattened by filename)
+        for (const img of scrapedImages) {
+          const destFile = path.join(publicImagesDir, img.name);
+          try {
+            await fsp.copyFile(img.path, destFile);
+          } catch (_) {
+            // ignore copy errors
+          }
+        }
+        
+        console.log(`   ✅ Copied scraped images to public/images/ for Next.js`);
+      }
+      
+      console.log(`   📁 All scraped images available under: images/scraped/`);
+    } else {
+      console.warn('   ⚠️  No scraped images found in mirror. Check URL or permissions.');
+    }
+  }
+
+  // Always copy stock images and logos to public/images for Next.js (even if no scraped images)
+  if (isNextJs) {
+    const publicImagesDir = path.join(destSiteDir, 'public', 'images');
+    await fsp.mkdir(publicImagesDir, { recursive: true });
+    
+    // Copy stock images to public/images
+    const stockImagesDir = path.join(destSiteDir, 'images', 'stock');
+    if (fs.existsSync(stockImagesDir)) {
+      const stockFiles = await fsp.readdir(stockImagesDir);
+      let copiedCount = 0;
+      for (const stockFile of stockFiles) {
+        if (/\.(jpg|jpeg|png|gif|webp)$/i.test(stockFile)) {
+          const srcFile = path.join(stockImagesDir, stockFile);
+          const destFile = path.join(publicImagesDir, stockFile);
+          try {
+            await fsp.copyFile(srcFile, destFile);
+            copiedCount++;
+          } catch (_) {
+            // ignore
+          }
         }
       }
-      
-      // If still no images, use default gallery image names from template
-      if (existingImageNames.length === 0) {
-        existingImageNames = [
-          'Gemini_Generated_Image_3171973171973171.png',
-          'Gemini_Generated_Image_6xm42n6xm42n6xm4.png',
-          'Gemini_Generated_Image_7uiph7uiph7uiph7.png',
-          'Gemini_Generated_Image_8c0h358c0h358c0h.png',
-          'Gemini_Generated_Image_f836zcf836zcf836.png',
-          'Gemini_Generated_Image_fbz66qfbz66qfbz6.png'
-        ];
+      if (copiedCount > 0) {
+        console.log(`   ✅ Copied ${copiedCount} stock image(s) to public/images/ for Next.js`);
       }
-      
-      // Copy scraped images to main images folder, replacing existing images
-      // First, replace template images with scraped images (use template image names so HTML references work)
-      const imagesToCopy = Math.min(imageFiles.length, existingImageNames.length);
-      for (let i = 0; i < imagesToCopy; i++) {
-        const scrapedFile = path.join(imagesScrapedDest, imageFiles[i]);
-        const destFile = path.join(mainImagesDir, existingImageNames[i]);
-        try {
-          await fsp.copyFile(scrapedFile, destFile);
-          console.log(`   📸 Replaced ${existingImageNames[i]} with scraped image`);
-        } catch (err) {
-          console.warn(`   ⚠️  Could not replace ${existingImageNames[i]}: ${err.message}`);
-        }
-      }
-      
-      // Copy remaining scraped images with their original names (for gallery pages)
-      for (let i = imagesToCopy; i < imageFiles.length; i++) {
-        const scrapedFile = path.join(imagesScrapedDest, imageFiles[i]);
-        const destFile = path.join(mainImagesDir, imageFiles[i]);
-        try {
-          await fsp.copyFile(scrapedFile, destFile);
-        } catch (err) {
-          // Skip if file already exists or can't be copied
-        }
-      }
-      
-      console.log(`   ✅ Copied ${imagesToCopy} scraped images to main images folder`);
+    }
+    
+    // Copy logo directory to public/images/logo
+    const logoDir = path.join(destSiteDir, 'images', 'logo');
+    const publicLogoDir = path.join(publicImagesDir, 'logo');
+    if (fs.existsSync(logoDir)) {
+      await copyDir(logoDir, publicLogoDir);
+      console.log(`   ✅ Copied logo images to public/images/logo/ for Next.js`);
     }
   }
 
   console.log('✏️ Replacing template tokens in all files...');
   const htmlFiles = [];
+  const skipDirsForCount = new Set(['node_modules', '.next', '.git', 'dist', 'build', '.cache']);
+  
   async function countHtmlFiles(dir) {
     const entries = await fsp.readdir(dir, { withFileTypes: true });
     for (const entry of entries) {
+      if (entry.isDirectory() && skipDirsForCount.has(entry.name.toLowerCase())) {
+        continue;
+      }
+      if (entry.name.startsWith('.') && entry.isDirectory()) {
+        continue;
+      }
+      
       const fullPath = path.join(dir, entry.name);
       if (entry.isDirectory()) {
         await countHtmlFiles(fullPath);
@@ -1642,15 +3170,16 @@ async function run() {
   }
   await countHtmlFiles(destSiteDir);
   console.log(`   Processing ${htmlFiles.length} HTML files...`);
+  console.log('   Replacing tokens in all template files (skipping node_modules, .next, etc.)...');
   
-  await replaceTokensRecursively(destSiteDir, replacements);
+  tokenReplacementCount = 0;
+  await replaceTokensRecursively(destSiteDir, replacements, true);
+  console.log(`   ✅ Processed ${tokenReplacementCount} files`);
 
-  // Fix absolute paths to relative paths for local file viewing
   console.log('🔧 Fixing CSS and image paths for local viewing...');
   await fixPathsRecursively(destSiteDir, destSiteDir);
   console.log('   ✅ Fixed absolute paths to relative paths');
 
-  // Generate city pages based on service area mode
   console.log('🏙️  Generating city pages...');
   const business = {
     name: answers.businessName,
@@ -1661,9 +3190,13 @@ async function run() {
   
   const cityData = buildCityEntries(answers, vertical, business);
   const cityCount = Object.keys(cityData).length;
-  await generateCityPages(destSiteDir, cityData, srcTemplateDir, replacements);
+  await generateCityPages(destSiteDir, cityData, srcTemplateDir, replacements, isNextJs);
   
-  // Fix paths in newly generated city pages (they're 2 levels deep: pages/cities/)
+  if (isNextJs) {
+    console.log('📄 Generating standard pages (about, services, contact)...');
+    await generateNextJsStandardPages(destSiteDir, replacements);
+  }
+  
   console.log('🔧 Fixing CSS paths in city pages...');
   const citiesDir = path.join(destSiteDir, 'pages', 'cities');
   if (fs.existsSync(citiesDir)) {
@@ -1671,29 +3204,43 @@ async function run() {
   }
   console.log('   ✅ Fixed CSS paths in city pages');
   
-  // Generate city data JSON file for reference
   const cityDataPath = path.join(destSiteDir, 'city-data.json');
   await fsp.writeFile(cityDataPath, JSON.stringify(cityData, null, 2), 'utf-8');
   console.log('   ✅ Generated city-data.json');
   
-  // Update locations page with generated cities list
   console.log('📍 Updating locations page with city data...');
   await updateLocationsPage(destSiteDir, cityData);
   console.log('   ✅ Updated locations page with city list');
 
-  // SEO enhancements (sitemap, robots.txt, JSON-LD)
   await addSeoEnhancements(destSiteDir, fullUrl, htmlFiles, answers, vertical, cityData);
+
+  // Note: Dependencies are installed earlier (after framework detection) to enable component processing
 
   console.log('\n✅ Done! Generated site at:', answers.outputFolder);
   console.log(`   Generated ${htmlFiles.length} pages with all tokens replaced.`);
   console.log(`   Generated ${cityCount} city pages (${answers.serviceAreaMode} mode)`);
   console.log(`   Vertical: ${vertical.primaryService}`);
   console.log(`   Domain: ${fullUrl}`);
-  console.log('   Open index.html in your browser or serve the folder with any static server.\n');
+  if (framework) {
+    const frameworkName = framework === 'nextjs' ? 'Next.js' : framework === 'vite' ? 'Vite' : framework === 'create-react-app' ? 'Create React App' : framework === 'react' ? 'React' : framework;
+    console.log(`\n   🚀 To run the ${frameworkName} site:`);
+    console.log(`      cd ${answers.outputFolder}`);
+    if (framework === 'nextjs') {
+      console.log('      npm run dev');
+      console.log('   Then open http://localhost:3000 in your browser\n');
+    } else if (framework === 'vite') {
+      console.log('      npm run dev');
+      console.log('   Then open the URL shown in the terminal\n');
+    } else {
+      console.log('      npm start');
+      console.log('   Then open the URL shown in the terminal\n');
+    }
+  } else {
+    console.log('   Open index.html in your browser or serve the folder with any static server.\n');
+  }
 }
 
 run().catch((err) => {
   console.error('❌ Error running King Tut wizard:', err);
   process.exit(1);
 });
-
