@@ -17,6 +17,7 @@ node_modules/
 !components/
 !docs/
 !Start Here/
+!skyridgeroofs/
 !.gitignore
 !*.json
 !*.md
