@@ -24,6 +24,8 @@ dist/
 
 # Data files (if not needed)
 data/
+# But keep skyridgeroofs/data/ for the Next.js build
+!skyridgeroofs/data/
 
 # Template files
 *.template
