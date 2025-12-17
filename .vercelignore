@@ -14,6 +14,9 @@ scripts/
 *.ps1
 *.js
 !public/**/*.js
+!skyridgeroofs/**/*.js
+!skyridgeroofs/**/*.mjs
+!skyridgeroofs/**/*.cjs
 
 # Config files
 package-lock.json
