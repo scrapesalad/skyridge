@@ -111,6 +111,16 @@ export default function Page() {
                       </li>
                     ))}
                   </ul>
+                  {material.name === 'Metal Roofing' && (
+                    <div className="mt-6">
+                      <Link
+                        href="/services/metal-roofing"
+                        className="inline-flex items-center text-blue-700 font-semibold hover:underline"
+                      >
+                        Explore Metal Roofing options →
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

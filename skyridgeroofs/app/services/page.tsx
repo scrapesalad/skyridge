@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Roofing Services | Sky Ridge Roofing - Complete Roofing Solutions',
-  description: 'Comprehensive roofing services including roof replacement, repairs, insurance claims, and additional services. Expert roofing solutions for your home.',
+  description: 'Roofing services in Utah: roof replacement, roof repairs, metal roofing, commercial roofing, insurance claims, and more. Free estimates.',
   openGraph: {
     title: 'Roofing Services - Sky Ridge Roofing',
-    description: 'Comprehensive roofing services including roof replacement, repairs, insurance claims, and additional services.',
+    description: 'Roofing services in Utah: replacement, repairs, metal roofing, commercial roofing, and insurance claims.',
     type: 'website',
   },
 };
@@ -30,11 +30,25 @@ const services = [
     features: ['Leak detection & repair', 'Shingle replacement', 'Emergency repairs', 'Flashing repair'],
   },
   {
+    title: 'Metal Roofing',
+    description: 'Standing seam and exposed-fastener metal roofing options built for Utah weather. Durable, efficient, and low-maintenance.',
+    image: '/images/skyridge/skyridge_image_021.webp',
+    link: '/services/metal-roofing',
+    features: ['Standing seam systems', 'Exposed-fastener panels', 'Flashing & ventilation details', 'Long service life'],
+  },
+  {
     title: 'Insurance Claims',
     description: 'Expert assistance with insurance claims to ensure you get the coverage you deserve. We simplify the claims process.',
     image: '/images/skyridge/skyridge_image_003.webp',
     link: '/services/insurance-claims',
     features: ['Claim filing assistance', 'Damage assessment', 'Insurance coordination', 'Maximize coverage'],
+  },
+  {
+    title: 'Commercial Roofing',
+    description: 'Commercial roofing services for flat and low-slope systems: repairs, replacements, coatings, and maintenance programs.',
+    image: '/images/skyridge/skyridge_image_043.webp',
+    link: '/services/commercial-roofing',
+    features: ['Flat/low-slope systems', 'Leak diagnosis & repair', 'Coatings & restoration', 'Maintenance programs'],
   },
   {
     title: 'Additional Services',
@@ -70,7 +84,7 @@ export default function Page() {
                   Our Services
                 </h1>
                 <p className="text-2xl md:text-3xl mb-8 text-blue-100 drop-shadow-lg">
-                  Complete Roofing Solutions for Your Home
+                  Residential and Commercial Roofing Across Utah
                 </p>
                 
                 {/* Phone Number */}

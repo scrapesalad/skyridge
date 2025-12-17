@@ -11,12 +11,29 @@ const nextConfig = {
     ],
     unoptimized: false,
   },
+  async redirects() {
+    return [
+      {
+        source: '/roofing-company-near-me',
+        destination: '/utah-roofing-company',
+        permanent: true,
+      },
+    ];
+  },
   // Ensure path aliases work correctly in all build environments
-  webpack: (config, { defaultLoaders }) => {
+  webpack: (config) => {
+    // Get the absolute path to the project root
+    const projectRoot = path.resolve(__dirname);
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': path.resolve(__dirname),
+      '@': projectRoot,
     };
+    // Ensure modules are resolved from the project root
+    config.resolve.modules = [
+      ...(config.resolve.modules || []),
+      projectRoot,
+      path.join(projectRoot, 'node_modules'),
+    ];
     return config;
   },
 }

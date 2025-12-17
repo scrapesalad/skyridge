@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Additional Services | Sky Ridge Roofing',
-  description: 'Solar installation, siding, gutters, and commercial roofing services. Complete exterior solutions for your property.',
+  description: 'Solar installation, siding, and gutter services. Complete exterior solutions for your property in Utah.',
   openGraph: {
     title: 'Additional Services - Sky Ridge Roofing',
-    description: 'Solar installation, siding, gutters, and commercial roofing services.',
+    description: 'Solar installation, siding, and gutter services.',
     type: 'website',
   },
 };
@@ -164,6 +164,11 @@ export default function Page() {
                   <li>Emergency roof repairs</li>
                   <li>Roof coating and restoration</li>
                 </ul>
+                <div className="mt-6">
+                  <Link href="/services/commercial-roofing" className="text-blue-700 font-semibold hover:underline">
+                    Learn about Commercial Roofing →
+                  </Link>
+                </div>
               </div>
               <div className="relative h-64 rounded-lg overflow-hidden">
                 <Image

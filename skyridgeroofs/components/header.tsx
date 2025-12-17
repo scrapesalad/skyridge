@@ -145,7 +145,9 @@ export default function Header() {
                   <div className="absolute top-full left-0 bg-white shadow-lg min-w-[200px] py-2">
                     <Link href="/services/roof-replacement" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Roof Replacement</Link>
                     <Link href="/services/roof-repairs" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Roof Repairs</Link>
+                    <Link href="/services/metal-roofing" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Metal Roofing</Link>
                     <Link href="/services/insurance-claims" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Insurance Claims</Link>
+                    <Link href="/services/commercial-roofing" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Commercial Roofing</Link>
                     <Link href="/services/additional-services" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Additional Services</Link>
                   </div>
                 )}
@@ -183,6 +185,7 @@ export default function Header() {
                 {locationsOpen && (
                   <div className="absolute top-full left-0 bg-white shadow-lg min-w-[200px] py-2">
                     <Link href="/locations/salt-lake-city" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Salt Lake City</Link>
+                    <Link href="/utah-roofing-company" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Utah Roofing Company</Link>
                     <Link href="/locations" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">All Locations</Link>
                   </div>
                 )}

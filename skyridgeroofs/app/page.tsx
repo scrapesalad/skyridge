@@ -98,10 +98,10 @@ export default function Page() {
                 </Link>
                 <div className="mt-4">
                   <Link
-                    href="/roofing-company-near-me"
+                    href="/utah-roofing-company"
                     className="inline-block bg-white/15 text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/25 transition text-lg uppercase tracking-wide"
                   >
-                    Roofing Company Near Me →
+                    Utah Roofing Company →
                   </Link>
                 </div>
               </div>

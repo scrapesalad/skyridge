@@ -15,11 +15,14 @@ export const INDEXABLE_CITY_SLUG_SET = new Set<string>(INDEXABLE_CITY_SLUGS);
 
 export const INDEXABLE_ROUTES = [
   '/',
+  '/utah-roofing-company',
   '/about',
   '/services',
   '/services/roof-replacement',
   '/services/roof-repairs',
+  '/services/metal-roofing',
   '/services/insurance-claims',
+  '/services/commercial-roofing',
   '/services/additional-services',
   '/materials',
   '/financing',
@@ -28,4 +31,3 @@ export const INDEXABLE_ROUTES = [
   '/faq',
   '/locations',
 ] as const;
-
