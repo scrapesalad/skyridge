@@ -73,7 +73,7 @@ export default function Page() {
                   <span className="text-primary-light">ROOFING</span>
                 </h1>
                 <p className="text-2xl md:text-3xl mb-8 text-blue-100">
-                  Expert Roofing Solutions
+                  Utah Roofing Company
                 </p>
                 
                 {/* Phone Number */}
@@ -96,6 +96,14 @@ export default function Page() {
                 >
                   Learn More About Us →
                 </Link>
+                <div className="mt-4">
+                  <Link
+                    href="/roofing-company-near-me"
+                    className="inline-block bg-white/15 text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/25 transition text-lg uppercase tracking-wide"
+                  >
+                    Roofing Company Near Me →
+                  </Link>
+                </div>
               </div>
 
               {/* Right Side - Quote Form */}
@@ -110,6 +118,66 @@ export default function Page() {
             <Link
               href="/calculators/roofing-cost"
               className="bg-primary-light text-white px-4 py-8 writing-vertical-rl text-center font-bold text-sm hover:bg-primary transition shadow-lg"
+              style={{ writingMode: 'vertical-rl' }}
+            >
+              30-Second Roof Estimate
+            </Link>
+          </div>
+        </section>
+
+        {/* About Us Section */}
+        <section className="py-16 bg-gray-50 relative">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left Side - Content */}
+              <div>
+                <div className="mb-4">
+                  <h2 className="text-sm uppercase tracking-wider text-gray-600 mb-2">About Us</h2>
+                  <div className="w-16 h-1 bg-blue-600"></div>
+                </div>
+                <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                  Sky Ridge Roofing Has Been Serving Utah With Excellence From The Start...
+                </h3>
+                <p className="text-lg text-gray-700 leading-relaxed mb-8">
+                  Today Sky Ridge Roofing maintains the same commitment we've always had: provide the best possible roofing products, at competitive prices, with exceptional service. We pride ourselves on our ability to deliver the highest level of service to customers statewide across Utah. As a trusted local roofing company, you can rest assured we will be around long enough to take care of all your roofing needs - from roof replacement and repairs to insurance claims assistance. Our team understands Utah's unique climate challenges and uses proven techniques to protect your home.
+                </p>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center space-x-3 text-gray-900 font-semibold uppercase tracking-wide hover:text-blue-600 transition group"
+                >
+                  <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center group-hover:bg-blue-700 transition">
+                    <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                    </svg>
+                  </div>
+                  <span>Watch Our Video</span>
+                </Link>
+              </div>
+
+              {/* Right Side - Image */}
+              <div className="relative">
+                <div className="relative h-[500px] rounded-lg overflow-hidden shadow-2xl">
+                  <Image
+                    src="/images/skyridge/skyridge_image_005.webp"
+                    alt="Sky Ridge Roofing Team"
+                    fill
+                    className="object-cover"
+                  />
+                  {/* Years Badge Overlay */}
+                  <div className="absolute bottom-6 right-6 bg-blue-600 text-white px-6 py-4 rounded-lg shadow-xl">
+                    <div className="text-3xl font-bold">15+</div>
+                    <div className="text-sm uppercase tracking-wide">Years</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 30-Second Roof Estimate Vertical Tab */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden xl:block">
+            <Link
+              href="/calculators/roofing-cost"
+              className="bg-blue-600 text-white px-4 py-8 writing-vertical-rl text-center font-bold text-sm hover:bg-blue-700 transition shadow-lg rounded-l-lg"
               style={{ writingMode: 'vertical-rl' }}
             >
               30-Second Roof Estimate
