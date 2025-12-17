@@ -2,6 +2,12 @@ const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Ensure CSS is properly compiled in production
+  swcMinify: true,
+  compiler: {
+    // Remove console logs in production (optional)
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
+  },
   images: {
     remotePatterns: [
       {
@@ -21,7 +27,7 @@ const nextConfig = {
     ];
   },
   // Ensure path aliases work correctly in all build environments
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     // Get the absolute path to the project root
     const projectRoot = path.resolve(__dirname);
     config.resolve.alias = {
@@ -34,6 +40,15 @@ const nextConfig = {
       projectRoot,
       path.join(projectRoot, 'node_modules'),
     ];
+    
+    // Ensure CSS is properly handled
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+    }
+    
     return config;
   },
 }

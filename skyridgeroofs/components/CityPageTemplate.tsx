@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { SITE_URL } from '@/lib/site';
+import QuoteButton from '@/components/QuoteButton';
 
 interface CityPageTemplateProps {
   cityName: string;
@@ -241,12 +242,9 @@ export default function CityPageTemplate({
               <p className="text-xl font-semibold text-gray-900 mb-4">
                 Call for a Free Estimate: <a href={`tel:${phoneNumber.replace(/\D/g, '')}`} className="text-blue-600 hover:text-blue-700">{phoneNumber}</a>
               </p>
-              <Link 
-                href="/contact"
-                className="inline-block bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all shadow-lg"
-              >
+              <QuoteButton className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 px-8 py-3 rounded-lg text-lg shadow-lg">
                 Get Free Quote
-              </Link>
+              </QuoteButton>
             </div>
           </div>
         </div>
@@ -373,7 +371,7 @@ export default function CityPageTemplate({
                 </svg>
                 <div>
                   <h3 className="font-semibold text-lg mb-2">Licensed & Insured</h3>
-                  <p className="text-gray-700">Fully licensed and insured in the State of Utah (License # 14235218-5501)</p>
+                  <p className="text-gray-700">Fully licensed and insured in the State of Utah</p>
                 </div>
               </div>
             </div>
@@ -619,12 +617,9 @@ export default function CityPageTemplate({
             >
               Call {phoneNumber}
             </a>
-            <Link 
-              href="/contact"
-              className="inline-block border-2 border-white text-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-blue-700 transition-all"
-            >
+            <QuoteButton variant="outline" className="px-10 py-4 text-lg">
               Get Free Quote
-            </Link>
+            </QuoteButton>
           </div>
         </div>
       </section>

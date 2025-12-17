@@ -61,9 +61,15 @@ export default function RoofingSquareCalculator() {
         <section className="container mx-auto px-4 py-12 max-w-4xl">
           <div className="bg-white rounded-lg shadow-lg p-8">
             <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-              <p className="text-sm text-gray-700">
-                <strong>Roofing Square:</strong> A unit of measurement equal to 100 square feet. Commonly used in the roofing industry.
+              <h2 className="text-2xl font-bold mb-3">What is a Square in Roofing?</h2>
+              <p className="text-gray-700 mb-4">
+                A <strong>"square"</strong> in roofing is a unit of measurement equal to <strong>100 square feet</strong> of roof area. It's the standard unit used by roofing contractors to estimate materials and costs.
               </p>
+              <div className="space-y-2 text-gray-700">
+                <p><strong>Why use squares?</strong> Roofing materials like shingles are typically sold by the square, and labor costs are often calculated per square. This makes it easier for contractors to provide accurate estimates.</p>
+                <p><strong>Example:</strong> A roof that's 2,000 square feet equals 20 squares. If shingles cost $300 per square, the material cost would be $6,000 (20 squares × $300).</p>
+                <p><strong>Understanding squares</strong> helps homeowners better understand estimates and material requirements when planning a roofing project.</p>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

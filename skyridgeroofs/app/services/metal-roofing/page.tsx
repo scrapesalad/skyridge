@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import JsonLd from '@/components/JsonLd';
+import QuoteButton from '@/components/QuoteButton';
 import { BUSINESS, SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -31,7 +32,15 @@ export default function Page() {
     },
     {
       q: 'Do you install standing seam metal roofs?',
-      a: 'Yes. We install standing seam systems and also offer exposed-fastener panels where appropriate. We’ll recommend the best fit based on slope, aesthetics, and budget.',
+      a: 'Yes. We install standing seam systems and also offer exposed-fastener panels where appropriate. We'll recommend the best fit based on slope, aesthetics, and budget.',
+    },
+    {
+      q: 'How to install metal roofing?',
+      a: 'Metal roofing installation requires proper preparation: removing old roofing, inspecting and repairing the deck, installing underlayment, and securing metal panels with appropriate fasteners. Standing seam systems use concealed fasteners, while exposed-fastener systems use screws with washers. Proper flashing around valleys, chimneys, and edges is critical. We recommend hiring a professional to ensure proper installation and avoid leaks or premature failure.',
+    },
+    {
+      q: 'How to cut metal roofing?',
+      a: 'Metal roofing panels should be cut using appropriate tools to avoid damaging the protective coating. Common methods include tin snips for small cuts, a circular saw with a metal-cutting blade, or a nibbler for precise cuts. Always wear safety equipment. Cut from the back side when possible to minimize chipping. For best results and warranty coverage, we recommend having a professional handle cutting and installation.',
     },
   ];
 
@@ -113,12 +122,9 @@ export default function Page() {
                   </div>
                 </div>
 
-                <Link
-                  href="/contact"
-                  className="inline-block bg-primary-light text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary transition text-lg uppercase tracking-wide"
-                >
+                <QuoteButton variant="light" className="text-lg">
                   Get Free Quote →
-                </Link>
+                </QuoteButton>
               </div>
             </div>
           </div>
@@ -182,6 +188,76 @@ export default function Page() {
                   <li>Fast installation timeline</li>
                 </ul>
               </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-8 mb-12">
+            <h2 className="text-3xl font-bold mb-6">Metal Roofing Installation Process</h2>
+            <p className="text-lg text-gray-700 leading-relaxed mb-6">
+              Professional metal roofing installation involves several critical steps to ensure long-lasting performance:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <h3 className="text-xl font-bold mb-3">1. Preparation & Tear-Off</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Remove existing roofing materials and inspect the deck for damage. Repair or replace damaged decking to ensure a solid foundation.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-3">2. Underlayment Installation</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Install high-quality underlayment to provide an additional moisture barrier and protect against condensation.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-3">3. Panel Installation</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Secure metal panels using appropriate fasteners. Standing seam systems use concealed fasteners, while exposed-fastener systems use screws with washers.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-3">4. Flashing & Details</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Install proper flashing around valleys, chimneys, skylights, and roof edges to prevent water infiltration.
+                </p>
+              </div>
+            </div>
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mt-6">
+              <p className="text-gray-700">
+                <strong>Important:</strong> Metal roofing installation requires specialized knowledge and tools. Incorrect installation can lead to leaks, wind damage, and voided warranties. Always hire a licensed, experienced professional.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-8 mb-12">
+            <h2 className="text-3xl font-bold mb-6">How to Cut Metal Roofing</h2>
+            <p className="text-lg text-gray-700 leading-relaxed mb-4">
+              If you need to cut metal roofing panels, use the right tools and techniques to avoid damaging the protective coating:
+            </p>
+            <div className="space-y-4 mb-6">
+              <div>
+                <h3 className="text-xl font-bold mb-2">Tools for Cutting Metal Roofing</h3>
+                <ul className="list-disc list-inside space-y-2 text-gray-700">
+                  <li><strong>Tin snips:</strong> Best for small cuts and trimming edges</li>
+                  <li><strong>Circular saw with metal-cutting blade:</strong> For straight cuts on larger panels</li>
+                  <li><strong>Nibbler:</strong> Provides precise cuts without creating sharp edges</li>
+                  <li><strong>Plasma cutter:</strong> For professional installations with complex cuts</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">Safety Tips</h3>
+                <ul className="list-disc list-inside space-y-2 text-gray-700">
+                  <li>Always wear safety glasses and cut-resistant gloves</li>
+                  <li>Cut from the back side when possible to minimize chipping of the finish</li>
+                  <li>Support panels properly to prevent bending during cutting</li>
+                  <li>Clean up metal shavings immediately to prevent injury</li>
+                </ul>
+              </div>
+            </div>
+            <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+              <p className="text-gray-700">
+                <strong>Note:</strong> Improper cutting can damage the protective coating and void warranties. For best results and to maintain warranty coverage, we recommend having a professional handle cutting and installation.
+              </p>
             </div>
           </div>
 

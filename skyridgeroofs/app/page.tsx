@@ -8,6 +8,8 @@ import JsonLd from '@/components/JsonLd';
 import QuoteForm from '@/components/QuoteForm';
 import AICitationSchema from '@/components/AICitationSchema';
 import LLMSchema from '@/components/LLMSchema';
+import QuoteButton from '@/components/QuoteButton';
+import NewsletterSignup from '@/components/NewsletterSignup';
 import { BUSINESS, SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -186,151 +188,340 @@ export default function Page() {
         </section>
 
         {/* Services Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold text-center mb-12">Our Services</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <div className="relative h-48">
-                  <Image
-                    src="/images/skyridge/skyridge_image_001.webp"
-                    alt="Roof Replacement"
-                    fill
-                    className="object-cover"
-                  />
+        <section className="relative h-[500px] md:h-[600px] overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/skyridge/skyridge_image_023.webp"
+              alt="Our Services"
+              fill
+              className="object-cover"
+              priority
+            />
+            {/* Dark Blue Overlay */}
+            <div className="absolute inset-0 bg-blue-900/70"></div>
+          </div>
+
+          {/* Content Container */}
+          <div className="container mx-auto px-4 h-full relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 h-full items-center">
+              {/* Residential Roofing Section */}
+              <div className="text-white text-center py-12 px-6 relative">
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Residential Roofing</h3>
+                <Link
+                  href="/services/roof-replacement"
+                  className="inline-block bg-primary-light hover:bg-primary text-white px-8 py-4 rounded-sm font-semibold mb-8 transition uppercase tracking-wide"
+                >
+                  Read more
+                </Link>
+                <div className="flex justify-center">
+                  <svg className="w-16 h-16 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-3">Roof Replacement</h3>
-                  <p className="text-gray-600 mb-4">
-                    Complete roof replacement services with quality materials and expert installation.
-                  </p>
-                  <Link href="/services/roof-replacement" className="text-blue-600 font-semibold hover:text-blue-800">
-                    Learn More →
-                  </Link>
-                </div>
+                {/* Vertical Divider */}
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-white/30 hidden md:block"></div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <div className="relative h-48">
-                  <Image
-                    src="/images/skyridge/skyridge_image_002.webp"
-                    alt="Roof Repairs"
-                    fill
-                    className="object-cover"
-                  />
+              {/* Commercial Roofing Section */}
+              <div className="text-white text-center py-12 px-6 relative">
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Commercial Roofing</h3>
+                <Link
+                  href="/services/commercial-roofing"
+                  className="inline-block bg-primary-light hover:bg-primary text-white px-8 py-4 rounded-sm font-semibold mb-8 transition uppercase tracking-wide"
+                >
+                  Read more
+                </Link>
+                <div className="flex justify-center">
+                  <svg className="w-16 h-16 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-3">Roof Repairs</h3>
-                  <p className="text-gray-600 mb-4">
-                    Fast and reliable roof repair services to fix leaks, damage, and wear.
-                  </p>
-                  <Link href="/services/roof-repairs" className="text-blue-600 font-semibold hover:text-blue-800">
-                    Learn More →
-                  </Link>
-                </div>
+                {/* Vertical Dividers */}
+                <div className="absolute left-0 top-0 bottom-0 w-px bg-white/30 hidden md:block"></div>
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-white/30 hidden md:block"></div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <div className="relative h-48">
-                  <Image
-                    src="/images/skyridge/skyridge_image_003.webp"
-                    alt="Insurance Claims"
-                    fill
-                    className="object-cover"
-                  />
+              {/* Multi Family Roofing Section */}
+              <div className="text-white text-center py-12 px-6 relative">
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Multi Family Roofing</h3>
+                <Link
+                  href="/services/roof-replacement"
+                  className="inline-block bg-primary-light hover:bg-primary text-white px-8 py-4 rounded-sm font-semibold mb-8 transition uppercase tracking-wide"
+                >
+                  Read more
+                </Link>
+                <div className="flex justify-center">
+                  <svg className="w-16 h-16 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-3">Insurance Claims</h3>
-                  <p className="text-gray-600 mb-4">
-                    Expert assistance with insurance claims to ensure you get the coverage you deserve.
-                  </p>
-                  <Link href="/services/insurance-claims" className="text-blue-600 font-semibold hover:text-blue-800">
-                    Learn More →
-                  </Link>
-                </div>
+                {/* Vertical Divider */}
+                <div className="absolute left-0 top-0 bottom-0 w-px bg-white/30 hidden md:block"></div>
               </div>
             </div>
           </div>
-        </section>
 
-        {/* Why Choose Us Section with Images */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold text-center mb-12">Why Choose Sky Ridge Roofing?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-              <div className="text-center">
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
-                  <Image
-                    src="/images/skyridge/skyridge_image_010.webp"
-                    alt="Licensed & Insured"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Licensed & Insured</h3>
-                <p className="text-gray-600">Fully licensed and insured in the State of Utah</p>
-              </div>
-
-              <div className="text-center">
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
-                  <Image
-                    src="/images/skyridge/skyridge_image_011.webp"
-                    alt="Expert Service"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Expert Service</h3>
-                <p className="text-gray-600">Years of experience in roofing and insurance claims</p>
-              </div>
-
-              <div className="text-center">
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
-                  <Image
-                    src="/images/skyridge/skyridge_image_012.webp"
-                    alt="Transparent Pricing"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Transparent Pricing</h3>
-                <p className="text-gray-600">No surprises, clear and upfront pricing</p>
-              </div>
-
-              <div className="text-center">
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
-                  <Image
-                    src="/images/skyridge/skyridge_image_013.webp"
-                    alt="Warranty Backed"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Warranty Backed</h3>
-                <p className="text-gray-600">Quality workmanship with warranty protection</p>
-              </div>
-            </div>
+          {/* 30-Second Roof Estimate Vertical Banner */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
+            <Link
+              href="/calculators/roofing-cost"
+              className="bg-primary-light text-white px-4 py-8 writing-vertical-rl text-center font-bold text-sm hover:bg-primary transition shadow-lg"
+              style={{ writingMode: 'vertical-rl' }}
+            >
+              30-Second Roof Estimate
+            </Link>
           </div>
         </section>
 
-        {/* Expanded Gallery Section - Using All Images */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold text-center mb-12">Our Work Gallery</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {allImages.map((num) => (
-                <div key={num} className="relative h-48 rounded-lg overflow-hidden group cursor-pointer">
+        {/* Why Choose Us Section */}
+        <section className="relative py-0 bg-white">
+          <div className="grid grid-cols-1 lg:grid-cols-5 min-h-[600px]">
+            {/* Left Column - 60% (3/5 columns) */}
+            <div className="lg:col-span-3 bg-white px-8 py-16 lg:py-24 flex items-center">
+              <div className="max-w-2xl">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                  Why Choose the Top Roofing Contractor in Utah
+                </h2>
+                <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-8">
+                  Less mess. Less stress. Lots more peace of mind.
+                </h3>
+                <p className="text-lg text-gray-700 leading-relaxed mb-8">
+                  Sky Ridge Roofing is a trusted, licensed, and insured roofing company serving homeowners and businesses throughout Utah. With over 15 years of experience, we've built our reputation on providing the best possible roofing products at competitive prices, with exceptional service. We specialize in roof replacement, roof repairs, and insurance claims assistance. Our team understands Utah's unique climate challenges and uses proven techniques to protect your home with quality asphalt roofing and premium materials.
+                </p>
+                <QuoteButton>
+                  GET A QUOTE{' '}
+                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </QuoteButton>
+              </div>
+            </div>
+
+            {/* Right Column - 40% (2/5 columns) */}
+            <div className="lg:col-span-2 relative min-h-[500px] lg:min-h-[600px]">
+              {/* Background Image */}
+              <div className="absolute inset-0">
+                <Image
+                  src="/images/skyridge/skyridge_image_015.webp"
+                  alt="Professional Roofer at Work"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              {/* Blue Overlay Box - Top Half */}
+              <div className="absolute top-0 left-0 right-0 h-1/2 bg-primary-dark p-8 lg:p-12 text-white flex flex-col">
+                <h3 className="text-3xl md:text-4xl font-bold mb-2">
+                  What if you hire the wrong roofer?
+                </h3>
+                <p className="text-lg mb-6 text-blue-100">
+                  (Please don't try this at home)
+                </p>
+                <ul className="space-y-2.5 overflow-y-auto flex-1">
+                  {[
+                    'Poor communication',
+                    'Missed deadlines',
+                    'Poor customer service',
+                    'Messy job site',
+                    'No pride in work',
+                    'Worthless warranties',
+                    'Lack of certifications',
+                    'Unsafe installations',
+                    'Uninsured',
+                    'Unlicensed',
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-center text-base lg:text-lg">
+                      <svg className="w-5 h-5 lg:w-6 lg:h-6 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* 30-Second Roof Estimate Vertical Banner */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
+            <Link
+              href="/calculators/roofing-cost"
+              className="bg-primary-light text-white px-4 py-8 writing-vertical-rl text-center font-bold text-sm hover:bg-primary transition shadow-lg"
+              style={{ writingMode: 'vertical-rl' }}
+            >
+              30-Second Roof Estimate
+            </Link>
+          </div>
+        </section>
+
+        {/* Our Process Section */}
+        <section className="relative py-20 md:py-24 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/skyridge/skyridge_image_023.webp"
+              alt="Residential Roofing"
+              fill
+              className="object-cover"
+            />
+            {/* Dark Blue Overlay */}
+            <div className="absolute inset-0 bg-blue-900/80"></div>
+          </div>
+
+          {/* Content Container */}
+          <div className="container mx-auto px-4 relative z-10">
+            {/* Section Header */}
+            <div className="text-center mb-16">
+              {/* Subtitle with decorative lines */}
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-12 h-px bg-primary-light"></div>
+                <h3 className="text-white uppercase tracking-wider text-sm md:text-base font-semibold mx-4">
+                  HOW WE DO IT
+                </h3>
+                <div className="w-12 h-px bg-primary-light"></div>
+              </div>
+              {/* Main Title */}
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white uppercase tracking-tight">
+                OUR PROCESS
+              </h2>
+            </div>
+
+            {/* Process Steps */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {/* Step 01 */}
+              <div className="bg-white p-8 rounded-lg shadow-xl">
+                <div className="flex items-start justify-between mb-6">
+                  <span className="bg-gray-200 text-gray-600 text-xs font-semibold px-3 py-1 rounded uppercase tracking-wider">
+                    Step 01
+                  </span>
+                </div>
+                <div className="flex justify-center mb-6">
+                  <div className="w-24 h-24 rounded-full bg-primary-dark flex items-center justify-center">
+                    <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-tight mb-4 text-center">
+                  SCHEDULE APPOINTMENT
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-center">
+                  Don't hesitate on getting your roof repaired or replaced. The longer you wait, the more expensive it gets.
+                </p>
+              </div>
+
+              {/* Step 02 */}
+              <div className="bg-white p-8 rounded-lg shadow-xl">
+                <div className="flex items-start justify-between mb-6">
+                  <span className="bg-gray-200 text-gray-600 text-xs font-semibold px-3 py-1 rounded uppercase tracking-wider">
+                    Step 02
+                  </span>
+                </div>
+                <div className="flex justify-center mb-6">
+                  <div className="w-24 h-24 rounded-full bg-primary-dark flex items-center justify-center">
+                    <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-tight mb-4 text-center">
+                  RECEIVE QUOTE
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-center">
+                  Get a detailed, no-obligation estimate tailored to your roofing needs. We'll assess your roof and provide transparent pricing.
+                </p>
+              </div>
+
+              {/* Step 03 */}
+              <div className="bg-white p-8 rounded-lg shadow-xl">
+                <div className="flex items-start justify-between mb-6">
+                  <span className="bg-gray-200 text-gray-600 text-xs font-semibold px-3 py-1 rounded uppercase tracking-wider">
+                    Step 03
+                  </span>
+                </div>
+                <div className="flex justify-center mb-6">
+                  <div className="w-24 h-24 rounded-full bg-primary-dark flex items-center justify-center">
+                    <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-tight mb-4 text-center">
+                  GET FINANCING
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-center">
+                  We know roofing can feel expensive, but we offer a variety of financing options to help you get your roof taken care of.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 30-Second Roof Estimate Vertical Banner */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 hidden xl:block">
+            <Link
+              href="/calculators/roofing-cost"
+              className="bg-primary-light text-white px-4 py-8 writing-vertical-rl text-center font-bold text-sm hover:bg-primary transition shadow-lg"
+              style={{ writingMode: 'vertical-rl' }}
+            >
+              30-Second Roof Estimate
+            </Link>
+          </div>
+        </section>
+
+        {/* Gallery Section */}
+        <section className="relative py-20 md:py-24 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/skyridge/skyridge_image_023.webp"
+              alt="Residential Roofing"
+              fill
+              className="object-cover"
+            />
+            {/* Dark Blue Overlay */}
+            <div className="absolute inset-0 bg-blue-900/80"></div>
+          </div>
+
+          {/* Content Container */}
+          <div className="container mx-auto px-4 relative z-10">
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+                You Take Pride in Your Home
+              </h2>
+              <p className="text-xl md:text-2xl text-gray-100 drop-shadow-md">
+                And we take pride in our work: check out our recent projects!
+              </p>
+            </div>
+
+            {/* Image Grid - 3 columns, 4 rows (12 images) */}
+            <div className="grid grid-cols-3 gap-0 max-w-5xl mx-auto">
+              {allImages.slice(0, 12).map((num) => (
+                <div key={num} className="relative aspect-square overflow-hidden group cursor-pointer">
                   <Image
                     src={`/images/skyridge/skyridge_image_${String(num).padStart(3, '0')}.webp`}
                     alt={`Roofing project ${num}`}
                     fill
                     className="object-cover group-hover:scale-110 transition duration-300"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                    sizes="(max-width: 768px) 33vw, (max-width: 1024px) 33vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition duration-300" />
                 </div>
               ))}
             </div>
+
+            {/* Show more images button/link - optional, if you want to show all images */}
+            {allImages.length > 12 && (
+              <div className="text-center mt-8">
+                <Link
+                  href="/gallery"
+                  className="inline-block bg-white text-primary-dark px-8 py-4 font-semibold uppercase tracking-wide hover:bg-gray-100 transition"
+                >
+                  View More Projects →
+                </Link>
+              </div>
+            )}
           </div>
         </section>
 
@@ -423,7 +614,7 @@ export default function Page() {
                 <div className="bg-white rounded-lg p-6 shadow-md">
                   <div className="text-4xl font-bold text-blue-600 mb-2">✓</div>
                   <h3 className="font-semibold mb-2">Licensed</h3>
-                  <p className="text-sm text-gray-600">UT License # 14235218-5501</p>
+                  <p className="text-sm text-gray-600">Fully licensed in Utah</p>
                 </div>
               </div>
               <div className="text-center">
@@ -451,21 +642,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-16 bg-blue-700 text-white">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-bold mb-4">Ready to Start Your Roofing Project?</h2>
-            <p className="text-xl mb-8">Contact us today for a free estimate</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact" className="bg-white text-blue-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition inline-block">
-                Get Free Quote
-              </Link>
-              <Link href="/financing" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-700 transition inline-block">
-                Learn About Financing
-              </Link>
-            </div>
-          </div>
-        </section>
+        {/* Newsletter Signup Section */}
+        <NewsletterSignup />
       </main>
       <Footer />
     </>

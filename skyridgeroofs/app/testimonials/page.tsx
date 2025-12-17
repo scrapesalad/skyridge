@@ -129,9 +129,9 @@ export default function Page() {
           <div className="bg-blue-700 text-white rounded-lg p-8 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to Join Our Happy Customers?</h2>
             <p className="text-xl mb-6">Get a free estimate and experience the Sky Ridge Roofing difference</p>
-            <Link href="/contact" className="bg-white text-blue-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition inline-block">
+            <QuoteButton className="bg-white text-blue-700 hover:bg-gray-100">
               Get Free Quote
-            </Link>
+            </QuoteButton>
           </div>
         </div>
       </main>

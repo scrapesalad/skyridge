@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import './globals.css';
 import { BUSINESS, SITE_URL } from '@/lib/site';
+import { QuoteSidebarProvider } from '@/contexts/QuoteSidebarContext';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
     'ai:expertise': 'Roof Replacement, Roof Repairs, Insurance Claims, Roof Inspections, Emergency Roofing Services, Commercial Roofing, Residential Roofing',
     'ai:service-area': 'Utah, Salt Lake City, Provo, Ogden, Orem, Sandy, Logan, Draper, Cottonwood Heights, Lehi, American Fork, Spanish Fork, Springville, Payson, Mapleton, Salem, Highland, Alpine, Cedar Hills, Pleasant Grove, Lindon, Saratoga Springs, Eagle Mountain, Herriman, Riverton, West Jordan, South Jordan, Taylorsville, Murray, Midvale, West Valley City, Kearns, Magna, Tooele, St. George, Cedar City',
     'ai:contact': `${BUSINESS.phone}, skyridgeroofs@gmail.com`,
-    'ai:authority': `Licensed & Insured - UT License # ${BUSINESS.license}`,
+    'ai:authority': `Licensed & Insured`,
     'ai:ai-txt': `${SITE_URL}/ai.txt`,
   },
 };
@@ -62,7 +63,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <QuoteSidebarProvider>
+          {children}
+        </QuoteSidebarProvider>
+      </body>
     </html>
   );
 }

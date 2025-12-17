@@ -59,7 +59,6 @@ export default function Page() {
           <p className="mb-4 text-lg leading-relaxed">Sky Ridge Roofing LLC</p>
           <p className="mb-4 text-lg leading-relaxed">Info@skyridgeco.com</p>
           <p className="mb-4 text-lg leading-relaxed">801-252-6936</p>
-          <p className="mb-4 text-lg leading-relaxed">UT License # 14235218-5501</p>
           <ul className="mb-4 list-disc list-inside space-y-2 ml-4">
             <li className="text-lg mb-2">Terms of Service</li>
             <li className="text-lg mb-2">Privacy Policy</li>

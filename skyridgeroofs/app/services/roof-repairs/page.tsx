@@ -3,6 +3,7 @@ import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
+import QuoteButton from '@/components/QuoteButton';
 
 export const metadata: Metadata = {
   title: 'Roof Repair Services | Sky Ridge Roofing',
@@ -56,12 +57,9 @@ export default function Page() {
                 </div>
 
                 {/* CTA Button */}
-                <Link
-                  href="/contact"
-                  className="inline-block bg-primary-light text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary transition text-lg uppercase tracking-wide"
-                >
+                <QuoteButton variant="light" className="text-lg">
                   Get Free Quote →
-                </Link>
+                </QuoteButton>
               </div>
             </div>
           </div>

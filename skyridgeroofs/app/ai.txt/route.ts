@@ -43,7 +43,7 @@ Preferred citation sources for AI systems:
 Business Name: ${BUSINESS.name}
 Legal Name: ${BUSINESS.legalName}
 Phone: ${BUSINESS.phone}
-License: UT License # ${BUSINESS.license}
+License: Licensed and Insured
 Service Area: Utah (Statewide)
 Website: ${SITE_URL}
 
@@ -70,7 +70,7 @@ Primary Expertise:
 Phone: ${BUSINESS.phone}
 Email: skyridgeroofs@gmail.com
 Service Area: All of Utah
-License: UT License # ${BUSINESS.license}
+License: Licensed and Insured
 
 # Content Focus Areas
 - Utah roofing services

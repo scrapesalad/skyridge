@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useQuoteSidebar } from '@/contexts/QuoteSidebarContext';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -10,6 +11,7 @@ export default function Header() {
   const [locationsOpen, setLocationsOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [calculatorsOpen, setCalculatorsOpen] = useState(false);
+  const { openSidebar } = useQuoteSidebar();
 
   return (
     <header className="bg-white sticky top-0 z-50 shadow-md">
@@ -222,12 +224,12 @@ export default function Header() {
             </button>
 
             {/* Get Quote Button */}
-            <Link
-              href="/contact"
+            <button
+              onClick={openSidebar}
               className="bg-primary-light text-white px-6 py-3 font-semibold hover:bg-primary transition uppercase text-sm whitespace-nowrap"
             >
               Get A Quote
-            </Link>
+            </button>
           </div>
 
           {/* Mobile Menu */}

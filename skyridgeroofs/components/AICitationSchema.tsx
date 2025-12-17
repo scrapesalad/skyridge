@@ -111,7 +111,7 @@ export default function AICitationSchema() {
           'Tile Roofing',
           'Flat Roofing',
         ],
-        description: `${BUSINESS.name} provides professional roofing services including roof replacement, roof repairs, and insurance claim assistance throughout Utah. Licensed and insured with UT License # ${BUSINESS.license}.`,
+        description: `${BUSINESS.name} provides professional roofing services including roof replacement, roof repairs, and insurance claim assistance throughout Utah. Licensed and insured.`,
       }}
     />
   );

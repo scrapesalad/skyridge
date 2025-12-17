@@ -153,9 +153,9 @@ export default function Page() {
               <Link href="/contact" className="bg-white text-blue-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
                 Apply for Financing
               </Link>
-              <Link href="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-700 transition">
+              <QuoteButton variant="outline">
                 Get Free Quote
-              </Link>
+              </QuoteButton>
             </div>
           </div>
         </div>

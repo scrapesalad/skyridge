@@ -121,8 +121,7 @@ Sky Ridge Roofing Team
 
           <p style="color: #6b7280; font-size: 12px; margin-top: 30px;">
             Sky Ridge Roofing<br>
-            Serving all of Utah<br>
-            UT License # 14235218-5501
+            Serving all of Utah
           </p>
         </div>
       `,

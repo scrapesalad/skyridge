@@ -84,7 +84,6 @@ export default function Page() {
                     </svg>
                     <div>
                       <h3 className="font-semibold text-lg mb-1">License</h3>
-                      <p className="text-gray-700">UT License # 14235218-5501</p>
                     </div>
                   </div>
                 </div>
