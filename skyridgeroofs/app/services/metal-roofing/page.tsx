@@ -24,23 +24,19 @@ export default function Page() {
   const faqs = [
     {
       q: 'How long does a metal roof last in Utah?',
-      a: 'A properly installed metal roof can last decades. Lifespan depends on panel type, coating quality, ventilation, and how well flashing details are handled at valleys, walls, and penetrations.',
+      a: 'A properly installed metal roof can last for decades. Lifespan depends on panel type, coating quality, ventilation, and how well flashing details are handled at valleys, walls, and penetrations.',
     },
     {
       q: 'Is metal roofing loud in rain or hail?',
-      a: 'When installed over solid decking with underlayment (typical residential installs), metal roofing is not dramatically louder than other systems. Proper insulation and attic ventilation help too.',
+      a: 'On a typical residential installation over solid decking with underlayment, metal roofing is not dramatically louder than other systems. Insulation and attic ventilation also help.',
     },
     {
       q: 'Do you install standing seam metal roofs?',
-      a: 'Yes. We install standing seam systems and also offer exposed-fastener panels where appropriate. We'll recommend the best fit based on slope, aesthetics, and budget.',
+      a: 'Yes. We install standing seam systems and can also quote exposed-fastener panels when they are a better fit. We will recommend the best option based on slope, aesthetics, and budget.',
     },
     {
-      q: 'How to install metal roofing?',
-      a: 'Metal roofing installation requires proper preparation: removing old roofing, inspecting and repairing the deck, installing underlayment, and securing metal panels with appropriate fasteners. Standing seam systems use concealed fasteners, while exposed-fastener systems use screws with washers. Proper flashing around valleys, chimneys, and edges is critical. We recommend hiring a professional to ensure proper installation and avoid leaks or premature failure.',
-    },
-    {
-      q: 'How to cut metal roofing?',
-      a: 'Metal roofing panels should be cut using appropriate tools to avoid damaging the protective coating. Common methods include tin snips for small cuts, a circular saw with a metal-cutting blade, or a nibbler for precise cuts. Always wear safety equipment. Cut from the back side when possible to minimize chipping. For best results and warranty coverage, we recommend having a professional handle cutting and installation.',
+      q: 'Can I install a metal roof over shingles?',
+      a: 'Sometimes. It depends on roof condition, local requirements, and whether the roof can be properly prepped for a long-lasting install. We will inspect the deck, ventilation, and flashing details and recommend the safest approach.',
     },
   ];
 
@@ -122,9 +118,17 @@ export default function Page() {
                   </div>
                 </div>
 
-                <QuoteButton variant="light" className="text-lg">
-                  Get Free Quote →
-                </QuoteButton>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <QuoteButton variant="light" className="text-lg">
+                    Get Free Quote →
+                  </QuoteButton>
+                  <Link
+                    href="/materials"
+                    className="inline-flex items-center justify-center border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-700 transition text-lg"
+                  >
+                    Compare Materials
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -135,20 +139,20 @@ export default function Page() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Why homeowners choose metal roofing</h2>
               <p className="mb-4 text-lg leading-relaxed text-gray-700">
-                If you want a roof that holds up to snow load, wind, and intense UV, metal roofing is
-                one of the strongest options. It’s also a great fit when you want a clean, modern
-                look and fewer long-term maintenance headaches.
+                Metal roofing is a strong choice in Utah when you want a roof that holds up to snow
+                load, wind, and intense UV. It can also help manage attic heat when paired with
+                proper ventilation and underlayment.
               </p>
               <ul className="list-disc list-inside space-y-2 mb-6 text-lg text-gray-700">
                 <li>Long service life with quality coatings</li>
                 <li>Great performance in freeze/thaw cycles</li>
-                <li>Reflective options that can reduce attic heat</li>
+                <li>Reflective options for summer heat</li>
                 <li>Low-maintenance compared to many systems</li>
               </ul>
               <p className="text-lg leading-relaxed text-gray-700">
                 The difference is in the details: underlayment, ventilation, fasteners, and flashing
-                work around chimneys, skylights, and valleys. That’s where our team spends the time
-                to do it right.
+                around chimneys, skylights, valleys, and walls. That is where we focus to prevent
+                leaks and premature wear.
               </p>
             </div>
             <div className="relative h-96 rounded-lg overflow-hidden">
@@ -179,8 +183,7 @@ export default function Page() {
               <div className="space-y-3">
                 <h3 className="text-xl font-bold">Exposed-fastener panels</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  A cost-effective metal roofing option that performs well when installed correctly
-                  and maintained.
+                  A cost-effective option that performs well when installed correctly and maintained.
                 </p>
                 <ul className="list-disc list-inside text-gray-700">
                   <li>Budget-friendly</li>
@@ -188,76 +191,6 @@ export default function Page() {
                   <li>Fast installation timeline</li>
                 </ul>
               </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-md p-8 mb-12">
-            <h2 className="text-3xl font-bold mb-6">Metal Roofing Installation Process</h2>
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              Professional metal roofing installation involves several critical steps to ensure long-lasting performance:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <h3 className="text-xl font-bold mb-3">1. Preparation & Tear-Off</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Remove existing roofing materials and inspect the deck for damage. Repair or replace damaged decking to ensure a solid foundation.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-3">2. Underlayment Installation</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Install high-quality underlayment to provide an additional moisture barrier and protect against condensation.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-3">3. Panel Installation</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Secure metal panels using appropriate fasteners. Standing seam systems use concealed fasteners, while exposed-fastener systems use screws with washers.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-3">4. Flashing & Details</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Install proper flashing around valleys, chimneys, skylights, and roof edges to prevent water infiltration.
-                </p>
-              </div>
-            </div>
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mt-6">
-              <p className="text-gray-700">
-                <strong>Important:</strong> Metal roofing installation requires specialized knowledge and tools. Incorrect installation can lead to leaks, wind damage, and voided warranties. Always hire a licensed, experienced professional.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-md p-8 mb-12">
-            <h2 className="text-3xl font-bold mb-6">How to Cut Metal Roofing</h2>
-            <p className="text-lg text-gray-700 leading-relaxed mb-4">
-              If you need to cut metal roofing panels, use the right tools and techniques to avoid damaging the protective coating:
-            </p>
-            <div className="space-y-4 mb-6">
-              <div>
-                <h3 className="text-xl font-bold mb-2">Tools for Cutting Metal Roofing</h3>
-                <ul className="list-disc list-inside space-y-2 text-gray-700">
-                  <li><strong>Tin snips:</strong> Best for small cuts and trimming edges</li>
-                  <li><strong>Circular saw with metal-cutting blade:</strong> For straight cuts on larger panels</li>
-                  <li><strong>Nibbler:</strong> Provides precise cuts without creating sharp edges</li>
-                  <li><strong>Plasma cutter:</strong> For professional installations with complex cuts</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">Safety Tips</h3>
-                <ul className="list-disc list-inside space-y-2 text-gray-700">
-                  <li>Always wear safety glasses and cut-resistant gloves</li>
-                  <li>Cut from the back side when possible to minimize chipping of the finish</li>
-                  <li>Support panels properly to prevent bending during cutting</li>
-                  <li>Clean up metal shavings immediately to prevent injury</li>
-                </ul>
-              </div>
-            </div>
-            <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
-              <p className="text-gray-700">
-                <strong>Note:</strong> Improper cutting can damage the protective coating and void warranties. For best results and to maintain warranty coverage, we recommend having a professional handle cutting and installation.
-              </p>
             </div>
           </div>
 
@@ -293,15 +226,12 @@ export default function Page() {
           <div className="bg-blue-700 text-white rounded-lg p-8 text-center">
             <h2 className="text-3xl font-bold mb-4">Thinking about a metal roof?</h2>
             <p className="text-xl mb-6">
-              We’ll inspect your roof, talk through options, and give you a clear estimate.
+              We will inspect your roof, talk through options, and give you a clear estimate.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="bg-white text-blue-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition inline-block"
-              >
+              <QuoteButton className="bg-white text-blue-700 hover:bg-gray-100">
                 Request a Free Quote
-              </Link>
+              </QuoteButton>
               <Link
                 href="/locations"
                 className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-700 transition inline-block"

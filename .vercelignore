@@ -17,6 +17,7 @@ scripts/
 
 # Config files
 package-lock.json
+!skyridgeroofs/package-lock.json
 
 # Build artifacts
 dist/

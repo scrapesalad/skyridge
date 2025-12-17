@@ -3,6 +3,7 @@ import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
+import QuoteButton from '@/components/QuoteButton';
 
 export const metadata: Metadata = {
   title: 'Roofing Financing Options | Sky Ridge Roofing',
@@ -164,4 +165,3 @@ export default function Page() {
     </>
   );
 }
-
