@@ -1,5 +1,5 @@
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, '') || 'https://www.skyridgeco.com';
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, '') || 'https://skyridgeroofs.com';
 
 export const BUSINESS = {
   name: 'Sky Ridge Roofing',

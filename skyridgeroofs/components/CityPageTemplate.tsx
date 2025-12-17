@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { SITE_URL } from '@/lib/site';
 
 interface CityPageTemplateProps {
   cityName: string;
@@ -59,7 +60,7 @@ export default function CityPageTemplate({
 }: CityPageTemplateProps) {
   const [activeService, setActiveService] = useState('replacement');
   
-  const canonicalUrl = `https://skyridgeroofs.com/locations/${citySlug}`;
+  const canonicalUrl = `${SITE_URL}/locations/${citySlug}`;
   
   // Use roofingServices from cityData if available, otherwise use default services
   const defaultServices = [
