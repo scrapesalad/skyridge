@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import DumpsterCalculator from '../components/DumpsterCalculator';
 import VideoWithErrorHandling from '../components/VideoWithErrorHandling';
 import FAQSection from '../components/FAQSection';
 
@@ -62,13 +61,6 @@ export default function PricingPage() {
               className="rounded-lg shadow-xl mb-8"
             />
           </div>
-        </div>
-      </section>
-
-      {/* Calculator Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <DumpsterCalculator />
         </div>
       </section>
 

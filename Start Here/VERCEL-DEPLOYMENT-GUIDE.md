@@ -318,3 +318,4 @@ Once deployed, your site will be:
 **Template Version:** King Tut Universal v2.0  
 **Deployment:** Vercel Ready ✅
 
+

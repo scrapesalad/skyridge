@@ -28,7 +28,6 @@ export default function MobileNav() {
             <a href="https://icondumpsters.com/services" className="block px-4 py-3 text-gray-800 hover:bg-gray-50 font-medium">Services</a>
             <a href="https://icondumpsters.com/locations" className="block px-4 py-3 text-gray-800 hover:bg-gray-50 font-medium">Service Area</a>
             <a href="https://icondumpsters.com/dumpster-sizes" className="block px-4 py-3 text-gray-800 hover:bg-gray-50 font-medium">Dumpster Sizes</a>
-            <a href="https://icondumpsters.com/dumpster-calculator" className="block px-4 py-3 text-gray-800 hover:bg-gray-50 font-medium">Calculator</a>
             <a href="https://icondumpsters.com/blog" className="block px-4 py-3 text-gray-800 hover:bg-gray-50 font-medium">Blog</a>
             <a href="https://icondumpsters.com/frequent-buyers" className="block px-4 py-3 text-gray-800 hover:bg-gray-50 font-medium">Frequent Buyers</a>
             <a href="https://icondumpsters.com/book" className="block px-4 py-3 text-gray-800 hover:bg-gray-50 font-medium">Book Now</a>

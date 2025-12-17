@@ -326,3 +326,4 @@ var(--color-accent)
 **Last Updated**: November 29, 2025  
 **Theme Version**: King Tut Avada-Inspired v2.0
 
+

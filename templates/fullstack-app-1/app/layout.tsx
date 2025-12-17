@@ -10,7 +10,6 @@ import Header from "./components/header";
 // Dynamic imports will still code-split and lazy load without ssr: false
 const Footer = dynamic(() => import("./components/Footer"));
 const MobileNav = dynamic(() => import("./components/MobileNav"));
-const ConditionalCalculatorBanner = dynamic(() => import("./components/ConditionalCalculatorBanner"));
 const FloatingTextButton = dynamic(() => import("./components/FloatingTextButton"));
 const RelatedServiceLinks = dynamic(() => import("./components/RelatedServiceLinks"));
 const ThirdPartyScripts = dynamic(() => import("./components/ThirdPartyScripts"));
@@ -252,10 +251,6 @@ export default function RootLayout({
 
         {/* Floating Text Button */}
         <FloatingTextButton />
-
-        {/* Calculator Banner - Only on calculator-related pages */}
-        <ConditionalCalculatorBanner />
-
 
         <Footer />
       </body>

@@ -155,10 +155,6 @@ export default function Header() {
                         <div className="font-semibold">How to Choose a Dumpster Size</div>
                         <div className="text-xs text-gray-500">Find the right size for your project</div>
                       </a>
-                      <a href="/dumpster-calculator" className="block px-4 py-3 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 border-b border-gray-100">
-                        <div className="font-semibold">Dumpster Calculator</div>
-                        <div className="text-xs text-gray-500">Calculate your project needs</div>
-                      </a>
                       <a href="/pricing/dumpster-prices" className="block px-4 py-3 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700">
                         <div className="font-semibold">Understanding Dumpster Fees</div>
                         <div className="text-xs text-gray-500">Learn about pricing & fees</div>
@@ -190,13 +186,9 @@ export default function Header() {
                   >
                     <div className="bg-white border border-gray-200 rounded-lg shadow-lg">
                     <div className="py-2">
-                      <a href="/#pricing" className="block px-4 py-3 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 border-b border-gray-100">
+                      <a href="/#pricing" className="block px-4 py-3 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700">
                         <div className="font-semibold">Pricing & Rates</div>
                         <div className="text-xs text-gray-500">View our competitive pricing</div>
-                      </a>
-                      <a href="/dumpster-calculator" className="block px-4 py-3 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700">
-                        <div className="font-semibold">Dumpster Calculator</div>
-                        <div className="text-xs text-gray-500">Calculate your project needs</div>
                       </a>
                     </div>
                     </div>

@@ -1,0 +1,5 @@
+# HSTS 1.0 Known Hosts database for GNU Wget.
+# Edit at your own risk.
+# <hostname>	<port>	<incl. subdomains>	<created>	<max-age>
+skyridgeco.com	0	1	1765947092	63072000
+www.youtube.com	0	0	1765952359	31536000
