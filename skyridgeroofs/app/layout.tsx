@@ -11,6 +11,25 @@ export const metadata: Metadata = {
   },
   description:
     'Sky Ridge Roofing provides roof replacement, roof repairs, and insurance-claim help across Utah. Licensed & insured. Free estimates.',
+  icons: {
+    icon: [
+      { url: '/images/logo/favicon.ico' },
+      { url: '/images/logo/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/images/logo/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/images/logo/favicon.ico',
+    apple: '/images/logo/apple-touch-icon.png',
+    other: [
+      {
+        rel: 'android-chrome-192x192',
+        url: '/images/logo/android-chrome-192x192.png',
+      },
+      {
+        rel: 'android-chrome-512x512',
+        url: '/images/logo/android-chrome-512x512.png',
+      },
+    ],
+  },
   robots: {
     index: true,
     follow: true,
