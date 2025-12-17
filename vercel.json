@@ -1,5 +1,13 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "trailingSlash": false
+  "buildCommand": "cd skyridgeroofs && npm install && npm run build",
+  "outputDirectory": "skyridgeroofs/.next",
+  "installCommand": "cd skyridgeroofs && npm install",
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/skyridgeroofs/$1"
+    }
+  ]
 }
