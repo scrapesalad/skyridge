@@ -6,6 +6,8 @@ import Link from 'next/link';
 
 import JsonLd from '@/components/JsonLd';
 import QuoteForm from '@/components/QuoteForm';
+import AICitationSchema from '@/components/AICitationSchema';
+import LLMSchema from '@/components/LLMSchema';
 import { BUSINESS, SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -29,6 +31,10 @@ export default function Page() {
     <>
       <Header />
       <main className="min-h-screen">
+        {/* AI Citation Schema for ChatGPT */}
+        <AICitationSchema />
+        <LLMSchema />
+        {/* Standard LocalBusiness Schema */}
         <JsonLd
           data={{
             '@context': 'https://schema.org',

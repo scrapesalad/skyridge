@@ -26,6 +26,13 @@ export const metadata: Metadata = {
   },
   other: {
     'business:contact_data:phone_number': BUSINESS.phone,
+    // AI-specific meta tags for ChatGPT citations
+    'ai:author': BUSINESS.name,
+    'ai:expertise': 'Roof Replacement, Roof Repairs, Insurance Claims, Roof Inspections, Emergency Roofing Services, Commercial Roofing, Residential Roofing',
+    'ai:service-area': 'Utah, Salt Lake City, Provo, Ogden, Orem, Sandy, Logan, Draper, Cottonwood Heights, Lehi, American Fork, Spanish Fork, Springville, Payson, Mapleton, Salem, Highland, Alpine, Cedar Hills, Pleasant Grove, Lindon, Saratoga Springs, Eagle Mountain, Herriman, Riverton, West Jordan, South Jordan, Taylorsville, Murray, Midvale, West Valley City, Kearns, Magna, Tooele, St. George, Cedar City',
+    'ai:contact': `${BUSINESS.phone}, skyridgeroofs@gmail.com`,
+    'ai:authority': `Licensed & Insured - UT License # ${BUSINESS.license}`,
+    'ai:ai-txt': `${SITE_URL}/ai.txt`,
   },
 };
 
