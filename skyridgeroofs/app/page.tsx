@@ -14,9 +14,9 @@ import { BUSINESS, SITE_URL } from '@/lib/site';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Utah Roofing Company | Roof Repair, Replacement & Installation | Sky Ridge Roofing',
+  title: 'Sky Ridge Roofing | Utah Roof Repair & Replacement',
   description:
-    'Sky Ridge Roofing is a trusted Utah roofing company specializing in roof repair, roof replacement, and roof installation. Licensed & insured. Free estimates.',
+    'Sky Ridge Roofing handles roof repair, roof replacement, and new roof installation across Utah including Beaver Mountain. Licensed, insured, insurance-claim experts. Free estimates.',
   alternates: { canonical: canonicalUrl('/') },
   openGraph: {
     title: 'Utah Roofing Company | Sky Ridge Roofing',

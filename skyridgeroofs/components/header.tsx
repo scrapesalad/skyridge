@@ -151,13 +151,13 @@ export default function Header() {
             </Link>
 
             <div className="hidden lg:flex items-center gap-3">
-              <a
-                href={`tel:${PHONE_TEL}`}
+              <Link
+                href="/calculators"
                 className="inline-flex items-center justify-center border-2 border-primary text-primary px-4 py-2 rounded font-semibold hover:bg-primary hover:text-white transition whitespace-nowrap"
-                aria-label={`Call ${PHONE_DISPLAY}`}
+                aria-label="Roofing Calculators"
               >
-                {PHONE_DISPLAY}
-              </a>
+                Calculators
+              </Link>
               <button
                 onClick={openSidebar}
                 className="bg-primary text-white px-4 py-2 rounded font-semibold hover:bg-primary-dark transition whitespace-nowrap"
