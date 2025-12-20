@@ -9,6 +9,7 @@ export const INDEXABLE_CITY_SLUGS = [
   'taylorsville',
   'st-george',
   'logan',
+  'beaver-mountain',
 ] as const;
 
 export const INDEXABLE_CITY_SLUG_SET = new Set<string>(INDEXABLE_CITY_SLUGS);

@@ -4,10 +4,12 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import QuoteButton from '@/components/QuoteButton';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Roofing Services | Sky Ridge Roofing - Complete Roofing Solutions',
   description: 'Roofing services in Utah: roof replacement, roof repairs, metal roofing, commercial roofing, insurance claims, and more. Free estimates.',
+  alternates: { canonical: canonicalUrl('/services') },
   openGraph: {
     title: 'Roofing Services - Sky Ridge Roofing',
     description: 'Roofing services in Utah: replacement, repairs, metal roofing, commercial roofing, and insurance claims.',

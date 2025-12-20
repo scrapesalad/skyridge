@@ -1,0 +1,162 @@
+# Sitemap Index for Google Search Console Submission
+
+## Primary Sitemap URL
+```
+https://skyridgeroofs.com/sitemap.xml
+```
+
+## Sitemap Details
+
+### Total URLs in Sitemap
+- **Core Pages:** 13 routes
+- **City/Location Pages:** 11 routes
+- **Calculator Pages:** 13 routes
+- **Total:** 37 indexable URLs
+
+### URL Breakdown
+
+#### Core Pages (Priority: 1.0 - 0.7)
+1. `https://skyridgeroofs.com/` (Priority: 1.0, Weekly)
+2. `https://skyridgeroofs.com/utah-roofing-company` (Priority: 0.7, Monthly)
+3. `https://skyridgeroofs.com/about` (Priority: 0.7, Monthly)
+4. `https://skyridgeroofs.com/services` (Priority: 0.7, Monthly)
+5. `https://skyridgeroofs.com/services/roof-replacement` (Priority: 0.7, Monthly)
+6. `https://skyridgeroofs.com/services/roof-repairs` (Priority: 0.7, Monthly)
+7. `https://skyridgeroofs.com/services/metal-roofing` (Priority: 0.7, Monthly)
+8. `https://skyridgeroofs.com/services/insurance-claims` (Priority: 0.7, Monthly)
+9. `https://skyridgeroofs.com/services/commercial-roofing` (Priority: 0.7, Monthly)
+10. `https://skyridgeroofs.com/services/additional-services` (Priority: 0.7, Monthly)
+11. `https://skyridgeroofs.com/materials` (Priority: 0.7, Monthly)
+12. `https://skyridgeroofs.com/financing` (Priority: 0.7, Monthly)
+13. `https://skyridgeroofs.com/gallery` (Priority: 0.7, Monthly)
+14. `https://skyridgeroofs.com/testimonials` (Priority: 0.7, Monthly)
+15. `https://skyridgeroofs.com/faq` (Priority: 0.7, Monthly)
+16. `https://skyridgeroofs.com/locations` (Priority: 0.7, Monthly)
+
+#### City/Location Pages (Priority: 0.6, Monthly)
+1. `https://skyridgeroofs.com/locations/salt-lake-city`
+2. `https://skyridgeroofs.com/locations/provo`
+3. `https://skyridgeroofs.com/locations/ogden`
+4. `https://skyridgeroofs.com/locations/west-valley-city`
+5. `https://skyridgeroofs.com/locations/sandy`
+6. `https://skyridgeroofs.com/locations/orem`
+7. `https://skyridgeroofs.com/locations/layton`
+8. `https://skyridgeroofs.com/locations/taylorsville`
+9. `https://skyridgeroofs.com/locations/st-george`
+10. `https://skyridgeroofs.com/locations/logan`
+11. `https://skyridgeroofs.com/locations/beaver-mountain`
+
+#### Calculator Pages (Priority: 0.5, Monthly)
+1. `https://skyridgeroofs.com/calculators`
+2. `https://skyridgeroofs.com/calculators/roofing-cost`
+3. `https://skyridgeroofs.com/calculators/shingle`
+4. `https://skyridgeroofs.com/calculators/roof-pitch`
+5. `https://skyridgeroofs.com/calculators/roofing-material`
+6. `https://skyridgeroofs.com/calculators/gutter-size`
+7. `https://skyridgeroofs.com/calculators/square-footage`
+8. `https://skyridgeroofs.com/calculators/roofing-square`
+9. `https://skyridgeroofs.com/calculators/ventilation`
+10. `https://skyridgeroofs.com/calculators/replacement-cost`
+11. `https://skyridgeroofs.com/calculators/labor-cost`
+12. `https://skyridgeroofs.com/calculators/warranty`
+13. `https://skyridgeroofs.com/calculators/insulation`
+
+## Canonical URLs
+
+All pages now use absolute canonical URLs pointing to `https://skyridgeroofs.com` (no www).
+
+### Canonical URL Format
+- Base domain: `https://skyridgeroofs.com`
+- All canonical URLs use the `canonicalUrl()` helper function
+- Ensures consistent domain (no www redirects needed)
+
+## Google Search Console Submission Steps
+
+### 1. Verify Domain Ownership
+- Go to [Google Search Console](https://search.google.com/search-console)
+- Add property: `skyridgeroofs.com` (preferred domain)
+- Verify ownership using one of the recommended methods
+
+### 2. Submit Sitemap
+1. Navigate to **Sitemaps** in the left sidebar
+2. Enter sitemap URL: `https://skyridgeroofs.com/sitemap.xml`
+3. Click **Submit**
+4. Wait for Google to process (usually within a few hours)
+
+### 3. Request Indexing (Optional)
+- After submission, you can request indexing for important pages
+- Go to **URL Inspection** tool
+- Enter URL and click **Request Indexing**
+
+### 4. Monitor Status
+- Check sitemap status in Search Console
+- Monitor for any errors or warnings
+- Review coverage report for indexed pages
+
+## SEO Checklist
+
+✅ **Canonical URLs**
+- All pages have absolute canonical URLs
+- All canonical URLs point to `skyridgeroofs.com` (no www)
+- Canonical URLs use `canonicalUrl()` helper function
+
+✅ **Sitemap**
+- Dynamic sitemap generated at `/sitemap.xml`
+- Includes all indexable pages
+- Proper priorities and change frequencies set
+- Includes calculator pages
+
+✅ **Robots.txt**
+- Configured at `/robots.txt`
+- Allows all search engines
+- Explicitly allows AI crawlers
+- References sitemap location
+
+✅ **Metadata**
+- All pages have proper title tags
+- All pages have meta descriptions
+- Open Graph tags configured
+- Structured data (JSON-LD) on key pages
+
+## Additional Files
+
+### robots.txt
+- URL: `https://skyridgeroofs.com/robots.txt`
+- Allows all crawlers
+- References sitemap
+
+### ai.txt
+- URL: `https://skyridgeroofs.com/ai.txt`
+- AI crawler permissions
+- Citation information
+
+## Notes
+
+- The sitemap is dynamically generated by Next.js
+- URLs are automatically updated when new pages are added
+- All canonical URLs ensure no duplicate content issues
+- Domain preference is set to `skyridgeroofs.com` (non-www)
+
+## Post-Submission Monitoring
+
+After submitting to Google Search Console:
+
+1. **Check Coverage Report**
+   - Monitor indexed vs. not indexed pages
+   - Fix any crawl errors
+
+2. **Review Performance**
+   - Track impressions and clicks
+   - Monitor average position
+   - Identify top-performing pages
+
+3. **Fix Issues**
+   - Address any mobile usability issues
+   - Fix any security issues
+   - Resolve any structured data errors
+
+---
+
+*Last Updated: Generated after canonical URL and sitemap updates*
+*Sitemap URL: https://skyridgeroofs.com/sitemap.xml*
+

@@ -7,6 +7,7 @@ import { getCityData } from '@/data/cityData';
 import { INDEXABLE_CITY_SLUG_SET, INDEXABLE_CITY_SLUGS } from '@/data/seo';
 import JsonLd from '@/components/JsonLd';
 import { BUSINESS, SITE_URL } from '@/lib/site';
+import { canonicalUrl } from '@/lib/seo';
 
 // Legacy city data for backward compatibility - will be migrated to use cityData.ts
 const legacyCityData: Record<string, {
@@ -409,6 +410,22 @@ const legacyCityData: Record<string, {
       serviceAreas: `We serve all of Spanish Fork including Spanish Fork City Center, Mapleton, Springville, Payson, and surrounding areas throughout Utah County.`,
     },
   },
+  'beaver-mountain': {
+    cityName: 'Beaver Mountain',
+    citySlug: 'beaver-mountain',
+    state: 'UT',
+    phoneNumber: '801-252-6936',
+    latitude: '41.8000',
+    longitude: '-111.5000',
+    zipCodes: ['84321', '84341', '84318', '84335', '84319', '84332', '84339', '84333', '84320'],
+    neighborhoods: ['Logan', 'North Logan', 'Hyde Park', 'Smithfield', 'Hyrum', 'Providence', 'Nibley', 'Wellsville', 'Richmond', 'Lewiston'],
+    contentSections: {
+      overview: `Sky Ridge Roofing provides expert roofing services to Beaver Mountain area homeowners and businesses. Located in the Bear River Mountains near Logan Canyon, this area experiences heavy snowfall, strong winds, and extreme temperature fluctuations. Our experienced team understands the unique roofing challenges in this mountain region and uses premium materials designed to withstand harsh mountain weather conditions.`,
+      whyChooseUs: `Our Beaver Mountain-area roofing service offers professional, reliable service to local homeowners and businesses. We use premium materials designed for mountain climates and provide expert installation that can handle heavy snow loads and extreme weather. With competitive pricing and fast service, we're the trusted choice for roofing needs in the Beaver Mountain region.`,
+      localInfo: `The Beaver Mountain area experiences a high-altitude mountain climate with very cold, snowy winters and mild summers. Heavy snowfall accumulation, strong winds, and rapid temperature changes create unique challenges for roofs. We use materials and installation techniques specifically suited for mountain conditions, including enhanced snow load capacity and wind resistance.`,
+      serviceAreas: `We provide roofing services throughout the Beaver Mountain area, including Logan, North Logan, Hyde Park, Smithfield, Hyrum, Providence, Nibley, Wellsville, Richmond, Lewiston, and all surrounding Cache County communities. We serve ZIP codes 84321, 84341, 84318, 84335, 84319, 84332, 84339, 84333, and 84320.`,
+    },
+  },
 };
 
 export async function generateStaticParams() {
@@ -429,7 +446,7 @@ export async function generateMetadata({ params }: { params: { city: string } })
     title: `Roofing Services in ${city.cityName}, ${city.state} | Sky Ridge Roofing`,
     description: `Expert roofing services in ${city.cityName}, ${city.state}. Roof replacement, repairs, and insurance claims. Free estimates. Licensed & insured.`,
     alternates: {
-      canonical: `/locations/${params.city}`,
+      canonical: canonicalUrl(`/locations/${params.city}`),
     },
     robots: {
       index: indexable,

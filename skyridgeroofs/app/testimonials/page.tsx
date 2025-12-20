@@ -4,10 +4,12 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import QuoteButton from '@/components/QuoteButton';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Customer Reviews & Testimonials | Sky Ridge Roofing',
   description: 'Read what our customers say about Sky Ridge Roofing. Real reviews from satisfied homeowners throughout Utah.',
+  alternates: { canonical: canonicalUrl('/testimonials') },
   openGraph: {
     title: 'Customer Reviews - Sky Ridge Roofing',
     description: 'Read what our customers say about Sky Ridge Roofing.',
@@ -126,13 +128,40 @@ export default function Page() {
             ))}
           </div>
 
+          {/* Related Links */}
+          <div className="bg-white rounded-lg shadow-md p-8 mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Explore Our Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Link href="/services/roof-replacement" className="text-center p-6 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                <h3 className="font-bold text-lg mb-2 text-blue-600">Roof Replacement</h3>
+                <p className="text-gray-600">Complete roof replacement with premium materials</p>
+              </Link>
+              <Link href="/services/insurance-claims" className="text-center p-6 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                <h3 className="font-bold text-lg mb-2 text-blue-600">Insurance Claims</h3>
+                <p className="text-gray-600">Expert assistance with insurance claims</p>
+              </Link>
+              <Link href="/gallery" className="text-center p-6 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                <h3 className="font-bold text-lg mb-2 text-blue-600">View Our Work</h3>
+                <p className="text-gray-600">See completed projects in our gallery</p>
+              </Link>
+            </div>
+          </div>
+
           {/* CTA Section */}
           <div className="bg-blue-700 text-white rounded-lg p-8 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to Join Our Happy Customers?</h2>
             <p className="text-xl mb-6">Get a free estimate and experience the Sky Ridge Roofing difference</p>
-            <QuoteButton className="bg-white text-blue-700 hover:bg-gray-100">
-              Get Free Quote
-            </QuoteButton>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <QuoteButton className="bg-white text-blue-700 hover:bg-gray-100">
+                Get Free Quote
+              </QuoteButton>
+              <Link
+                href="/locations"
+                className="inline-block border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition"
+              >
+                Find Your Location
+              </Link>
+            </div>
           </div>
         </div>
       </main>

@@ -1107,6 +1107,19 @@ export const cityData: Record<string, CityData> = {
     overviewNote: 'Sky Ridge Roofing provides expert roofing services to Vernal, Utah homeowners. Vernal\'s location in Uintah County means roofs face challenges from desert conditions, strong winds, and temperature extremes.',
     landingPath: '/locations/vernal',
   }),
+  'beaver-mountain': createGenericCityData({
+    citySlug: 'beaver-mountain',
+    cityName: 'Beaver Mountain',
+    latitude: '41.8000',
+    longitude: '-111.5000',
+    county: 'Cache County',
+    neighborhoods: ['Logan', 'North Logan', 'Hyde Park', 'Smithfield', 'Hyrum', 'Providence', 'Nibley', 'Wellsville', 'Richmond', 'Lewiston'],
+    serviceAreas: 'We provide roofing services throughout the Beaver Mountain area, including Logan, North Logan, Hyde Park, Smithfield, Hyrum, Providence, Nibley, Wellsville, Richmond, Lewiston, and all surrounding Cache County communities. Our same-day estimates ensure you get expert service when you need it.',
+    permitCityName: 'Logan',
+    permitPhone: '435-716-9000',
+    overviewNote: 'Sky Ridge Roofing provides expert roofing services to Beaver Mountain area homeowners and businesses. Located in the Bear River Mountains near Logan Canyon, this area experiences heavy snowfall, strong winds, and extreme temperature fluctuations. Our team understands the unique roofing challenges in this mountain region and uses premium materials designed to withstand harsh mountain weather conditions.',
+    landingPath: '/locations/beaver-mountain',
+  }),
 };
 
 // Helper function to get city data

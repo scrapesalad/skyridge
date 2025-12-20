@@ -3,10 +3,12 @@ import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Roofing Gallery | Sky Ridge Roofing - Before & After Photos',
   description: 'View our roofing project gallery featuring before and after photos of completed roof replacements, repairs, and installations throughout Utah.',
+  alternates: { canonical: canonicalUrl('/gallery') },
   openGraph: {
     title: 'Roofing Gallery - Sky Ridge Roofing',
     description: 'View our roofing project gallery featuring before and after photos.',

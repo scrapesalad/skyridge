@@ -6,12 +6,13 @@ import Image from 'next/image';
 import JsonLd from '@/components/JsonLd';
 import { BUSINESS, SITE_URL } from '@/lib/site';
 import { INDEXABLE_CITY_SLUGS } from '@/data/seo';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Utah Roofing Company',
   description:
     'Sky Ridge Roofing provides roof replacement, roof repairs, metal roofing, and commercial roofing across Utah. Licensed & insured. Free estimates.',
-  alternates: { canonical: '/utah-roofing-company' },
+  alternates: { canonical: canonicalUrl('/utah-roofing-company') },
   openGraph: {
     title: 'Utah Roofing Company | Sky Ridge Roofing',
     description:

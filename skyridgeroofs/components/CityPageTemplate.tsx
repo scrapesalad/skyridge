@@ -62,6 +62,7 @@ export default function CityPageTemplate({
   const [activeService, setActiveService] = useState('replacement');
   
   const canonicalUrl = `${SITE_URL}/locations/${citySlug}`;
+  const isExternalLink = (href: string) => /^https?:\/\//i.test(href);
   
   // Use roofingServices from cityData if available, otherwise use default services
   const defaultServices = [
@@ -105,6 +106,25 @@ export default function CityPageTemplate({
         image: `/images/skyridge/skyridge_image_${String(index + 1).padStart(3, '0')}.webp`,
       }))
     : defaultServices;
+
+  const serviceCityLinks = [
+    { label: `Roof replacement in ${cityName}`, href: `/services/roof-replacement?city=${citySlug}` },
+    { label: `Roof repairs in ${cityName}`, href: `/services/roof-repairs?city=${citySlug}` },
+    { label: `Insurance claims in ${cityName}`, href: `/services/insurance-claims?city=${citySlug}` },
+    { label: `Commercial roofing in ${cityName}`, href: `/services/commercial-roofing?city=${citySlug}` },
+    { label: `Metal roofing in ${cityName}`, href: `/services/metal-roofing?city=${citySlug}` },
+  ];
+
+  const cityResourceLinks = [
+    {
+      label: `${cityName} on Google Maps`,
+      href: `https://www.google.com/maps/search/${encodeURIComponent(`${cityName}, ${state}`)}`,
+    },
+    {
+      label: `Roofing in ${cityName} map results`,
+      href: `https://www.google.com/maps/search/${encodeURIComponent(`roofing ${cityName}, ${state}`)}`,
+    },
+  ];
 
   const cityFAQs = [
     {
@@ -414,7 +434,26 @@ export default function CityPageTemplate({
               <div className="grid md:grid-cols-2 gap-4">
                 {businessDistricts.map((district, index) => (
                   <div key={index} className="bg-white rounded-lg p-4 shadow-md">
-                    <h4 className="font-semibold text-gray-900 mb-2">{district.name}</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">
+                      {district.link ? (
+                        isExternalLink(district.link) ? (
+                          <a
+                            href={district.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-700"
+                          >
+                            {district.name}
+                          </a>
+                        ) : (
+                          <Link href={district.link} className="text-blue-600 hover:text-blue-700">
+                            {district.name}
+                          </Link>
+                        )
+                      ) : (
+                        district.name
+                      )}
+                    </h4>
                     <p className="text-gray-700 text-sm">{district.description}</p>
                   </div>
                 ))}
@@ -479,6 +518,29 @@ export default function CityPageTemplate({
                   {faq.answer}
                 </p>
               </div>
+            ))}
+          </div>
+        </div>
+        </section>
+
+      {/* Service + City URLs */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            Popular Roofing Services in {cityName}
+          </h2>
+          <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+            Explore focused service pages built for {cityName} homeowners and businesses.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {serviceCityLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center text-blue-700 hover:text-blue-800 hover:border-blue-300 transition-colors"
+              >
+                {link.label}
+              </Link>
             ))}
           </div>
         </div>
@@ -566,6 +628,20 @@ export default function CityPageTemplate({
                 className="w-full"
               ></iframe>
             </div>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            {cityResourceLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-700 hover:text-blue-800 hover:underline font-semibold"
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
         </div>
       </section>

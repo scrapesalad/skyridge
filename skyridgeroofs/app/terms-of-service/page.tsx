@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import Header from '@/components/header';
 import Footer from '@/components/Footer';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
   description: 'Website terms for Sky Ridge Roofing.',
-  alternates: { canonical: '/terms-of-service' },
+  alternates: { canonical: canonicalUrl('/terms-of-service') },
   robots: { index: false, follow: true },
 };
 

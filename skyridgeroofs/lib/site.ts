@@ -1,5 +1,6 @@
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, '') || 'https://skyridgeroofs.com';
+// Ensure we always use skyridgeroofs.com (no www)
+const rawUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, '') || 'https://skyridgeroofs.com';
+export const SITE_URL = rawUrl.replace(/^https?:\/\/(www\.)?/, 'https://');
 
 export const BUSINESS = {
   name: 'Sky Ridge Roofing',

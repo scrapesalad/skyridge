@@ -56,9 +56,21 @@ export default function Footer() {
               <h4 className="text-white font-bold uppercase mb-4 tracking-wide">BROWSE OUR SITE</h4>
               <ul className="space-y-2">
                 <li>
+                  <Link href="/services" className="text-gray-300 hover:text-white transition flex items-center group">
+                    <span className="mr-2">»</span>
+                    <span>All Services</span>
+                  </Link>
+                </li>
+                <li>
                   <Link href="/services/roof-replacement" className="text-gray-300 hover:text-white transition flex items-center group">
                     <span className="mr-2">»</span>
-                    <span>Residential Roofing</span>
+                    <span>Roof Replacement</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/services/roof-repairs" className="text-gray-300 hover:text-white transition flex items-center group">
+                    <span className="mr-2">»</span>
+                    <span>Roof Repairs</span>
                   </Link>
                 </li>
                 <li>
@@ -74,9 +86,33 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/services/roof-replacement" className="text-gray-300 hover:text-white transition flex items-center group">
+                  <Link href="/services/insurance-claims" className="text-gray-300 hover:text-white transition flex items-center group">
                     <span className="mr-2">»</span>
-                    <span>Multi-Family Roofing</span>
+                    <span>Insurance Claims</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/locations" className="text-gray-300 hover:text-white transition flex items-center group">
+                    <span className="mr-2">»</span>
+                    <span>Service Areas</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/calculators" className="text-gray-300 hover:text-white transition flex items-center group">
+                    <span className="mr-2">»</span>
+                    <span>Roofing Calculators</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/gallery" className="text-gray-300 hover:text-white transition flex items-center group">
+                    <span className="mr-2">»</span>
+                    <span>Project Gallery</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/testimonials" className="text-gray-300 hover:text-white transition flex items-center group">
+                    <span className="mr-2">»</span>
+                    <span>Testimonials</span>
                   </Link>
                 </li>
                 <li>
@@ -88,7 +124,19 @@ export default function Footer() {
                 <li>
                   <Link href="/faq" className="text-gray-300 hover:text-white transition flex items-center group">
                     <span className="mr-2">»</span>
-                    <span>Learning Hub</span>
+                    <span>FAQ</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/materials" className="text-gray-300 hover:text-white transition flex items-center group">
+                    <span className="mr-2">»</span>
+                    <span>Roofing Materials</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/financing" className="text-gray-300 hover:text-white transition flex items-center group">
+                    <span className="mr-2">»</span>
+                    <span>Financing Options</span>
                   </Link>
                 </li>
               </ul>
@@ -184,13 +232,21 @@ export default function Footer() {
       <div className="bg-gray-900 py-4 border-t border-gray-700">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-            <div>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               <p>
-                © 2025 Sky Ridge Roofing. All rights reserved.{' '}
-                <Link href="/privacy-policy" className="text-primary-light hover:text-primary transition">
-                  Privacy Policy
-                </Link>
+                © 2025 Sky Ridge Roofing. All rights reserved.
               </p>
+              <Link href="/privacy-policy" className="text-primary-light hover:text-primary transition">
+                Privacy Policy
+              </Link>
+              <span className="text-gray-500">|</span>
+              <Link href="/terms-of-service" className="text-primary-light hover:text-primary transition">
+                Terms of Service
+              </Link>
+              <span className="text-gray-500">|</span>
+              <Link href="/contingency-agreement" className="text-primary-light hover:text-primary transition">
+                Contingency Agreement
+              </Link>
             </div>
           </div>
         </div>

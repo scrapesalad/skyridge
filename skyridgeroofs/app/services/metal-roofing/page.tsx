@@ -6,12 +6,13 @@ import Link from 'next/link';
 import JsonLd from '@/components/JsonLd';
 import QuoteButton from '@/components/QuoteButton';
 import { BUSINESS, SITE_URL } from '@/lib/site';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Metal Roofing',
   description:
     'Metal roofing installation and replacement in Utah. Standing seam and exposed-fastener options, expert flashing details, and clean job sites. Free estimates.',
-  alternates: { canonical: '/services/metal-roofing' },
+  alternates: { canonical: canonicalUrl('/services/metal-roofing') },
   openGraph: {
     title: 'Metal Roofing in Utah | Sky Ridge Roofing',
     description:

@@ -5,12 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import JsonLd from '@/components/JsonLd';
 import { BUSINESS, SITE_URL } from '@/lib/site';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Commercial Roofing',
   description:
     'Commercial roofing in Utah for offices, retail, warehouses, and multi-family properties. Repairs, replacements, coatings, and maintenance programs.',
-  alternates: { canonical: '/services/commercial-roofing' },
+  alternates: { canonical: canonicalUrl('/services/commercial-roofing') },
   openGraph: {
     title: 'Commercial Roofing in Utah | Sky Ridge Roofing',
     description:

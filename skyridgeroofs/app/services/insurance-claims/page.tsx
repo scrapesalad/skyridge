@@ -4,10 +4,12 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import QuoteButton from '@/components/QuoteButton';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Insurance Claims Assistance | Sky Ridge Roofing',
   description: 'Expert assistance with insurance claims to ensure you get the coverage you deserve. We simplify the claims process.',
+  alternates: { canonical: canonicalUrl('/services/insurance-claims') },
   openGraph: {
     title: 'Insurance Claims - Sky Ridge Roofing',
     description: 'Expert assistance with insurance claims to ensure you get the coverage you deserve.',

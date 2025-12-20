@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import Header from '@/components/header';
 import Footer from '@/components/Footer';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'How Sky Ridge Roofing collects and uses information.',
-  alternates: { canonical: '/privacy-policy' },
+  alternates: { canonical: canonicalUrl('/privacy-policy') },
   robots: { index: false, follow: true },
 };
 

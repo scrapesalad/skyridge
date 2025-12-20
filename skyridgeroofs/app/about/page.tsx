@@ -2,10 +2,13 @@ import { Metadata } from 'next';
 import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
+import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'About Sky Ridge Roofing - Trusted Roofing Services in Utah',
   description: 'Sky Ridge Roofing offers expert roofing services, including roof replacement and assistance with insurance claims, ensuring customer satisfaction.',
+  alternates: { canonical: canonicalUrl('/about') },
   openGraph: {
     title: 'About Sky Ridge Roofing',
     description: 'Sky Ridge Roofing offers expert roofing services, including roof replacement and assistance with insurance claims, ensuring customer satisfaction.',
@@ -39,7 +42,10 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
             <div>
               <p className="mb-4 text-lg leading-relaxed">
-                At Sky Ridge Roofing, we prioritize trust, transparency, and exceptional service. We ensure a seamless roof replacement process, leaving you with nothing but a flawless new roof. Our customer-focused team is here to assist with insurance claims, making your experience smooth—because while satisfaction can be costly, loyalty is truly priceless.
+                At Sky Ridge Roofing, we prioritize trust, transparency, and exceptional service. We ensure a seamless <Link href="/services/roof-replacement" className="text-blue-600 hover:underline font-semibold">roof replacement</Link> process, leaving you with nothing but a flawless new roof. Our customer-focused team is here to assist with <Link href="/services/insurance-claims" className="text-blue-600 hover:underline font-semibold">insurance claims</Link>, making your experience smooth—because while satisfaction can be costly, loyalty is truly priceless.
+              </p>
+              <p className="mb-4 text-lg leading-relaxed">
+                We serve homeowners and businesses throughout Utah, providing expert <Link href="/services" className="text-blue-600 hover:underline font-semibold">roofing services</Link> including roof replacement, repairs, metal roofing, and commercial roofing solutions. <Link href="/contact" className="text-blue-600 hover:underline font-semibold">Contact us</Link> today to learn more about how we can help protect your property.
               </p>
             </div>
             <div className="relative h-96 rounded-lg overflow-hidden">
@@ -66,7 +72,7 @@ export default function Page() {
               </div>
               <h3 className="text-2xl font-bold mb-3">Built On Trust</h3>
               <p className="text-gray-700 leading-relaxed">
-                Trust and transparency are at the core of everything we do at Sky Ridge Roofing, especially when it comes to handling insurance claims and roof replacement projects.
+                Trust and transparency are at the core of everything we do at Sky Ridge Roofing, especially when it comes to handling <Link href="/services/insurance-claims" className="text-blue-600 hover:underline">insurance claims</Link> and <Link href="/services/roof-replacement" className="text-blue-600 hover:underline">roof replacement</Link> projects.
               </p>
             </div>
 
@@ -130,7 +136,7 @@ export default function Page() {
                 <svg className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-lg">Experts in Insurance Claims & Roof Replacement</span>
+                <span className="text-lg">Experts in <Link href="/services/insurance-claims" className="text-blue-600 hover:underline">Insurance Claims</Link> & <Link href="/services/roof-replacement" className="text-blue-600 hover:underline">Roof Replacement</Link></span>
               </li>
               <li className="flex items-start">
                 <svg className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -167,6 +173,26 @@ export default function Page() {
                   />
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="bg-blue-700 text-white rounded-lg p-8 text-center mt-12">
+            <h2 className="text-3xl font-bold mb-4">Ready to Work With Us?</h2>
+            <p className="text-xl mb-6">Get a free estimate and experience the Sky Ridge Roofing difference</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/contact"
+                className="inline-block bg-white text-blue-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
+              >
+                Get Free Quote
+              </Link>
+              <Link
+                href="/services"
+                className="inline-block border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition"
+              >
+                View Our Services
+              </Link>
             </div>
           </div>
         </div>

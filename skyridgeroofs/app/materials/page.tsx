@@ -3,10 +3,12 @@ import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Roofing Materials & Types | Sky Ridge Roofing',
   description: 'Explore our premium roofing materials including asphalt shingles, metal roofing, tile, and more. Find the perfect roof for your home.',
+  alternates: { canonical: canonicalUrl('/materials') },
   openGraph: {
     title: 'Roofing Materials - Sky Ridge Roofing',
     description: 'Explore our premium roofing materials including asphalt shingles, metal roofing, tile, and more.',
@@ -79,7 +81,7 @@ export default function Page() {
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold mb-4">Choose the Perfect Roofing Material</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              At Sky Ridge Roofing, we offer a wide variety of premium roofing materials to suit your style, budget, and needs. Our expert team will help you choose the perfect material for your home.
+              At Sky Ridge Roofing, we offer a wide variety of premium roofing materials to suit your style, budget, and needs. Our expert team will help you choose the perfect material for your home. Need help deciding? Check out our <Link href="/calculators/roofing-material" className="text-blue-600 hover:underline font-semibold">roofing material calculator</Link> or <Link href="/contact" className="text-blue-600 hover:underline font-semibold">contact us</Link> for a free consultation.
             </p>
           </div>
 

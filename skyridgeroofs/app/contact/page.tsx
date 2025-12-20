@@ -3,10 +3,12 @@ import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
 import Image from 'next/image';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Contact Us | Sky Ridge Roofing - Free Estimate',
   description: 'Contact Sky Ridge Roofing for a free estimate. Call 801-252-6936 or fill out our contact form. We serve all of Utah.',
+  alternates: { canonical: canonicalUrl('/contact') },
   openGraph: {
     title: 'Contact Us - Sky Ridge Roofing',
     description: 'Contact Sky Ridge Roofing for a free estimate. Call 801-252-6936 or fill out our contact form.',

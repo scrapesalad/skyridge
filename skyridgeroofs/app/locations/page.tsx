@@ -4,10 +4,12 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import JsonLd from '@/components/JsonLd';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Service Areas | Sky Ridge Roofing - Serving Utah',
   description: 'Sky Ridge Roofing provides expert roofing services throughout Utah. Find your city and get a free estimate today.',
+  alternates: { canonical: canonicalUrl('/locations') },
   openGraph: {
     title: 'Service Areas - Sky Ridge Roofing',
     description: 'Sky Ridge Roofing provides expert roofing services throughout Utah.',
@@ -26,6 +28,7 @@ const serviceAreas = [
   { name: 'Taylorsville', slug: 'taylorsville', zipCodes: ['84118', '84123', '84129'] },
   { name: 'St. George', slug: 'st-george', zipCodes: ['84770', '84790', '84791'] },
   { name: 'Logan', slug: 'logan', zipCodes: ['84321', '84322', '84323', '84341'] },
+  { name: 'Beaver Mountain', slug: 'beaver-mountain', zipCodes: ['84321', '84341', '84318', '84335', '84319', '84332', '84339', '84333', '84320'] },
 ];
 
 export default function Page() {

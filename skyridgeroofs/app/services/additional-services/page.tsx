@@ -4,10 +4,12 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import QuoteButton from '@/components/QuoteButton';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Additional Services | Sky Ridge Roofing',
   description: 'Solar installation, siding, and gutter services. Complete exterior solutions for your property in Utah.',
+  alternates: { canonical: canonicalUrl('/services/additional-services') },
   openGraph: {
     title: 'Additional Services - Sky Ridge Roofing',
     description: 'Solar installation, siding, and gutter services.',

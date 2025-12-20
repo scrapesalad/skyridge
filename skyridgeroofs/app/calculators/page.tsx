@@ -3,10 +3,12 @@ import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import JsonLd from '@/components/JsonLd';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Roofing Calculators | Sky Ridge Roofing',
   description: 'Free roofing calculators to help estimate costs, materials, measurements, and more for your roofing project.',
+  alternates: { canonical: canonicalUrl('/calculators') },
   openGraph: {
     title: 'Roofing Calculators - Sky Ridge Roofing',
     description: 'Free roofing calculators for your roofing project.',

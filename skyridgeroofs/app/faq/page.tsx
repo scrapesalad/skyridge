@@ -3,10 +3,12 @@ import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Roofing FAQs | Sky Ridge Roofing - Your Questions Answered',
   description: 'Get answers to common roofing questions about roof replacement, repairs, insurance claims, materials, and more from Sky Ridge Roofing experts.',
+  alternates: { canonical: canonicalUrl('/faq') },
   openGraph: {
     title: 'Roofing FAQs - Sky Ridge Roofing',
     description: 'Get answers to common roofing questions about roof replacement, repairs, insurance claims, and more.',

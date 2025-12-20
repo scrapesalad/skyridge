@@ -4,10 +4,12 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import QuoteButton from '@/components/QuoteButton';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Roof Replacement Services | Sky Ridge Roofing',
   description: 'Complete roof replacement services with quality materials and expert installation. Protect your home and boost curb appeal.',
+  alternates: { canonical: canonicalUrl('/services/roof-replacement') },
   openGraph: {
     title: 'Roof Replacement - Sky Ridge Roofing',
     description: 'Complete roof replacement services with quality materials and expert installation.',

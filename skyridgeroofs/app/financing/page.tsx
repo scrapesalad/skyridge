@@ -4,10 +4,12 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import QuoteButton from '@/components/QuoteButton';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Roofing Financing Options | Sky Ridge Roofing',
   description: 'Flexible financing options available for your roofing project. Make your roof replacement affordable with our payment plans.',
+  alternates: { canonical: canonicalUrl('/financing') },
   openGraph: {
     title: 'Financing Options - Sky Ridge Roofing',
     description: 'Flexible financing options available for your roofing project.',

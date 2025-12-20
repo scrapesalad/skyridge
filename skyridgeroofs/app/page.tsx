@@ -11,12 +11,13 @@ import LLMSchema from '@/components/LLMSchema';
 import QuoteButton from '@/components/QuoteButton';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import { BUSINESS, SITE_URL } from '@/lib/site';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Utah Roofing Company',
   description:
     'Roof replacement, roof repairs, and insurance-claim help across Utah. Licensed & insured. Call for a free estimate.',
-  alternates: { canonical: '/' },
+  alternates: { canonical: canonicalUrl('/') },
   openGraph: {
     title: 'Sky Ridge Roofing',
     description:
