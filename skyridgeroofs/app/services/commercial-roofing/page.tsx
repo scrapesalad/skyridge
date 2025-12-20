@@ -8,14 +8,14 @@ import { BUSINESS, SITE_URL } from '@/lib/site';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Commercial Roofing',
+  title: 'Commercial Roofing | TPO Roofing & EPDM Roofing | Sky Ridge Roofing',
   description:
-    'Commercial roofing in Utah for offices, retail, warehouses, and multi-family properties. Repairs, replacements, coatings, and maintenance programs.',
+    'Expert commercial roofing services in Utah: TPO roofing, EPDM roofing, commercial roof repair, commercial roof replacement, and commercial roofing contractors. Free estimates.',
   alternates: { canonical: canonicalUrl('/services/commercial-roofing') },
   openGraph: {
-    title: 'Commercial Roofing in Utah | Sky Ridge Roofing',
+    title: 'Commercial Roofing Company | TPO & EPDM Roofing | Sky Ridge Roofing',
     description:
-      'Commercial roofing in Utah: repairs, replacements, coatings, and maintenance programs for flat and low-slope systems.',
+      'Professional commercial roofing in Utah: TPO roofing, EPDM roofing, commercial roof repairs, replacements, coatings, and maintenance programs.',
     url: '/services/commercial-roofing',
   },
 };

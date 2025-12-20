@@ -7,12 +7,12 @@ import QuoteButton from '@/components/QuoteButton';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Roofing Services | Sky Ridge Roofing - Complete Roofing Solutions',
-  description: 'Roofing services in Utah: roof replacement, roof repairs, metal roofing, commercial roofing, insurance claims, and more. Free estimates.',
+  title: 'Roofing Services | Roof Installation, Roof Repairs, Metal Roofing | Sky Ridge Roofing',
+  description: 'Comprehensive roofing services in Utah: roof replacement, roof repairs, roof installation, metal roofing, commercial roofing, roof leak repair, and insurance claims. Expert roofing contractors near me. Free estimates.',
   alternates: { canonical: canonicalUrl('/services') },
   openGraph: {
-    title: 'Roofing Services - Sky Ridge Roofing',
-    description: 'Roofing services in Utah: replacement, repairs, metal roofing, commercial roofing, and insurance claims.',
+    title: 'Roofing Services - Expert Roofing Contractors | Sky Ridge Roofing',
+    description: 'Professional roofing services in Utah: roof replacement, roof repairs, roof installation, metal roofing, commercial roofing, and insurance claims. Licensed roofing contractors.',
     type: 'website',
   },
 };
@@ -24,6 +24,13 @@ const services = [
     image: '/images/skyridge/skyridge_image_001.webp',
     link: '/services/roof-replacement',
     features: ['Full roof replacement', 'Premium materials', 'Expert installation', 'Warranty included'],
+  },
+  {
+    title: 'Roof Installation',
+    description: 'New roof installation in Utah with quality materials and expert workmanship. Free estimates.',
+    image: '/images/skyridge/skyridge_image_010.webp',
+    link: '/services/roof-installation',
+    features: ['New roof installation', 'Material guidance', 'Expert workmanship', 'Warranty included'],
   },
   {
     title: 'Roof Repairs',
@@ -61,6 +68,17 @@ const services = [
     features: ['Solar installation', 'Siding services', 'Gutter systems', 'Commercial roofing'],
   },
 ];
+
+const moreServices = [
+  { title: 'Roof Inspection', link: '/services/roof-inspection', note: 'Hail, wind, leak checks, and documentation' },
+  { title: 'Emergency Roof Repair', link: '/services/emergency-roof-repair', note: 'Urgent leak and storm damage help' },
+  { title: 'Roof Maintenance', link: '/services/roof-maintenance', note: 'Preventative tune-ups and minor fixes' },
+  { title: 'Roof Ventilation', link: '/services/roof-ventilation', note: 'Vent and airflow improvements' },
+  { title: 'Roof Coatings', link: '/services/roof-coatings', note: 'Commercial/flat roof coating options' },
+  { title: 'Shingle Roofing', link: '/services/shingle-roofing', note: 'Asphalt shingle installation and repairs' },
+  { title: 'Flat Roofing', link: '/services/flat-roofing', note: 'TPO/EPDM and low-slope systems' },
+  { title: 'Solar Installation', link: '/services/solar', note: 'Roof-first solar planning with partners' },
+] as const;
 
 export default function Page() {
   return (
@@ -116,7 +134,7 @@ export default function Page() {
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold mb-4">Comprehensive Roofing Services</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Sky Ridge Roofing offers a full range of roofing services to meet all your needs. From emergency repairs to complete roof replacements, we have the expertise and experience to handle any project.
+              Sky Ridge Roofing offers a full range of roofing services to meet all your needs. As expert roofing contractors, we specialize in roof replacement, roof repairs, roof installation, metal roofing, commercial roofing, roof leak repair, and roof maintenance. Whether you need residential roofing services or commercial roofing solutions, our licensed roofing contractors have the expertise and experience to handle any project. From emergency roof repairs to complete roof replacements, we provide quality workmanship with premium roofing materials including asphalt shingles, architectural shingles, and standing seam metal roofing.
             </p>
           </div>
 
@@ -151,6 +169,25 @@ export default function Page() {
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-8 mb-12">
+            <h2 className="text-3xl font-bold mb-4 text-center">More Roofing Services</h2>
+            <p className="text-gray-600 text-center mb-8">
+              Looking for a specific service? These pages help you find the right solution quickly.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {moreServices.map((s) => (
+                <Link
+                  key={s.link}
+                  href={s.link}
+                  className="border border-gray-200 rounded-lg p-5 hover:border-blue-300 hover:bg-blue-50 transition"
+                >
+                  <div className="font-bold text-lg text-gray-900">{s.title}</div>
+                  <div className="text-gray-600">{s.note}</div>
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Additional Services Section */}

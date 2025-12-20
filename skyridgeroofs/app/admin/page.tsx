@@ -597,7 +597,7 @@ function BulkEmailOutreach() {
                 </p>
                 {getRecipientCount() > 100 && (
                   <div className="mt-2 p-2 bg-yellow-100 border border-yellow-300 rounded text-xs text-yellow-800">
-                    ⚠️ <strong>Warning:</strong> Large batches ({getRecipientCount()} emails) may timeout. 
+                    <strong>Warning:</strong> Large batches ({getRecipientCount()} emails) may timeout.
                     Consider sending in smaller batches (50-100 emails) for better reliability.
                   </div>
                 )}
@@ -672,14 +672,14 @@ function BulkEmailOutreach() {
 
       {/* Help Text */}
       <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-        <h4 className="text-sm font-medium text-primary-dark mb-2">💡 Tips for Effective Email Outreach</h4>
+        <h4 className="text-sm font-medium text-primary-dark mb-2">Tips for Effective Email Outreach</h4>
         <ul className="text-sm text-primary-dark space-y-1">
-          <li>• Use personalization tokens like {'{firstName}'}, {'{city}'}, {'{county}'} in your content</li>
-          <li>• Test with a small group first before sending to all clients</li>
-          <li>• Keep subject lines under 50 characters for better open rates</li>
-          <li>• Include a clear call-to-action in your emails</li>
-          <li>• Respect unsubscribe requests and email preferences</li>
-          <li>• Seasonal emails work great for roofing (spring inspections, winter preparation, etc.)</li>
+          <li>Use personalization tokens like {'{firstName}'}, {'{city}'}, {'{county}'} in your content</li>
+          <li>Test with a small group before sending to all clients</li>
+          <li>Keep subject lines under 50 characters for better open rates</li>
+          <li>Include a clear call-to-action in your emails</li>
+          <li>Respect unsubscribe requests and email preferences</li>
+          <li>Seasonal emails work well for roofing (spring inspections, winter preparation, etc.)</li>
         </ul>
       </div>
     </div>

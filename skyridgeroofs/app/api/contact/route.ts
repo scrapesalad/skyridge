@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { buildContactEmailContent } from '@/lib/contactEmailTemplates';
+import { buildCcRecipients, parseEmailList } from '@/lib/emailRecipients';
 
 // Email configuration from environment variables
 const EMAIL_CONFIG = {
@@ -36,95 +38,43 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Format the form data
-    const formDataText = `
-New ${formType || 'Contact'} Form Submission
+    const { businessHtml, customerHtml, summaryText, businessSubject, customerSubject } =
+      buildContactEmailContent({
+        firstName,
+        lastName,
+        email,
+        telephone,
+        address,
+        city,
+        zipCode,
+        service,
+        message,
+        formType,
+      });
 
-Contact Information:
-- Name: ${firstName || ''} ${lastName || ''}
-- Email: ${email}
-- Phone: ${telephone}
-${address ? `- Address: ${address}` : ''}
-${city ? `- City: ${city}` : ''}
-${zipCode ? `- ZIP Code: ${zipCode}` : ''}
-${service ? `- Service Needed: ${service}` : ''}
-${message ? `\nMessage:\n${message}` : ''}
-    `.trim();
+    const toRecipients = parseEmailList(EMAIL_CONFIG.to);
+    const ccRecipients = buildCcRecipients(EMAIL_CONFIG.cc);
+
+    // Log CC recipients for debugging
+    console.log('CC Recipients:', ccRecipients);
 
     // Email to business (skyridgeroofs@gmail.com and jeremyuwg@gmail.com)
     const businessEmail = {
       from: EMAIL_CONFIG.user,
-      to: EMAIL_CONFIG.to,
-      cc: EMAIL_CONFIG.cc,
-      subject: `New ${formType || 'Contact'} Form Submission from ${firstName || email}`,
-      text: formDataText,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e40af;">New ${formType || 'Contact'} Form Submission</h2>
-          <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #374151; margin-top: 0;">Contact Information</h3>
-            <p><strong>Name:</strong> ${firstName || ''} ${lastName || ''}</p>
-            <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-            <p><strong>Phone:</strong> <a href="tel:${telephone}">${telephone}</a></p>
-            ${address ? `<p><strong>Address:</strong> ${address}</p>` : ''}
-            ${city ? `<p><strong>City:</strong> ${city}</p>` : ''}
-            ${zipCode ? `<p><strong>ZIP Code:</strong> ${zipCode}</p>` : ''}
-            ${service ? `<p><strong>Service Needed:</strong> ${service}</p>` : ''}
-            ${message ? `<div style="margin-top: 20px;"><strong>Message:</strong><p style="background-color: white; padding: 15px; border-radius: 4px; margin-top: 10px;">${message.replace(/\n/g, '<br>')}</p></div>` : ''}
-          </div>
-          <p style="color: #6b7280; font-size: 12px; margin-top: 30px;">
-            This email was sent from the Sky Ridge Roofing contact form.
-          </p>
-        </div>
-      `,
+      to: toRecipients.length > 0 ? toRecipients : EMAIL_CONFIG.to,
+      cc: ccRecipients.length > 0 ? ccRecipients : undefined,
+      subject: businessSubject,
+      text: summaryText,
+      html: businessHtml,
     };
 
     // Follow-up email to the customer
     const followUpEmail = {
       from: EMAIL_CONFIG.user,
       to: email,
-      subject: 'Thank You for Contacting Sky Ridge Roofing',
-      text: `
-Thank you for contacting Sky Ridge Roofing!
-
-We've received your request and one of our team members will get back to you within 24 hours.
-
-Here's a summary of your submission:
-${formDataText}
-
-If you have any urgent questions, please call us at 801-252-6936.
-
-Best regards,
-Sky Ridge Roofing Team
-      `.trim(),
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e40af;">Thank You for Contacting Sky Ridge Roofing!</h2>
-          <p>We've received your request and one of our team members will get back to you within 24 hours.</p>
-          
-          <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #374151; margin-top: 0;">Your Submission Summary</h3>
-            <p><strong>Name:</strong> ${firstName || ''} ${lastName || ''}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${telephone}</p>
-            ${address ? `<p><strong>Address:</strong> ${address}</p>` : ''}
-            ${city ? `<p><strong>City:</strong> ${city}</p>` : ''}
-            ${zipCode ? `<p><strong>ZIP Code:</strong> ${zipCode}</p>` : ''}
-            ${service ? `<p><strong>Service Needed:</strong> ${service}</p>` : ''}
-            ${message ? `<div style="margin-top: 20px;"><strong>Message:</strong><p style="background-color: white; padding: 15px; border-radius: 4px; margin-top: 10px;">${message.replace(/\n/g, '<br>')}</p></div>` : ''}
-          </div>
-
-          <div style="background-color: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 0;"><strong>Need immediate assistance?</strong></p>
-            <p style="margin: 5px 0 0 0;">Call us at <a href="tel:8012526936" style="color: #1e40af; font-weight: bold;">801-252-6936</a></p>
-          </div>
-
-          <p style="color: #6b7280; font-size: 12px; margin-top: 30px;">
-            Sky Ridge Roofing<br>
-            Serving all of Utah
-          </p>
-        </div>
-      `,
+      subject: customerSubject,
+      text: `Thank you for contacting Sky Ridge Roofing!\n\nWe’ve received your request and will follow up within 24 hours.\n\nIf you have an urgent question, call us at 801-252-6936.`,
+      html: customerHtml,
     };
 
     // Send both emails

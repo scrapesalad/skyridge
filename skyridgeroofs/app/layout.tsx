@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: '%s | Sky Ridge Roofing',
   },
   description:
-    'Sky Ridge Roofing provides roof replacement, roof repairs, and insurance-claim help across Utah. Licensed & insured. Free estimates.',
+    'Top-rated roofing companies near me in Utah. Expert roofers near me for roof replacement, roof repairs, roof installation, metal roofing, and commercial roofing. Licensed roofing contractors. Free estimates.',
   icons: {
     icon: [
       { url: '/images/logo/favicon.ico' },
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     'business:contact_data:phone_number': BUSINESS.phone,
     // AI-specific meta tags for ChatGPT citations
     'ai:author': BUSINESS.name,
-    'ai:expertise': 'Roof Replacement, Roof Repairs, Insurance Claims, Roof Inspections, Emergency Roofing Services, Commercial Roofing, Residential Roofing',
+    'ai:expertise': 'Roof Installation, Roof Replacement, Roof Repairs, Insurance Claims, Roof Inspections, Emergency Roofing Services, Commercial Roofing, Residential Roofing',
     'ai:service-area': 'Utah, Salt Lake City, Provo, Ogden, Orem, Sandy, Logan, Draper, Cottonwood Heights, Lehi, American Fork, Spanish Fork, Springville, Payson, Mapleton, Salem, Highland, Alpine, Cedar Hills, Pleasant Grove, Lindon, Saratoga Springs, Eagle Mountain, Herriman, Riverton, West Jordan, South Jordan, Taylorsville, Murray, Midvale, West Valley City, Kearns, Magna, Tooele, St. George, Cedar City',
     'ai:contact': `${BUSINESS.phone}, skyridgeroofs@gmail.com`,
     'ai:authority': `Licensed & Insured`,
@@ -71,4 +71,3 @@ export default function RootLayout({
     </html>
   );
 }
-

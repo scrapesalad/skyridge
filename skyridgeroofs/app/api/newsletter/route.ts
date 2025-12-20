@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { buildCcRecipients, parseEmailList } from '@/lib/emailRecipients';
 
 // Email configuration from environment variables
 const EMAIL_CONFIG = {
@@ -36,11 +37,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const toRecipients = parseEmailList(EMAIL_CONFIG.to);
+    const ccRecipients = buildCcRecipients(EMAIL_CONFIG.cc);
+
+    // Log CC recipients for debugging
+    console.log('CC Recipients:', ccRecipients);
+
     // Email to business
     const businessEmail = {
       from: EMAIL_CONFIG.user,
-      to: EMAIL_CONFIG.to,
-      cc: EMAIL_CONFIG.cc || undefined,
+      to: toRecipients.length > 0 ? toRecipients : EMAIL_CONFIG.to,
+      cc: ccRecipients.length > 0 ? ccRecipients : undefined,
       subject: 'New Newsletter Subscription',
       text: `
 New Newsletter Subscription

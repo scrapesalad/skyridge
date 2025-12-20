@@ -24,6 +24,141 @@ const nextConfig = {
         destination: '/utah-roofing-company',
         permanent: true,
       },
+      {
+        source: '/roof-installation',
+        destination: '/services/roof-installation',
+        permanent: true,
+      },
+      {
+        source: '/roof-installation-utah',
+        destination: '/services/roof-installation',
+        permanent: true,
+      },
+      {
+        source: '/roof-repair',
+        destination: '/services/roof-repairs',
+        permanent: true,
+      },
+      {
+        source: '/roof-repair-utah',
+        destination: '/services/roof-repairs',
+        permanent: true,
+      },
+      {
+        source: '/roof-repair-near-me',
+        destination: '/services/roof-repairs',
+        permanent: true,
+      },
+      {
+        source: '/roof-replacement-near-me',
+        destination: '/services/roof-replacement',
+        permanent: true,
+      },
+      {
+        source: '/roof-installation-near-me',
+        destination: '/services/roof-installation',
+        permanent: true,
+      },
+      {
+        source: '/roofers-near-me',
+        destination: '/utah-roofing-company',
+        permanent: true,
+      },
+      {
+        source: '/roofing-contractors-near-me',
+        destination: '/utah-roofing-company',
+        permanent: true,
+      },
+      {
+        source: '/metal-roofing-near-me',
+        destination: '/services/metal-roofing',
+        permanent: true,
+      },
+      {
+        source: '/commercial-roofing-near-me',
+        destination: '/services/commercial-roofing',
+        permanent: true,
+      },
+      {
+        source: '/roof-inspection-near-me',
+        destination: '/services/roof-inspection',
+        permanent: true,
+      },
+      {
+        source: '/emergency-roof-repair-near-me',
+        destination: '/services/emergency-roof-repair',
+        permanent: true,
+      },
+      {
+        source: '/shingle-roofing-near-me',
+        destination: '/services/shingle-roofing',
+        permanent: true,
+      },
+      {
+        source: '/flat-roofing-near-me',
+        destination: '/services/flat-roofing',
+        permanent: true,
+      },
+      {
+        source: '/solar',
+        destination: '/services/solar',
+        permanent: true,
+      },
+      {
+        source: '/solar-installation',
+        destination: '/services/solar',
+        permanent: true,
+      },
+      {
+        source: '/solar-installation-utah',
+        destination: '/services/solar',
+        permanent: true,
+      },
+      {
+        source: '/solar-near-me',
+        destination: '/services/solar',
+        permanent: true,
+      },
+      {
+        source: '/roof-replacement-utah',
+        destination: '/services/roof-replacement',
+        permanent: true,
+      },
+      {
+        source: '/roof-inspection',
+        destination: '/services/roof-inspection',
+        permanent: true,
+      },
+      {
+        source: '/emergency-roof-repair',
+        destination: '/services/emergency-roof-repair',
+        permanent: true,
+      },
+      {
+        source: '/roof-maintenance',
+        destination: '/services/roof-maintenance',
+        permanent: true,
+      },
+      {
+        source: '/roof-ventilation',
+        destination: '/services/roof-ventilation',
+        permanent: true,
+      },
+      {
+        source: '/roof-coatings',
+        destination: '/services/roof-coatings',
+        permanent: true,
+      },
+      {
+        source: '/shingle-roofing',
+        destination: '/services/shingle-roofing',
+        permanent: true,
+      },
+      {
+        source: '/flat-roofing',
+        destination: '/services/flat-roofing',
+        permanent: true,
+      },
     ];
   },
   // Ensure path aliases work correctly in all build environments

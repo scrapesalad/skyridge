@@ -4,15 +4,18 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import QuoteButton from '@/components/QuoteButton';
+import JsonLd from '@/components/JsonLd';
+import { BUSINESS, SITE_URL } from '@/lib/site';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Roof Repair Services | Sky Ridge Roofing',
-  description: 'Fast and reliable roof repair services to fix leaks, damage, and wear. Expert repairs to extend your roof\'s lifespan.',
+  title: 'Roof Repair Near Me & Roof Leak Repair | Sky Ridge Roofing',
+  description:
+    'Expert roof repair near me and roof leak repair services in Utah. Professional roof repairs for leaks, storm damage, shingles, flashing, and ventilation issues. Fast scheduling and free estimates.',
   alternates: { canonical: canonicalUrl('/services/roof-repairs') },
   openGraph: {
-    title: 'Roof Repairs - Sky Ridge Roofing',
-    description: 'Fast and reliable roof repair services to fix leaks, damage, and wear.',
+    title: 'Roof Repair Near Me & Roof Leak Repair | Sky Ridge Roofing',
+    description: 'Professional roof repair near me and roof leak repair in Utah for leaks, storm damage, shingles, and flashing issues.',
     type: 'website',
   },
 };
@@ -21,6 +24,20 @@ export default function Page() {
   return (
     <>
       <Header />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          serviceType: 'Roof repair',
+          areaServed: 'Utah',
+          provider: {
+            '@type': 'LocalBusiness',
+            name: BUSINESS.name,
+            url: SITE_URL,
+            telephone: BUSINESS.phone,
+          },
+        }}
+      />
       <main className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">

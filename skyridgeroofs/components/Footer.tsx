@@ -47,7 +47,18 @@ export default function Footer() {
                     className="h-16 w-auto object-contain"
                   />
                 </Link>
-                <p className="text-white text-lg">Roofing Solutions.</p>
+                <p className="text-white text-lg mb-3">Roofing Solutions.</p>
+                <p className="text-gray-300 text-sm">
+                  Visit our{' '}
+                  <a 
+                    href="https://skyridgeco.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary-light hover:text-white transition underline"
+                  >
+                    original website
+                  </a>
+                </p>
               </div>
             </div>
 

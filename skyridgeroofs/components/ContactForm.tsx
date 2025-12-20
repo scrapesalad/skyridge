@@ -134,8 +134,10 @@ export default function ContactForm() {
           >
             <option value="">Select a service</option>
             <option value="roof-replacement">Roof Replacement</option>
+            <option value="roof-installation">Roof Installation</option>
             <option value="roof-repairs">Roof Repairs</option>
             <option value="insurance-claims">Insurance Claims</option>
+            <option value="solar">Solar Installation</option>
             <option value="additional-services">Additional Services</option>
             <option value="inspection">Roof Inspection</option>
             <option value="other">Other</option>

@@ -14,14 +14,14 @@ import { BUSINESS, SITE_URL } from '@/lib/site';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Utah Roofing Company',
+  title: 'Roofing Companies Near Me | Utah Roofing Company | Sky Ridge Roofing',
   description:
-    'Roof replacement, roof repairs, and insurance-claim help across Utah. Licensed & insured. Call for a free estimate.',
+    'Find the best roofing companies near me in Utah. Expert roofers near me for roof replacement, roof repairs, roof installation, metal roofing, and commercial roofing. Licensed roofing contractors offering free estimates.',
   alternates: { canonical: canonicalUrl('/') },
   openGraph: {
-    title: 'Sky Ridge Roofing',
+    title: 'Roofing Companies Near Me | Sky Ridge Roofing',
     description:
-      'Roof replacement, roof repairs, and insurance-claim help across Utah. Licensed & insured. Free estimates.',
+      'Top-rated roofers near me in Utah. Expert roof replacement, roof repairs, roof installation, metal roofing, and commercial roofing services. Licensed roofing contractors. Free estimates.',
     url: '/',
   },
 };
@@ -142,19 +142,34 @@ export default function Page() {
                   Sky Ridge Roofing Has Been Serving Utah With Excellence From The Start...
                 </h3>
                 <p className="text-lg text-gray-700 leading-relaxed mb-8">
-                  Today Sky Ridge Roofing maintains the same commitment we've always had: provide the best possible roofing products, at competitive prices, with exceptional service. We pride ourselves on our ability to deliver the highest level of service to customers statewide across Utah. As a trusted local roofing company, you can rest assured we will be around long enough to take care of all your roofing needs - from roof replacement and repairs to insurance claims assistance. Our team understands Utah's unique climate challenges and uses proven techniques to protect your home.
+                  Today Sky Ridge Roofing maintains the same commitment we've always had: provide the best possible roofing products, at competitive prices, with exceptional service. As one of Utah's top roofing companies, we pride ourselves on delivering the highest level of service to customers statewide. Whether you need roof replacement, roof repairs, roof installation, metal roofing, or commercial roofing services, our licensed roofing contractors are here to help. We specialize in roof replacement, roof repairs, roof leak repair, and insurance claims assistance. Our team understands Utah's unique climate challenges and uses proven techniques to protect your home with quality asphalt shingles, architectural shingles, and premium roofing materials.
                 </p>
-                <Link
-                  href="/about"
-                  className="inline-flex items-center space-x-3 text-gray-900 font-semibold uppercase tracking-wide hover:text-blue-600 transition group"
-                >
-                  <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center group-hover:bg-blue-700 transition">
-                    <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                    </svg>
-                  </div>
-                  <span>Watch Our Video</span>
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link
+                    href="/about"
+                    className="inline-flex items-center space-x-3 text-gray-900 font-semibold uppercase tracking-wide hover:text-blue-600 transition group"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center group-hover:bg-blue-700 transition">
+                      <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                      </svg>
+                    </div>
+                    <span>Watch Our Video</span>
+                  </Link>
+                  <a
+                    href="https://skyridgeco.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-3 text-gray-900 font-semibold uppercase tracking-wide hover:text-blue-600 transition group"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center group-hover:bg-gray-300 transition">
+                      <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                      </svg>
+                    </div>
+                    <span>Visit SkyRidgeCo.com</span>
+                  </a>
+                </div>
               </div>
 
               {/* Right Side - Image */}
@@ -288,7 +303,7 @@ export default function Page() {
                   Less mess. Less stress. Lots more peace of mind.
                 </h3>
                 <p className="text-lg text-gray-700 leading-relaxed mb-8">
-                  Sky Ridge Roofing is a trusted, licensed, and insured roofing company serving homeowners and businesses throughout Utah. With over 15 years of experience, we've built our reputation on providing the best possible roofing products at competitive prices, with exceptional service. We specialize in roof replacement, roof repairs, and insurance claims assistance. Our team understands Utah's unique climate challenges and uses proven techniques to protect your home with quality asphalt roofing and premium materials.
+                  Sky Ridge Roofing is a trusted, licensed, and insured roofing company serving homeowners and businesses throughout Utah. As one of the top roofing contractors in the state, we've built our reputation on providing the best possible roofing products at competitive prices, with exceptional service. With over 15 years of experience, we specialize in roof replacement, roof repairs, roof installation, metal roofing, commercial roofing, and insurance claims assistance. Our expert roofing contractors understand Utah's unique climate challenges and use proven techniques to protect your home with quality asphalt shingles, architectural shingles, and premium roofing materials.
                 </p>
                 <QuoteButton>
                   GET A QUOTE{' '}
@@ -531,25 +546,25 @@ export default function Page() {
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold text-center mb-12">Quality Craftsmanship</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="relative h-64 rounded-lg overflow-hidden">
+              <div className="relative h-64 rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src="/images/skyridge/skyridge_image_020.webp"
+                  src="/images/beforeafter/IMG_2310.JPG"
                   alt="Quality roofing work"
                   fill
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-64 rounded-lg overflow-hidden">
+              <div className="relative h-64 rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src="/images/skyridge/skyridge_image_025.webp"
+                  src="/images/beforeafter/IMG_2311.JPG"
                   alt="Professional installation"
                   fill
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-64 rounded-lg overflow-hidden">
+              <div className="relative h-64 rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src="/images/skyridge/skyridge_image_030.webp"
+                  src="/images/beforeafter/IMG_2318.JPG"
                   alt="Expert roofing team"
                   fill
                   className="object-cover"

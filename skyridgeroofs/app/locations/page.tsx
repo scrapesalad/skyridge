@@ -7,12 +7,12 @@ import JsonLd from '@/components/JsonLd';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Service Areas | Sky Ridge Roofing - Serving Utah',
-  description: 'Sky Ridge Roofing provides expert roofing services throughout Utah. Find your city and get a free estimate today.',
+  title: 'Roofing Companies Near Me | Roofers Near Me | Sky Ridge Roofing Utah',
+  description: 'Find roofing companies near me and roofers near me in Utah. Expert roof repair near me, roof replacement near me, and roofing contractors near me. Free estimates.',
   alternates: { canonical: canonicalUrl('/locations') },
   openGraph: {
-    title: 'Service Areas - Sky Ridge Roofing',
-    description: 'Sky Ridge Roofing provides expert roofing services throughout Utah.',
+    title: 'Roofing Companies Near Me | Roofers Near Me | Sky Ridge Roofing',
+    description: 'Top roofing companies near me and roofers near me throughout Utah. Expert roof repair near me and roof replacement near me services.',
     type: 'website',
   },
 };
@@ -83,7 +83,7 @@ export default function Page() {
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold mb-4">We Serve All of Utah</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Sky Ridge Roofing provides professional roofing services throughout Utah. Whether you're in Salt Lake City, Provo, Ogden, or any surrounding area, we're here to help with all your roofing needs.
+              Sky Ridge Roofing is your trusted local roofing contractor. We provide expert roof repair, roof replacement, roof installation, metal roofing, and commercial roofing services throughout Utah. Whether you're in Salt Lake City, Provo, Ogden, or any surrounding area, our licensed roofing contractors are here to help with all your roofing needs. As one of Utah's top roofing companies, we offer free estimates and quality workmanship.
             </p>
           </div>
 

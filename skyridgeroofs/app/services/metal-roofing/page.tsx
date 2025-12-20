@@ -9,14 +9,14 @@ import { BUSINESS, SITE_URL } from '@/lib/site';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Metal Roofing',
+  title: 'Metal Roofing | Standing Seam Metal Roof Installation | Sky Ridge Roofing',
   description:
-    'Metal roofing installation and replacement in Utah. Standing seam and exposed-fastener options, expert flashing details, and clean job sites. Free estimates.',
+    'Expert metal roofing installation and metal roof replacement in Utah. Professional standing seam metal roof and metal roof installation services. Metal roofing contractors near me. Free estimates.',
   alternates: { canonical: canonicalUrl('/services/metal-roofing') },
   openGraph: {
-    title: 'Metal Roofing in Utah | Sky Ridge Roofing',
+    title: 'Metal Roofing & Standing Seam Metal Roof | Sky Ridge Roofing',
     description:
-      'Metal roofing installation and replacement in Utah. Standing seam and exposed-fastener options. Free estimates.',
+      'Professional metal roofing installation and standing seam metal roof services in Utah. Expert metal roofing contractors. Free estimates.',
     url: '/services/metal-roofing',
   },
 };

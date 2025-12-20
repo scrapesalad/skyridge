@@ -42,6 +42,62 @@ export default function Page() {
         </section>
 
         <div className="container mx-auto px-4 py-12 max-w-7xl">
+          {/* Before & After Section */}
+          <div className="mb-16">
+            <div className="mb-12 text-center">
+              <h2 className="text-4xl font-bold mb-4">Before & After Transformations</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                See the dramatic transformations we've achieved for our customers. From damaged and worn roofs to beautiful, durable roofing systems.
+              </p>
+            </div>
+
+            {/* Before & After Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
+              {[
+                { before: 'IMG_2312.JPG', after: 'IMG_2317.JPG' },
+                { before: 'IMG_2313.JPG', after: 'IMG_2319.JPG' },
+                { before: 'IMG_2314.JPG', after: 'IMG_2320.JPG' },
+                { before: 'IMG_2315.JPG', after: 'IMG_2321.JPG' },
+              ].map((pair, index) => (
+                <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                  <div className="relative">
+                    {/* Before Image */}
+                    <div className="relative h-64 border-b-4 border-red-500">
+                      <Image
+                        src={`/images/beforeafter/${pair.before}`}
+                        alt={`Before - Project ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                      <div className="absolute top-4 left-4 bg-red-600 text-white px-4 py-2 rounded font-bold text-sm shadow-lg">
+                        BEFORE
+                      </div>
+                    </div>
+                    {/* After Image */}
+                    <div className="relative h-64 border-t-4 border-green-500">
+                      <Image
+                        src={`/images/beforeafter/${pair.after}`}
+                        alt={`After - Project ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                      <div className="absolute top-4 left-4 bg-green-600 text-white px-4 py-2 rounded font-bold text-sm shadow-lg">
+                        AFTER
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 bg-gray-50">
+                    <p className="text-sm text-gray-600 text-center font-medium">
+                      Project Transformation #{index + 1}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold mb-4">Our Recent Projects</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">

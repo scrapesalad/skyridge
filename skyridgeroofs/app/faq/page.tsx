@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { canonicalUrl } from '@/lib/seo';
+import JsonLd from '@/components/JsonLd';
 
 export const metadata: Metadata = {
   title: 'Roofing FAQs | Sky Ridge Roofing - Your Questions Answered',
@@ -17,6 +18,21 @@ export const metadata: Metadata = {
 };
 
 const faqs = [
+  {
+    question: 'How much does a new roof cost?',
+    answer:
+      'A new roof cost depends on roof size, material, pitch/complexity, tear-off needs, and any decking repairs. In Utah, many asphalt shingle roof replacements land in the ~$8,000–$18,000 range, while metal and tile systems can be higher. The fastest way to get a ballpark is our <a href="/calculators/roofing-cost" class="text-blue-600 hover:underline">roofing cost calculator</a>, and we also offer <a href="/contact" class="text-blue-600 hover:underline">free estimates</a> for an exact price.',
+  },
+  {
+    question: 'How much is a new roof?',
+    answer:
+      'Most “new roof” quotes are based on total roof area (often measured in roofing squares), material choice, and complexity (valleys, dormers, steep pitch). If you share your address and goals, we can inspect and provide a detailed quote. You can also start with our <a href="/calculators/roofing-cost" class="text-blue-600 hover:underline">roofing cost calculator</a> for a quick estimate.',
+  },
+  {
+    question: 'How long does a roof last?',
+    answer:
+      'Roof lifespan depends on material quality, ventilation, installation details, and Utah weather. Many asphalt shingle roofs last ~15–30 years, metal roofs often last ~40–70 years, and tile can last 50+ years with proper underlayment and maintenance. The best way to know where yours stands is a <a href="/services/roof-inspection" class="text-blue-600 hover:underline">roof inspection</a>.',
+  },
   {
     question: 'How do I know if I need a roof replacement?',
     answer: 'Signs that you may need a roof replacement include: missing or damaged shingles, leaks or water damage, roof age over 20 years, granules in your gutters, sagging or drooping roof, and high energy bills. Our team can perform a free inspection to assess your roof\'s condition.',
@@ -87,14 +103,32 @@ const faqs = [
   },
   {
     question: 'How much does roofing cost?',
-    answer: 'Roofing costs vary widely based on several factors: roof size (measured in squares), material choice, roof complexity (pitch, valleys, dormers), location, and labor costs. Asphalt shingles typically cost $3,000-$7,000 per square (100 sq ft), metal roofing $7,000-$15,000 per square, tile $10,000-$20,000 per square, and slate $15,000-$30,000 per square. A typical 2,000 sq ft roof (20 squares) with asphalt shingles might cost $6,000-$14,000 total. Additional factors include tear-off of old roofing, decking repairs, and complexity. We provide free estimates to give you an accurate cost for your specific project. <a href="/calculators/roofing-cost" class="text-blue-600 hover:underline">Use our roofing cost calculator</a> for an estimate, or <a href="/contact" class="text-blue-600 hover:underline">contact us for a free quote</a>.',
+    answer: 'Roofing costs vary widely based on roof size (measured in roofing squares), material choice, pitch/complexity (valleys, dormers), tear-off, and any decking repairs. As a rough guide, asphalt shingles often run about $400–$800 per roofing square installed, metal roofing often about $800–$1,600+ per square, and tile can be higher depending on the system. We provide free estimates to give you an accurate cost for your specific project. <a href="/calculators/roofing-cost" class="text-blue-600 hover:underline">Use our roofing cost calculator</a> for a ballpark, or <a href="/contact" class="text-blue-600 hover:underline">contact us for a free quote</a>.',
   },
 ];
+
+function stripHtml(value: string): string {
+  return value.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
 
 export default function Page() {
   return (
     <>
       <Header />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.map((f) => ({
+            '@type': 'Question',
+            name: f.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: stripHtml(f.answer),
+            },
+          })),
+        }}
+      />
       <main className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section className="relative h-96 mb-12">

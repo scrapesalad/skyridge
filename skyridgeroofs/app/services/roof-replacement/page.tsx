@@ -4,15 +4,18 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import QuoteButton from '@/components/QuoteButton';
+import JsonLd from '@/components/JsonLd';
+import { BUSINESS, SITE_URL } from '@/lib/site';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Roof Replacement Services | Sky Ridge Roofing',
-  description: 'Complete roof replacement services with quality materials and expert installation. Protect your home and boost curb appeal.',
+  title: 'Roof Replacement & Roof Replacement Near Me | Sky Ridge Roofing',
+  description:
+    'Expert roof replacement and roof replacement near me services in Utah. Professional roof installation, new roof installation, and roof replacement contractors. Free estimates.',
   alternates: { canonical: canonicalUrl('/services/roof-replacement') },
   openGraph: {
-    title: 'Roof Replacement - Sky Ridge Roofing',
-    description: 'Complete roof replacement services with quality materials and expert installation.',
+    title: 'Roof Replacement & Roof Installation | Sky Ridge Roofing',
+    description: 'Professional roof replacement, roof replacement near me, and roof installation services in Utah. Expert roofing contractors.',
     type: 'website',
   },
 };
@@ -21,6 +24,20 @@ export default function Page() {
   return (
     <>
       <Header />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          serviceType: 'Roof replacement',
+          areaServed: 'Utah',
+          provider: {
+            '@type': 'LocalBusiness',
+            name: BUSINESS.name,
+            url: SITE_URL,
+            telephone: BUSINESS.phone,
+          },
+        }}
+      />
       <main className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">
@@ -72,7 +89,14 @@ export default function Page() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Is It Time to Replace Your Roof?</h2>
               <p className="mb-4 text-lg leading-relaxed">
-                We specialize in full roof replacements that are built to withstand Utah's unpredictable weather — from snow and wind to harsh summer sun. Whether your roof is nearing the end of its lifespan, or storm damage has left it compromised, we'll walk you through the replacement process with honesty and clarity.
+                We specialize in full roof replacements that are built to withstand Utah's unpredictable weather - from snow and wind to harsh summer sun. Whether your roof is nearing the end of its lifespan, or storm damage has left it compromised, we'll walk you through the replacement process with honesty and clarity.
+              </p>
+              <p className="mb-4 text-lg leading-relaxed">
+                Searching for <strong>roof installation</strong>? Roof installation is part of every roof replacement we do. You can also review our{' '}
+                <Link href="/services/roof-installation" className="text-blue-700 font-semibold hover:underline">
+                  roof installation service
+                </Link>{' '}
+                for a dedicated overview.
               </p>
               <p className="mb-4 text-lg leading-relaxed">
                 If you are noticing any of the following, it might be time to replace your roof:
@@ -85,6 +109,23 @@ export default function Page() {
                 <li>Sagging or drooping roof</li>
                 <li>High energy bills</li>
               </ul>
+
+              <div className="bg-blue-50 border-l-4 border-blue-600 p-5 rounded">
+                <h3 className="text-xl font-bold mb-2">How much does a new roof cost in Utah?</h3>
+                <p className="text-lg text-gray-700 leading-relaxed mb-3">
+                  New roof cost depends on roof size (squares), material, pitch/complexity, tear-off, and any decking repairs.
+                  For a quick ballpark, use our{' '}
+                  <Link href="/calculators/roofing-cost" className="text-blue-700 font-semibold hover:underline">
+                    roofing cost calculator
+                  </Link>
+                  . For an exact price, we offer free inspections and written estimates.
+                </p>
+                <h3 className="text-xl font-bold mb-2">How long does a roof last?</h3>
+                <p className="text-lg text-gray-700 leading-relaxed mb-0">
+                  Lifespan depends on material quality, ventilation, and installation. Many asphalt shingle roofs last ~15–30 years,
+                  metal roofs often ~40–70 years, and tile can last 50+ years with proper underlayment and maintenance.
+                </p>
+              </div>
             </div>
             <div className="relative h-96 rounded-lg overflow-hidden">
               <Image
