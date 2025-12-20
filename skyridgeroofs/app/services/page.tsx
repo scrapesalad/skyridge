@@ -8,7 +8,8 @@ import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Roofing Services | Roof Installation, Roof Repairs, Metal Roofing | Sky Ridge Roofing',
-  description: 'Comprehensive roofing services in Utah: roof replacement, roof repairs, roof installation, metal roofing, commercial roofing, roof leak repair, and insurance claims. Expert roofing contractors near me. Free estimates.',
+  description:
+    'Comprehensive Utah roofing services: roof repair, roof replacement, roof installation, metal roofing, commercial roofing, roof leak repair, and insurance claims. Free estimates.',
   alternates: { canonical: canonicalUrl('/services') },
   openGraph: {
     title: 'Roofing Services - Expert Roofing Contractors | Sky Ridge Roofing',

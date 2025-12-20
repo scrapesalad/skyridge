@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: '%s | Sky Ridge Roofing',
   },
   description:
-    'Top-rated roofing companies near me in Utah. Expert roofers near me for roof replacement, roof repairs, roof installation, metal roofing, and commercial roofing. Licensed roofing contractors. Free estimates.',
+    'Top-rated Utah roofing company for roof repair, roof replacement, and roof installation. Licensed & insured. Free estimates across Utah.',
   icons: {
     icon: [
       { url: '/images/logo/favicon.ico' },
@@ -43,6 +43,21 @@ export const metadata: Metadata = {
     description:
       'Roof replacement, roof repairs, and insurance-claim help across Utah. Licensed & insured. Free estimates.',
     url: '/',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Sky Ridge Roofing - Utah Roofing',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sky Ridge Roofing',
+    description:
+      'Roof repair, roof replacement, and roof installation across Utah. Licensed & insured. Free estimates.',
+    images: ['/twitter-image'],
   },
   other: {
     'business:contact_data:phone_number': BUSINESS.phone,

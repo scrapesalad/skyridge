@@ -7,12 +7,13 @@ import JsonLd from '@/components/JsonLd';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Roofing Companies Near Me | Roofers Near Me | Sky Ridge Roofing Utah',
-  description: 'Find roofing companies near me and roofers near me in Utah. Expert roof repair near me, roof replacement near me, and roofing contractors near me. Free estimates.',
+  title: 'Utah Roofing Service Areas | Sky Ridge Roofing',
+  description:
+    'Explore our Utah service areas for roof repair, roof replacement, and roof installation. Free estimates from Sky Ridge Roofing.',
   alternates: { canonical: canonicalUrl('/locations') },
   openGraph: {
-    title: 'Roofing Companies Near Me | Roofers Near Me | Sky Ridge Roofing',
-    description: 'Top roofing companies near me and roofers near me throughout Utah. Expert roof repair near me and roof replacement near me services.',
+    title: 'Utah Roofing Service Areas | Sky Ridge Roofing',
+    description: 'Roof repair, roof replacement, and roof installation across Utah. View cities we serve.',
     type: 'website',
   },
 };
@@ -170,4 +171,3 @@ export default function Page() {
     </>
   );
 }
-

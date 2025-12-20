@@ -9,13 +9,13 @@ import { BUSINESS, SITE_URL } from '@/lib/site';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Roof Repair Near Me & Roof Leak Repair | Sky Ridge Roofing',
+  title: 'Roof Repair & Roof Leak Repair | Sky Ridge Roofing',
   description:
-    'Expert roof repair near me and roof leak repair services in Utah. Professional roof repairs for leaks, storm damage, shingles, flashing, and ventilation issues. Fast scheduling and free estimates.',
+    'Expert roof repair and roof leak repair services in Utah. Professional roof repairs for leaks, storm damage, shingles, flashing, and ventilation issues. Fast scheduling and free estimates.',
   alternates: { canonical: canonicalUrl('/services/roof-repairs') },
   openGraph: {
-    title: 'Roof Repair Near Me & Roof Leak Repair | Sky Ridge Roofing',
-    description: 'Professional roof repair near me and roof leak repair in Utah for leaks, storm damage, shingles, and flashing issues.',
+    title: 'Roof Repair & Roof Leak Repair | Sky Ridge Roofing',
+    description: 'Professional roof repair and roof leak repair in Utah for leaks, storm damage, shingles, and flashing issues.',
     type: 'website',
   },
 };

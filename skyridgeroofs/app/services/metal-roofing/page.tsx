@@ -11,7 +11,7 @@ import { canonicalUrl } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'Metal Roofing | Standing Seam Metal Roof Installation | Sky Ridge Roofing',
   description:
-    'Expert metal roofing installation and metal roof replacement in Utah. Professional standing seam metal roof and metal roof installation services. Metal roofing contractors near me. Free estimates.',
+    'Expert metal roofing installation and metal roof replacement in Utah. Professional standing seam metal roof and metal roof installation services. Free estimates.',
   alternates: { canonical: canonicalUrl('/services/metal-roofing') },
   openGraph: {
     title: 'Metal Roofing & Standing Seam Metal Roof | Sky Ridge Roofing',
@@ -310,4 +310,3 @@ export default function Page() {
     </>
   );
 }
-

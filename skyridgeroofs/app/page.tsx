@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
@@ -14,15 +14,16 @@ import { BUSINESS, SITE_URL } from '@/lib/site';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Roofing Companies Near Me | Utah Roofing Company | Sky Ridge Roofing',
+  title: 'Utah Roofing Company | Roof Repair, Replacement & Installation | Sky Ridge Roofing',
   description:
-    'Find the best roofing companies near me in Utah. Expert roofers near me for roof replacement, roof repairs, roof installation, metal roofing, and commercial roofing. Licensed roofing contractors offering free estimates.',
+    'Sky Ridge Roofing is a trusted Utah roofing company specializing in roof repair, roof replacement, and roof installation. Licensed & insured. Free estimates.',
   alternates: { canonical: canonicalUrl('/') },
   openGraph: {
-    title: 'Roofing Companies Near Me | Sky Ridge Roofing',
+    title: 'Utah Roofing Company | Sky Ridge Roofing',
     description:
-      'Top-rated roofers near me in Utah. Expert roof replacement, roof repairs, roof installation, metal roofing, and commercial roofing services. Licensed roofing contractors. Free estimates.',
+      'Roof repair, roof replacement, and roof installation across Utah. Licensed & insured. Free estimates.',
     url: '/',
+    type: 'website',
   },
 };
 
@@ -97,14 +98,14 @@ export default function Page() {
                   href="/about"
                   className="inline-block bg-primary-light text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary transition text-lg uppercase tracking-wide"
                 >
-                  Learn More About Us →
+                  Learn More About Us
                 </Link>
                 <div className="mt-4">
                   <Link
                     href="/utah-roofing-company"
                     className="inline-block bg-white/15 text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/25 transition text-lg uppercase tracking-wide"
                   >
-                    Utah Roofing Company →
+                    Utah Roofing Company
                   </Link>
                 </div>
               </div>
@@ -665,3 +666,4 @@ export default function Page() {
     </>
   );
 }
+

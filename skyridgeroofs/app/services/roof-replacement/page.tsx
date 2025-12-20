@@ -9,13 +9,13 @@ import { BUSINESS, SITE_URL } from '@/lib/site';
 import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Roof Replacement & Roof Replacement Near Me | Sky Ridge Roofing',
+  title: 'Roof Replacement & Roof Installation | Sky Ridge Roofing',
   description:
-    'Expert roof replacement and roof replacement near me services in Utah. Professional roof installation, new roof installation, and roof replacement contractors. Free estimates.',
+    'Expert roof replacement services in Utah. Professional roof installation, new roof installation, and quality workmanship. Free estimates.',
   alternates: { canonical: canonicalUrl('/services/roof-replacement') },
   openGraph: {
     title: 'Roof Replacement & Roof Installation | Sky Ridge Roofing',
-    description: 'Professional roof replacement, roof replacement near me, and roof installation services in Utah. Expert roofing contractors.',
+    description: 'Professional roof replacement and roof installation services in Utah. Expert roofing contractors.',
     type: 'website',
   },
 };
