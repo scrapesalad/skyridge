@@ -120,6 +120,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/services/commercial-roofing-services',
+        destination: '/services/commercial-roofing',
+        permanent: true,
+      },
+      {
+        source: '/services/residential-roofing-services',
+        destination: '/services/residential-roofing',
+        permanent: true,
+      },
+      {
         source: '/roof-replacement-utah',
         destination: '/services/roof-replacement',
         permanent: true,

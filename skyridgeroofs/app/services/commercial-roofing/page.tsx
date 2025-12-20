@@ -79,7 +79,7 @@ export default function Page() {
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_043.webp"
+              src="/images/skyridge/scrap/commercial-roof-installation.jpg"
               alt="Commercial roofing services in Utah"
               fill
               className="object-cover"
@@ -153,13 +153,76 @@ export default function Page() {
                 so your team has consistent documentation and timelines.
               </p>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_031.webp"
-                alt="Roof inspection and documentation"
+                src="/images/skyridge/scrap/commercial-roof-installation.jpg"
+                alt="Commercial roof installation in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Commercial Roofing Images Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Commercial Roofing Solutions</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/Cincinnati-commercial-roof-restoration.jpg"
+                    alt="Commercial roof restoration and coating services"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Roof Restoration</h3>
+                  <p className="text-sm text-gray-600">Extend your roof's life with professional restoration</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/flat-roof.jpg"
+                    alt="Flat commercial roof system"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Flat Roof Systems</h3>
+                  <p className="text-sm text-gray-600">TPO and EPDM for low-slope commercial roofs</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/greeley-commercial-replacement-experts-q5ci09vs7pm79teahi5wnibtyc7pl27apafiidv1g0.jpg"
+                    alt="Commercial roof replacement project"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Roof Replacement</h3>
+                  <p className="text-sm text-gray-600">Complete commercial roof replacement services</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/commercial-roofing-inspections-longmont-300x200.jpg"
+                    alt="Commercial roof inspection services"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Inspections</h3>
+                  <p className="text-sm text-gray-600">Regular maintenance and inspection programs</p>
+                </div>
+              </div>
             </div>
           </div>
 

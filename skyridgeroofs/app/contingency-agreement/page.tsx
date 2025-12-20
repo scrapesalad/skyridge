@@ -24,7 +24,7 @@ export default function Page() {
         {/* Hero Section */}
         <section className="relative h-96 mb-12">
           <Image
-            src="/images/skyridge/skyridge_image_003.webp"
+            src="/images/skyridge/scrap/Roof-Inspection-Image-768x439.jpg"
             alt="Contingency Agreement"
             fill
             className="object-cover"

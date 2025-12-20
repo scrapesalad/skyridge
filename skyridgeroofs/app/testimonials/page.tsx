@@ -23,42 +23,42 @@ const testimonials = [
     location: 'Salt Lake City, UT',
     rating: 5,
     text: 'Sky Ridge Roofing did an amazing job replacing our roof. The team was professional, clean, and completed the work on time. Highly recommend!',
-    image: '/images/skyridge/skyridge_image_010.webp',
+    image: '/images/skyridge/scrap/roofing-job.jpg',
   },
   {
     name: 'Michael Chen',
     location: 'Provo, UT',
     rating: 5,
     text: 'We had storm damage and needed help with our insurance claim. Sky Ridge Roofing handled everything and made the process so easy. Great service!',
-    image: '/images/skyridge/skyridge_image_011.webp',
+    image: '/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp',
   },
   {
     name: 'Jennifer Martinez',
     location: 'Ogden, UT',
     rating: 5,
     text: 'Fast response time and excellent workmanship. Our new roof looks fantastic and we feel confident it will last for years to come.',
-    image: '/images/skyridge/skyridge_image_012.webp',
+    image: '/images/skyridge/scrap/Roof-Inspection-Image-768x439.jpg',
   },
   {
     name: 'David Thompson',
     location: 'Sandy, UT',
     rating: 5,
     text: 'The team at Sky Ridge Roofing was transparent about pricing and kept us informed throughout the entire process. Very satisfied with the results.',
-    image: '/images/skyridge/skyridge_image_013.webp',
+    image: '/images/skyridge/scrap/roofing-center-02.jpg',
   },
   {
     name: 'Lisa Anderson',
     location: 'West Valley City, UT',
     rating: 5,
     text: 'We needed emergency roof repairs after a storm. Sky Ridge Roofing came out quickly and fixed the problem. Professional and reliable!',
-    image: '/images/skyridge/skyridge_image_014.webp',
+    image: '/images/skyridge/scrap/roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg',
   },
   {
     name: 'Robert Williams',
     location: 'Orem, UT',
     rating: 5,
     text: 'Best roofing company in Utah! They helped us choose the right materials and the installation was flawless. Couldn\'t be happier.',
-    image: '/images/skyridge/skyridge_image_015.webp',
+    image: '/images/skyridge/scrap/Camelot_Aged_Oak_Photo_1-scaled-1.jpg',
   },
 ];
 
@@ -70,7 +70,7 @@ export default function Page() {
         {/* Hero Section */}
         <section className="relative h-96 mb-12">
           <Image
-            src="/images/skyridge/skyridge_image_017.webp"
+            src="/images/skyridge/scrap/roofing-center-02.jpg"
             alt="Customer Testimonials"
             fill
             className="object-cover"

@@ -58,7 +58,7 @@ export default function Page() {
               loop
               muted
               playsInline
-              poster="/images/skyridge/skyridge_image_023.webp"
+              poster="/images/skyridge/scrap/roofing-job.jpg"
               className="absolute inset-0 w-full h-full object-cover"
             >
               <source src="/videos/hero-video.mp4" type="video/mp4" />
@@ -176,7 +176,7 @@ export default function Page() {
               <div className="relative">
                 <div className="relative h-[500px] rounded-lg overflow-hidden shadow-2xl">
                   <Image
-                    src="/images/skyridge/skyridge_image_005.webp"
+                    src="/images/skyridge/scrap/roofing-job.jpg"
                     alt="Sky Ridge Roofing Team"
                     fill
                     className="object-cover"
@@ -208,7 +208,7 @@ export default function Page() {
           {/* Background Image */}
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_023.webp"
+              src="/images/skyridge/scrap/roofing-center-02.jpg"
               alt="Our Services"
               fill
               className="object-cover"
@@ -319,7 +319,7 @@ export default function Page() {
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
-                  src="/images/skyridge/skyridge_image_015.webp"
+                  src="/images/skyridge/scrap/roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg"
                   alt="Professional Roofer at Work"
                   fill
                   className="object-cover"
@@ -376,7 +376,7 @@ export default function Page() {
           {/* Background Image */}
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_023.webp"
+              src="/images/skyridge/scrap/roofing-center-02.jpg"
               alt="Residential Roofing"
               fill
               className="object-cover"
@@ -490,7 +490,7 @@ export default function Page() {
           {/* Background Image */}
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_023.webp"
+              src="/images/skyridge/scrap/roofing-center-02.jpg"
               alt="Residential Roofing"
               fill
               className="object-cover"

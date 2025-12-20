@@ -27,7 +27,7 @@ export default function Page() {
         {/* Hero Section */}
         <section className="relative h-96 mb-12">
           <Image
-            src="/images/skyridge/skyridge_image_020.webp"
+            src="/images/skyridge/scrap/roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg"
             alt="Project Gallery"
             fill
             className="object-cover"
@@ -132,7 +132,7 @@ export default function Page() {
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="relative h-48">
                   <Image
-                    src="/images/skyridge/skyridge_image_010.webp"
+                    src="/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp"
                     alt="Roof Replacements"
                     fill
                     className="object-cover"
@@ -150,7 +150,7 @@ export default function Page() {
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="relative h-48">
                   <Image
-                    src="/images/skyridge/skyridge_image_020.webp"
+                    src="/images/skyridge/scrap/flashing-1.jpeg"
                     alt="Roof Repairs"
                     fill
                     className="object-cover"
@@ -168,7 +168,7 @@ export default function Page() {
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="relative h-48">
                   <Image
-                    src="/images/skyridge/skyridge_image_030.webp"
+                    src="/images/skyridge/scrap/commercial-roof-installation.jpg"
                     alt="Commercial Projects"
                     fill
                     className="object-cover"

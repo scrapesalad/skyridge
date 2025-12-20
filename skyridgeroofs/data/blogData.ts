@@ -118,6 +118,11 @@ export const blogPosts: Record<string, BlogPost> = {
           'Look for any wind, hail, or weather-related exclusions',
           'Verify you have code upgrade coverage',
         ],
+        image: {
+          src: '/images/skyridge/scrap/Roof-Inspection_Sumit-Kapoor-TX_2-scaled-1.jpeg',
+          alt: 'Understanding your roof insurance policy before storm damage occurs',
+          caption: 'Reviewing your insurance policy before disaster strikes can save you thousands of dollars.',
+        },
       },
       {
         heading: 'What Types of Storm Damage Are Actually Covered in Utah?',
@@ -134,6 +139,11 @@ export const blogPosts: Record<string, BlogPost> = {
 
           <p>The trickiest claims I see are when old damage gets mixed with new damage.  Last fall, a homeowner in West Jordan had both: hail damage from a July storm that he didn't notice until September, plus some worn-out shingles from age.  The adjuster tried to deny everything, claiming it was all age-related.  We eventually won by showing clear hail impact patterns that were fresh and widespread.  But it was a fight.</p>
         `,
+        image: {
+          src: '/images/skyridge/scrap/hail-damage.jpeg',
+          alt: 'Hail damage on roof shingles in Utah',
+          caption: 'Hail damage can cause functional damage that insurance typically covers, but documentation is key.',
+        },
       },
       {
         heading: 'Step-by-Step: How to File Your Utah Roof Insurance Claim',
@@ -188,6 +198,11 @@ export const blogPosts: Record<string, BlogPost> = {
 
           <p>Last June, I worked with a homeowner in Herriman whose claim was initially denied.  The adjuster said the damage was "pre-existing." We went back with a supplemental report showing clear hail impact patterns that matched the June 10th storm's hail direction (we even referenced NOAA weather data).  Claim approved two weeks later.  That's the power of good documentation.</p>
         `,
+        image: {
+          src: '/images/skyridge/scrap/Roof-Inspection-Image-768x439.jpg',
+          alt: 'Professional roof inspection and damage documentation for insurance claims',
+          caption: 'Thorough documentation with photos and professional inspection reports significantly increases claim approval rates.',
+        },
       },
       {
         heading: 'Working with Insurance Adjusters: What Utah Homeowners Should Expect',
@@ -206,6 +221,11 @@ export const blogPosts: Record<string, BlogPost> = {
 
           <p>I had a client in Taylorsville whose claim sat untouched for 6 weeks.  She filed a complaint with the state, and suddenly her adjuster was very responsive.  Sometimes you need a little pressure to get things moving.</p>
         `,
+        image: {
+          src: '/images/skyridge/scrap/What-You-Dont-Have-To-Do-Home-Inspector-01-1440x820-1.jpg',
+          alt: 'Working with insurance adjusters during roof inspection',
+          caption: 'Having your roofer present during adjuster inspections ensures all damage is properly documented.',
+        },
       },
       {
         heading: 'Common Reasons Utah Roof Claims Get Denied (And How to Avoid Them)',
@@ -390,6 +410,11 @@ export const blogPosts: Record<string, BlogPost> = {
           'Fresh damage has clean, sharp edges (not weathered or diffuse)',
           'Damage is often invisible from the ground--get up close',
         ],
+        image: {
+          src: '/images/skyridge/scrap/hail-damage.jpeg',
+          alt: 'Hail damage on asphalt shingle roof showing bruising and granule loss',
+          caption: 'Hail damage on asphalt shingles appears as dark circular bruises where protective granules have been knocked off, exposing the black asphalt underneath.',
+        },
       },
       {
         heading: 'DIY Hail Damage Inspection: What Utah Homeowners Can Check from the Ground',
@@ -410,6 +435,11 @@ export const blogPosts: Record<string, BlogPost> = {
 
           <p><strong>Look at Neighbor Roofs</strong><br/>Hailstorms don't skip houses.  If three neighbors on your street are getting new roofs because of hail damage, you probably have damage too.  I've worked entire neighborhoods where every single roof got replaced after major hail events.  Don't assume you lucked out--get it checked.</p>
         `,
+        image: {
+          src: '/images/skyridge/scrap/gutter-covers-maryland-1024x768-1.webp',
+          alt: 'Checking gutters for granule accumulation after hailstorm in Utah',
+          caption: 'Excessive granule accumulation in gutters after a hailstorm is a key indicator that your roof has sustained hail damage.',
+        },
       },
       {
         heading: 'Professional Roof Inspection: What We Look For (And Why You Need One)',
@@ -435,6 +465,11 @@ export const blogPosts: Record<string, BlogPost> = {
           'Detailed documentation with photos, measurements, and damage counts',
           'We know what insurance adjusters need to see for claim approval',
         ],
+        image: {
+          src: '/images/skyridge/scrap/Roof-Inspection_Sumit-Kapoor-TX_2-scaled-1.jpeg',
+          alt: 'Professional roof inspection for hail damage in Utah',
+          caption: 'Professional roofers systematically inspect every section of your roof, checking for hail damage that may not be visible from the ground.',
+        },
       },
       {
         heading: 'How to Document Hail Damage for Insurance Claims',
@@ -451,6 +486,11 @@ export const blogPosts: Record<string, BlogPost> = {
 
           <p><strong>Save Weather Data</strong><br/>Go to the National Weather Service website and pull storm reports for your area on the hail date.  If they recorded 1.5-inch hail in your zip code, that's ammunition for your claim.  I helped a homeowner in West Jordan whose adjuster tried to claim the hail was "too small to cause damage." We showed NWS data proving 2-inch hail fell that day.  Claim approved.</p>
         `,
+        image: {
+          src: '/images/skyridge/scrap/Roof-Inspection-Image-768x439.jpg',
+          alt: 'Documenting hail damage with photos and detailed inspection reports for insurance claims',
+          caption: 'Proper photo documentation with close-up shots of hail impacts and overall roof condition is essential for successful insurance claims.',
+        },
       },
       {
         heading: 'Common Mistakes Utah Homeowners Make After Hail Damage',
@@ -477,9 +517,12 @@ export const blogPosts: Record<string, BlogPost> = {
           "Inspect within 72 hours of a hailstorm-don't wait weeks",
           'Never rely on a ground-level visual check--get up close or hire a pro',
           'Document ALL collateral damage (cars, siding, gutters, decks, etc.)',
-          'Photograph damage with proper lighting and reference objects',
-          'Work with established local contractors, not fly-by-night storm chasers',
         ],
+        image: {
+          src: '/images/skyridge/scrap/What-You-Dont-Have-To-Do-Home-Inspector-01-1440x820-1.jpg',
+          alt: 'Common mistakes homeowners make when inspecting hail damage',
+          caption: 'Avoid common mistakes like waiting too long to inspect or relying on ground-level visual checks. Professional inspections catch damage that homeowners miss.',
+        },
       },
       {
         heading: 'When Hail Damage Doesn\'t Qualify for Replacement',

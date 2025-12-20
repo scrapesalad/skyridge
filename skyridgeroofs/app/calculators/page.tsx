@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Header from '@/components/header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import JsonLd from '@/components/JsonLd';
 import { canonicalUrl } from '@/lib/seo';
 
@@ -149,15 +150,15 @@ export default function CalculatorsPage() {
 
         {/* Intro */}
         <section className="container mx-auto px-4 py-10 max-w-6xl">
-          <div className="bg-white rounded-lg shadow-md p-8">
+          <div className="bg-white rounded-lg shadow-md p-8 mb-8">
             <h2 className="text-3xl font-bold mb-4">Quick estimates, clear next steps</h2>
             <p className="text-lg text-gray-700 leading-relaxed mb-4">
-              These tools are built for homeowners who want a fast starting point—whether you’re
-              comparing materials, checking measurements, or planning a replacement timeline. They’re
-              especially helpful when you’re gathering info before calling for an estimate.
+              These tools are built for homeowners who want a fast starting point—whether you're
+              comparing materials, checking measurements, or planning a replacement timeline. They're
+              especially helpful when you're gathering info before calling for an estimate.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              If you’re in Utah and you’d like a professional inspection, we’re happy to help. We’ll
+              If you're in Utah and you'd like a professional inspection, we're happy to help. We'll
               verify measurements, inspect flashing and ventilation, and provide a clear written
               quote—no pressure.
             </p>
@@ -174,6 +175,69 @@ export default function CalculatorsPage() {
               >
                 Explore Services
               </Link>
+            </div>
+          </div>
+
+          {/* Calculator Tools Images */}
+          <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+            <h2 className="text-3xl font-bold mb-6 text-center">Roofing Project Planning Tools</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden border border-gray-200">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofing-job.jpg"
+                    alt="Roofing cost calculation tools"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Cost Calculators</h3>
+                  <p className="text-sm text-gray-600">Estimate project costs and materials</p>
+                </div>
+              </div>
+              <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden border border-gray-200">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/landmark-series-shingles-certainteed.jpg"
+                    alt="Material calculation tools"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Material Calculators</h3>
+                  <p className="text-sm text-gray-600">Calculate shingles, squares, and materials</p>
+                </div>
+              </div>
+              <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden border border-gray-200">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/Roof-Inspection_Sumit-Kapoor-TX_2-scaled-1.jpeg"
+                    alt="Measurement and inspection tools"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Measurement Tools</h3>
+                  <p className="text-sm text-gray-600">Calculate square footage and pitch</p>
+                </div>
+              </div>
+              <div className="bg-gray-50 rounded-lg shadow-md overflow-hidden border border-gray-200">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/gv_apr-2019_strip-ventilation.jpg"
+                    alt="Ventilation and system calculators"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">System Calculators</h3>
+                  <p className="text-sm text-gray-600">Ventilation, insulation, and warranty tools</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>

@@ -42,7 +42,7 @@ export default function Page() {
         <section className="relative h-[520px] md:h-[620px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_025.webp"
+              src="/images/skyridge/scrap/flat-roof.jpg"
               alt="Flat roofing in Utah"
               fill
               className="object-cover"
@@ -87,13 +87,76 @@ export default function Page() {
                 .
               </p>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_043.webp"
-                alt="Commercial flat roof"
+                src="/images/skyridge/scrap/flat-roof.jpg"
+                alt="Flat roofing system in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Flat Roofing Images Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Flat Roofing Systems & Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/Cincinnati-commercial-roof-restoration.jpg"
+                    alt="Flat roof restoration and coating"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Roof Coatings</h3>
+                  <p className="text-sm text-gray-600">Extend flat roof life with professional coatings</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/commercial-roof-installation.jpg"
+                    alt="TPO flat roof installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">TPO Installation</h3>
+                  <p className="text-sm text-gray-600">Energy-efficient TPO roofing systems</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/greeley-commercial-replacement-experts-q5ci09vs7pm79teahi5wnibtyc7pl27apafiidv1g0.jpg"
+                    alt="EPDM flat roof replacement"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">EPDM Systems</h3>
+                  <p className="text-sm text-gray-600">Durable EPDM flat roof solutions</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/commercial-roofing-inspections-longmont-300x200.jpg"
+                    alt="Flat roof maintenance and inspection"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Maintenance</h3>
+                  <p className="text-sm text-gray-600">Regular inspections and preventive maintenance</p>
+                </div>
+              </div>
             </div>
           </div>
 

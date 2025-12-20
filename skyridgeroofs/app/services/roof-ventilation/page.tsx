@@ -42,7 +42,7 @@ export default function Page() {
         <section className="relative h-[520px] md:h-[620px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_025.webp"
+              src="/images/skyridge/scrap/gv_apr-2019_strip-ventilation.jpg"
               alt="Roof ventilation in Utah"
               fill
               className="object-cover"
@@ -88,13 +88,76 @@ export default function Page() {
                 .
               </p>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_009.webp"
-                alt="Roof vent installation"
+                src="/images/skyridge/scrap/gv_apr-2019_strip-ventilation.jpg"
+                alt="Roof ventilation system in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Roof Ventilation Images Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Roof Ventilation Solutions</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofing-center-02.jpg"
+                    alt="Ridge vent installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Ridge Vents</h3>
+                  <p className="text-sm text-gray-600">Continuous ridge vent systems for optimal airflow</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg"
+                    alt="Soffit vent installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Soffit Vents</h3>
+                  <p className="text-sm text-gray-600">Proper intake ventilation for balanced airflow</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofingcenter-blog-07-qfskckmzpii02wunzlscnv7r272fkut533k7tmxgso.jpg"
+                    alt="Attic ventilation system"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Attic Ventilation</h3>
+                  <p className="text-sm text-gray-600">Complete attic ventilation solutions</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofingcenter-blog-185.jpg"
+                    alt="Vent repair and maintenance"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Vent Repairs</h3>
+                  <p className="text-sm text-gray-600">Fix and maintain existing ventilation systems</p>
+                </div>
+              </div>
             </div>
           </div>
 

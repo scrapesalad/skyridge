@@ -42,7 +42,7 @@ export default function Page() {
         <section className="relative h-[520px] md:h-[620px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_020.webp"
+              src="/images/skyridge/scrap/landmark-series-shingles-certainteed.jpg"
               alt="Shingle roofing in Utah"
               fill
               className="object-cover"
@@ -86,13 +86,76 @@ export default function Page() {
                 page.
               </p>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_006.webp"
-                alt="Asphalt shingle roof installation"
+                src="/images/skyridge/scrap/landmark-series-shingles-certainteed.jpg"
+                alt="Asphalt shingle roof installation in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Shingle Roofing Images Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Asphalt Shingle Roofing Solutions</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/GAF_Timberline_HD_Slate_2_Shown_For_Color-1-scaled-1.jpg"
+                    alt="GAF Timberline HD shingles"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">GAF Shingles</h3>
+                  <p className="text-sm text-gray-600">Premium GAF Timberline shingle installation</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/Camelot_Aged_Oak_Photo_1-scaled-1.jpg"
+                    alt="Architectural shingle roofing"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Architectural Shingles</h3>
+                  <p className="text-sm text-gray-600">Enhanced dimensional shingle options</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/CF-Shingle-Project-8-300x202.webp"
+                    alt="Shingle roof replacement project"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Roof Replacement</h3>
+                  <p className="text-sm text-gray-600">Complete shingle roof replacement services</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/closed-roof-valley.jpg"
+                    alt="Shingle roof valley installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Expert Installation</h3>
+                  <p className="text-sm text-gray-600">Professional shingle installation and details</p>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -79,7 +79,7 @@ export default function Page() {
         <section className="relative h-[520px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_022.webp"
+              src="/images/skyridge/scrap/West-Jordan-Roofing.jpg"
               alt="Roofing contractor serving Utah homeowners"
               fill
               className="object-cover"

@@ -25,7 +25,7 @@ export default function Page() {
         {/* Hero Section */}
         <section className="relative h-96 mb-12">
           <Image
-            src="/images/skyridge/skyridge_image_021.webp"
+            src="/images/skyridge/scrap/roofing-center-02.jpg"
             alt="Financing Options"
             fill
             className="object-cover"
@@ -52,7 +52,7 @@ export default function Page() {
             <div className="bg-white rounded-lg shadow-md p-8">
               <div className="relative h-48 mb-6 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/skyridge/skyridge_image_016.webp"
+                  src="/images/skyridge/scrap/roofing-center-02.jpg"
                   alt="Easy Financing"
                   fill
                   className="object-cover"
@@ -84,7 +84,7 @@ export default function Page() {
             <div className="bg-white rounded-lg shadow-md p-8">
               <div className="relative h-48 mb-6 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/skyridge/skyridge_image_017.webp"
+                  src="/images/skyridge/scrap/roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg"
                   alt="Flexible Terms"
                   fill
                   className="object-cover"

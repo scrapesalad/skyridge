@@ -24,7 +24,7 @@ export default function Page() {
         {/* Hero Section */}
         <section className="relative h-96 mb-12">
           <Image
-            src="/images/skyridge/skyridge_image_016.webp"
+            src="/images/skyridge/scrap/roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg"
             alt="Contact Us"
             fill
             className="object-cover"
@@ -112,6 +112,69 @@ export default function Page() {
                       <strong>Emergency Service:</strong> Available 24/7 for urgent roofing issues
                     </p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Page Images */}
+          <div className="mt-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Why Choose Sky Ridge Roofing</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofing-job.jpg"
+                    alt="Professional roofing services in Utah"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Expert Team</h3>
+                  <p className="text-sm text-gray-600">Licensed and insured roofing professionals</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp"
+                    alt="Quality craftsmanship and workmanship"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Quality Work</h3>
+                  <p className="text-sm text-gray-600">Attention to detail in every project</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/Roof-Inspection_Sumit-Kapoor-TX_2-scaled-1.jpeg"
+                    alt="Free estimates and inspections"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Free Estimates</h3>
+                  <p className="text-sm text-gray-600">No-obligation quotes for all projects</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofing-center-02.jpg"
+                    alt="24/7 emergency roofing services"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">24/7 Service</h3>
+                  <p className="text-sm text-gray-600">Emergency repairs available anytime</p>
                 </div>
               </div>
             </div>

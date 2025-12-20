@@ -76,7 +76,7 @@ export default function Page() {
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_040.webp"
+              src="/images/skyridge/scrap/roofing-center-02.jpg"
               alt="Solar installation in Utah"
               fill
               className="object-cover"
@@ -146,13 +146,76 @@ export default function Page() {
                 <li>Guidance on incentives and paperwork (as applicable)</li>
               </ul>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_006.webp"
-                alt="Roof ready for solar"
+                src="/images/skyridge/scrap/roofing-job.jpg"
+                alt="Roof ready for solar installation in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Solar Installation Images */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Solar Installation Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofing-center-02.jpg"
+                    alt="Roof assessment for solar installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Roof Assessment</h3>
+                  <p className="text-sm text-gray-600">Evaluate roof condition before solar installation</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp"
+                    alt="Solar panel mounting and installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Solar Planning</h3>
+                  <p className="text-sm text-gray-600">Coordinate layout and mounting approach</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/commercial-roof-installation.jpg"
+                    alt="Professional solar installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Clean Installation</h3>
+                  <p className="text-sm text-gray-600">Professional installation with roof protection</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg"
+                    alt="Roof and solar coordination"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Roof + Solar</h3>
+                  <p className="text-sm text-gray-600">Coordinated roof and solar projects</p>
+                </div>
+              </div>
             </div>
           </div>
 

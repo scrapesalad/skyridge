@@ -26,7 +26,7 @@ export default function Page() {
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_013.webp"
+              src="/images/skyridge/scrap/roofing-job.jpg"
               alt="Additional Services"
               fill
               className="object-cover"
@@ -77,7 +77,7 @@ export default function Page() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-8">
               <div className="relative h-64 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/skyridge/skyridge_image_040.webp"
+                  src="/images/skyridge/scrap/roofing-center-02.jpg"
                   alt="Solar Installation"
                   fill
                   className="object-cover"
@@ -115,7 +115,7 @@ export default function Page() {
               </div>
               <div className="relative h-64 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/skyridge/skyridge_image_041.webp"
+                  src="/images/skyridge/scrap/building-exterior.jpg"
                   alt="Siding Installation"
                   fill
                   className="object-cover"
@@ -129,7 +129,7 @@ export default function Page() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-8">
               <div className="relative h-64 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/skyridge/skyridge_image_042.webp"
+                  src="/images/skyridge/scrap/gutter-covers-maryland-1024x768-1.webp"
                   alt="Gutters & Gutter Guards"
                   fill
                   className="object-cover"
@@ -172,7 +172,7 @@ export default function Page() {
               </div>
               <div className="relative h-64 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/skyridge/skyridge_image_043.webp"
+                  src="/images/skyridge/scrap/commercial-roof-installation.jpg"
                   alt="Commercial Roofing"
                   fill
                   className="object-cover"
@@ -185,16 +185,54 @@ export default function Page() {
           <div className="mb-12">
             <h2 className="text-3xl font-bold mb-6 text-center">Our Additional Services Work</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[44, 45, 46, 47, 48, 49].map((num) => (
-                <div key={num} className="relative h-48 rounded-lg overflow-hidden">
-                  <Image
-                    src={`/images/skyridge/skyridge_image_${String(num).padStart(3, '0')}.webp`}
-                    alt={`Additional service project ${num}`}
-                    fill
-                    className="object-cover hover:scale-110 transition duration-300"
-                  />
-                </div>
-              ))}
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/building-exterior.jpg"
+                  alt="Siding installation project"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/gutter-covers-maryland-1024x768-1.webp"
+                  alt="Gutter installation project"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/increasing-your-curb-appeal.jpg"
+                  alt="Exterior improvement project"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/roofing-job.jpg"
+                  alt="Complete exterior project"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/bungalow-holiday-apartments-on-cyprus.jpg"
+                  alt="Siding replacement project"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/hero-image-vacation-homes.jpg"
+                  alt="Exterior renovation project"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
             </div>
           </div>
         </div>

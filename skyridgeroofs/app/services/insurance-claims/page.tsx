@@ -26,7 +26,7 @@ export default function Page() {
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_012.webp"
+              src="/images/skyridge/scrap/Roof-Inspection-Image-768x439.jpg"
               alt="Insurance Claims"
               fill
               className="object-cover"
@@ -85,30 +85,76 @@ export default function Page() {
                 <li>Quality repairs that meet insurance standards</li>
               </ul>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_031.webp"
-                alt="Insurance claims process"
+                src="/images/skyridge/scrap/hail-damage.jpeg"
+                alt="Storm damage insurance claims in Utah"
                 fill
                 className="object-cover"
               />
             </div>
           </div>
 
-          {/* Image Gallery */}
+          {/* Insurance Claims Process Images */}
           <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6">Storm Damage Restoration</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[32, 33, 34, 35, 36, 37, 38, 39].map((num) => (
-                <div key={num} className="relative h-48 rounded-lg overflow-hidden">
+            <h2 className="text-3xl font-bold mb-6 text-center">Our Insurance Claims Process</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
                   <Image
-                    src={`/images/skyridge/skyridge_image_${String(num).padStart(3, '0')}.webp`}
-                    alt={`Insurance claim project ${num}`}
+                    src="/images/skyridge/scrap/Roof-Inspection_Sumit-Kapoor-TX_2-scaled-1.jpeg"
+                    alt="Roof damage inspection for insurance claims"
                     fill
-                    className="object-cover hover:scale-110 transition duration-300"
+                    className="object-cover"
                   />
                 </div>
-              ))}
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Damage Assessment</h3>
+                  <p className="text-sm text-gray-600">Thorough inspection and documentation</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/Roof-Inspection-Image-768x439.jpg"
+                    alt="Insurance claim documentation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Photo Documentation</h3>
+                  <p className="text-sm text-gray-600">Detailed photos for your claim</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/What-You-Dont-Have-To-Do-Home-Inspector-01-1440x820-1.jpg"
+                    alt="Working with insurance adjusters"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Adjuster Meetings</h3>
+                  <p className="text-sm text-gray-600">We meet with adjusters on your behalf</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/replace-rotted-roof-decking-r9s0s1ll2umws3di4jscahu9s54iilxkq8ir4t3ads.jpg"
+                    alt="Insurance claim roof repair"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Quality Repairs</h3>
+                  <p className="text-sm text-gray-600">Professional repairs that meet standards</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

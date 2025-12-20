@@ -42,7 +42,7 @@ export default function Page() {
         <section className="relative h-[520px] md:h-[620px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_025.webp"
+              src="/images/skyridge/scrap/Cincinnati-commercial-roof-restoration.jpg"
               alt="Roof coatings in Utah"
               fill
               className="object-cover"
@@ -86,13 +86,76 @@ export default function Page() {
                 .
               </p>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_043.webp"
-                alt="Commercial roof coating"
+                src="/images/skyridge/scrap/Cincinnati-commercial-roof-restoration.jpg"
+                alt="Commercial roof coating in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Roof Coatings Images Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Roof Coating Solutions</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/greeley-commercial-replacement-experts-q5ci09vs7pm79teahi5wnibtyc7pl27apafiidv1g0.jpg"
+                    alt="Commercial roof coating application"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Elastomeric Coatings</h3>
+                  <p className="text-sm text-gray-600">Flexible, waterproof roof coating systems</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/flat-roof.jpg"
+                    alt="Flat roof coating services"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Flat Roof Coatings</h3>
+                  <p className="text-sm text-gray-600">Extend flat roof life with professional coatings</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/commercial-roof-installation.jpg"
+                    alt="Roof restoration coating"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Restoration Coatings</h3>
+                  <p className="text-sm text-gray-600">Complete roof restoration with coatings</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/commercial-roofing-inspections-longmont-300x200.jpg"
+                    alt="Roof coating inspection"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Coating Evaluation</h3>
+                  <p className="text-sm text-gray-600">Professional assessment for coating suitability</p>
+                </div>
+              </div>
             </div>
           </div>
 

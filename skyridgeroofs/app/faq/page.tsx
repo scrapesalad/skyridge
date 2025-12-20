@@ -133,7 +133,7 @@ export default function Page() {
         {/* Hero Section */}
         <section className="relative h-96 mb-12">
           <Image
-            src="/images/skyridge/skyridge_image_018.webp"
+            src="/images/skyridge/scrap/What-You-Dont-Have-To-Do-Home-Inspector-01-1440x820-1.jpg"
             alt="Frequently Asked Questions"
             fill
             className="object-cover"

@@ -43,7 +43,7 @@ export default function Page() {
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_010.webp"
+              src="/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp"
               alt="Roof Installation in Utah"
               fill
               className="object-cover"
@@ -105,13 +105,76 @@ export default function Page() {
                 <li>Clean job sites and clear communication</li>
               </ul>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_006.webp"
-                alt="New roof installation"
+                src="/images/skyridge/scrap/roofing-job.jpg"
+                alt="Professional roof installation in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Roof Installation Images Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Professional Roof Installation Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/landmark-series-shingles-certainteed.jpg"
+                    alt="Shingle roof installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Shingle Installation</h3>
+                  <p className="text-sm text-gray-600">Expert asphalt shingle roof installation</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/metal-roofing-768x576.jpg"
+                    alt="Metal roof installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Metal Roof Installation</h3>
+                  <p className="text-sm text-gray-600">Standing seam and metal panel installation</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/commercial-roof-installation.jpg"
+                    alt="Commercial roof installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Commercial Installation</h3>
+                  <p className="text-sm text-gray-600">TPO, EPDM, and commercial roofing systems</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp"
+                    alt="Roof installation finishing details"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Quality Craftsmanship</h3>
+                  <p className="text-sm text-gray-600">Attention to detail in every installation</p>
+                </div>
+              </div>
             </div>
           </div>
 

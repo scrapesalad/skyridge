@@ -43,7 +43,7 @@ export default function Page() {
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_010.webp"
+              src="/images/skyridge/scrap/roofing-job.jpg"
               alt="Roof Replacement"
               fill
               className="object-cover"
@@ -129,7 +129,7 @@ export default function Page() {
             </div>
             <div className="relative h-96 rounded-lg overflow-hidden">
               <Image
-                src="/images/skyridge/skyridge_image_006.webp"
+                src="/images/skyridge/scrap/Camelot_Aged_Oak_Photo_1-scaled-1.jpg"
                 alt="Roof replacement work"
                 fill
                 className="object-cover"
@@ -143,8 +143,8 @@ export default function Page() {
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
                   <Image
-                    src="/images/skyridge/skyridge_image_007.webp"
-                    alt="Inspection"
+                    src="/images/skyridge/scrap/Roof-Inspection_Sumit-Kapoor-TX_2-scaled-1.jpeg"
+                    alt="Roof inspection and assessment for replacement"
                     fill
                     className="object-cover"
                   />
@@ -155,8 +155,8 @@ export default function Page() {
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
                   <Image
-                    src="/images/skyridge/skyridge_image_008.webp"
-                    alt="Planning"
+                    src="/images/skyridge/scrap/landmark-series-shingles-certainteed.jpg"
+                    alt="Planning and selecting roofing materials"
                     fill
                     className="object-cover"
                   />
@@ -167,8 +167,8 @@ export default function Page() {
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
                   <Image
-                    src="/images/skyridge/skyridge_image_009.webp"
-                    alt="Installation"
+                    src="/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp"
+                    alt="Professional roof installation"
                     fill
                     className="object-cover"
                   />
@@ -183,16 +183,70 @@ export default function Page() {
           <div className="mb-12">
             <h2 className="text-3xl font-bold mb-6">Recent Roof Replacements</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[14, 15, 16, 17, 18, 19, 20, 21].map((num) => (
-                <div key={num} className="relative h-48 rounded-lg overflow-hidden">
-                  <Image
-                    src={`/images/skyridge/skyridge_image_${String(num).padStart(3, '0')}.webp`}
-                    alt={`Roof replacement project ${num}`}
-                    fill
-                    className="object-cover hover:scale-110 transition duration-300"
-                  />
-                </div>
-              ))}
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/roofing-job.jpg"
+                  alt="Completed roof replacement project"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/Camelot_Aged_Oak_Photo_1-scaled-1.jpg"
+                  alt="Architectural shingle roof replacement"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/metal-roofing-768x576.jpg"
+                  alt="Metal roof replacement project"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/CF-Shingle-Project-8-300x202.webp"
+                  alt="Shingle roof replacement"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/GAF_Timberline_HD_Slate_2_Shown_For_Color-1-scaled-1.jpg"
+                  alt="GAF Timberline HD roof replacement"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/roofing-center-02.jpg"
+                  alt="Professional roof replacement work"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg"
+                  alt="Quality roof replacement installation"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
+              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/images/skyridge/scrap/commercial-roof-installation.jpg"
+                  alt="Commercial roof replacement project"
+                  fill
+                  className="object-cover hover:scale-110 transition duration-300"
+                />
+              </div>
             </div>
           </div>
         </div>

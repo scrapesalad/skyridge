@@ -65,7 +65,7 @@ export default function Page() {
         {/* Hero Section */}
         <section className="relative h-96 mb-12">
           <Image
-            src="/images/skyridge/skyridge_image_022.webp"
+            src="/images/skyridge/scrap/West-Jordan-Roofing.jpg"
             alt="Service Areas"
             fill
             className="object-cover"
@@ -103,28 +103,43 @@ export default function Page() {
 
           {/* Service Areas Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {serviceAreas.map((area) => (
-              <div key={area.slug} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
-                <div className="relative h-48">
-                  <Image
-                    src="/images/skyridge/skyridge_image_005.webp"
-                    alt={`Roofing services in ${area.name}`}
-                    fill
-                    className="object-cover"
-                  />
+            {serviceAreas.map((area, index) => {
+              const locationImages = [
+                '/images/skyridge/scrap/West-Jordan-Roofing.jpg',
+                '/images/skyridge/scrap/roofing-job.jpg',
+                '/images/skyridge/scrap/Idaho-Roofing-Contractors-1.jpg',
+                '/images/skyridge/scrap/roofing-center-02.jpg',
+                '/images/skyridge/scrap/commercial-roof-installation.jpg',
+                '/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp',
+                '/images/skyridge/scrap/landmark-series-shingles-certainteed.jpg',
+                '/images/skyridge/scrap/metal-roofing-768x576.jpg',
+                '/images/skyridge/scrap/roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg',
+                '/images/skyridge/scrap/Camelot_Aged_Oak_Photo_1-scaled-1.jpg',
+                '/images/skyridge/scrap/roofingcenter-blog-07-qfskckmzpii02wunzlscnv7r272fkut533k7tmxgso.jpg',
+              ];
+              return (
+                <div key={area.slug} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+                  <div className="relative h-48">
+                    <Image
+                      src={locationImages[index % locationImages.length]}
+                      alt={`Roofing services in ${area.name}, Utah`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-2xl font-bold mb-3">{area.name}</h3>
+                    <p className="text-gray-600 mb-4">Serving ZIP codes: {area.zipCodes.join(', ')}</p>
+                    <Link 
+                      href={`/locations/${area.slug}`}
+                      className="text-blue-600 font-semibold hover:text-blue-800 inline-flex items-center"
+                    >
+                      Learn More →
+                    </Link>
+                  </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-3">{area.name}</h3>
-                  <p className="text-gray-600 mb-4">Serving ZIP codes: {area.zipCodes.join(', ')}</p>
-                  <Link 
-                    href={`/locations/${area.slug}`}
-                    className="text-blue-600 font-semibold hover:text-blue-800 inline-flex items-center"
-                  >
-                    Learn More →
-                  </Link>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="bg-white rounded-lg shadow-md p-8 mb-12">

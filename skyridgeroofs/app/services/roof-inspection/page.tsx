@@ -43,7 +43,7 @@ export default function Page() {
         <section className="relative h-[520px] md:h-[620px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_011.webp"
+              src="/images/skyridge/scrap/Roof-Inspection_Sumit-Kapoor-TX_2-scaled-1.jpeg"
               alt="Roof inspection in Utah"
               fill
               className="object-cover"
@@ -104,13 +104,62 @@ export default function Page() {
                 can help you document and communicate effectively.
               </p>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_022.webp"
-                alt="Roof inspection documentation"
+                src="/images/skyridge/scrap/Roof-Inspection_Sumit-Kapoor-TX_2-scaled-1.jpeg"
+                alt="Professional roof inspection in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Image Gallery Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Our Roof Inspection Process</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-64">
+                  <Image
+                    src="/images/skyridge/scrap/Roof-Inspection-Image-768x439.jpg"
+                    alt="Roof inspection for hail damage in Utah"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2">Hail Damage Inspection</h3>
+                  <p className="text-gray-600">We check for bruising, granule loss, and impact patterns that indicate storm damage.</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-64">
+                  <Image
+                    src="/images/skyridge/scrap/What-You-Dont-Have-To-Do-Home-Inspector-01-1440x820-1.jpg"
+                    alt="Professional roof inspector checking roof condition"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2">Comprehensive Assessment</h3>
+                  <p className="text-gray-600">Thorough evaluation of shingles, flashing, vents, and all roof components.</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-64">
+                  <Image
+                    src="/images/skyridge/scrap/hail-damage.jpeg"
+                    alt="Hail damage on roof shingles"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2">Photo Documentation</h3>
+                  <p className="text-gray-600">Detailed photos and documentation for insurance claims and repair planning.</p>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -42,7 +42,7 @@ export default function Page() {
         <section className="relative h-[520px] md:h-[620px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_019.webp"
+              src="/images/skyridge/scrap/leavesontheroof-ra7jjucc7rnbr41zzppkycdprcwydk9ae70g2z72og.webp"
               alt="Roof maintenance in Utah"
               fill
               className="object-cover"
@@ -88,13 +88,76 @@ export default function Page() {
                 instead.
               </p>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_023.webp"
-                alt="Roof maintenance checklist"
+                src="/images/skyridge/scrap/leavesontheroof-ra7jjucc7rnbr41zzppkycdprcwydk9ae70g2z72og.webp"
+                alt="Roof maintenance and cleaning in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Roof Maintenance Images Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Roof Maintenance Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/gv_apr-2019_strip-ventilation.jpg"
+                    alt="Roof ventilation maintenance"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Ventilation Checks</h3>
+                  <p className="text-sm text-gray-600">Ensure proper attic ventilation</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/gutter-covers-maryland-1024x768-1.webp"
+                    alt="Gutter maintenance and cleaning"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Gutter Maintenance</h3>
+                  <p className="text-sm text-gray-600">Clean and repair gutters and downspouts</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/flashing-1.jpeg"
+                    alt="Flashing inspection and repair"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Flashing Inspection</h3>
+                  <p className="text-sm text-gray-600">Check and repair roof flashing</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/nails-1.jpeg"
+                    alt="Minor roof repairs and maintenance"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Minor Repairs</h3>
+                  <p className="text-sm text-gray-600">Fix small issues before they become big problems</p>
+                </div>
+              </div>
             </div>
           </div>
 

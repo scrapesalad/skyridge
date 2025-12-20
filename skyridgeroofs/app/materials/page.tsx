@@ -21,37 +21,37 @@ const materials = [
     name: 'Asphalt Shingles',
     description: 'The most popular roofing material in America. Affordable, durable, and available in a wide variety of colors and styles.',
     benefits: ['Cost-effective', 'Easy installation', 'Wide variety of styles', 'Good warranty options'],
-    image: '/images/skyridge/skyridge_image_020.webp',
+    image: '/images/skyridge/scrap/landmark-series-shingles-certainteed.jpg',
   },
   {
     name: 'Metal Roofing',
     description: 'Long-lasting and energy-efficient metal roofing that can last 50+ years. Perfect for Utah\'s weather conditions.',
     benefits: ['50+ year lifespan', 'Energy efficient', 'Fire resistant', 'Low maintenance'],
-    image: '/images/skyridge/skyridge_image_021.webp',
+    image: '/images/skyridge/scrap/metal-roofing-768x576.jpg',
   },
   {
     name: 'Tile Roofing',
     description: 'Beautiful and durable tile roofing that adds elegance to any home. Excellent for hot climates and high wind areas.',
     benefits: ['Extremely durable', 'Fire resistant', 'Aesthetic appeal', 'Long lifespan'],
-    image: '/images/skyridge/skyridge_image_022.webp',
+    image: '/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp',
   },
   {
     name: 'Slate Roofing',
     description: 'Premium natural stone roofing that can last over 100 years. The ultimate in durability and elegance.',
     benefits: ['100+ year lifespan', 'Natural beauty', 'Fireproof', 'Low maintenance'],
-    image: '/images/skyridge/skyridge_image_023.webp',
+    image: '/images/skyridge/scrap/GAF_Slateline_Antique_Slate_1440x1440.jpg',
   },
   {
     name: 'Synthetic Roofing',
     description: 'Modern synthetic materials that mimic the look of natural materials while offering superior performance.',
     benefits: ['Lightweight', 'Durable', 'Cost-effective', 'Various styles'],
-    image: '/images/skyridge/skyridge_image_024.webp',
+    image: '/images/skyridge/scrap/GAF_Slateline_Antique_Slate_1440x1440.jpg',
   },
   {
     name: 'Flat Roofing',
     description: 'Specialized materials for flat and low-slope roofs. Perfect for commercial buildings and modern home designs.',
     benefits: ['Waterproof', 'Energy efficient', 'Modern aesthetic', 'Easy maintenance'],
-    image: '/images/skyridge/skyridge_image_025.webp',
+    image: '/images/skyridge/scrap/flat-roof.jpg',
   },
 ];
 
@@ -63,7 +63,7 @@ export default function Page() {
         {/* Hero Section */}
         <section className="relative h-96 mb-12">
           <Image
-            src="/images/skyridge/skyridge_image_019.webp"
+            src="/images/skyridge/scrap/GAF_Timberline_HD_Slate_2_Shown_For_Color-1-scaled-1.jpg"
             alt="Roofing Materials"
             fill
             className="object-cover"
@@ -221,6 +221,69 @@ export default function Page() {
               <p className="text-gray-700">
                 <strong>Our Recommendation:</strong> The best roofing style for your home depends on multiple factors. We recommend scheduling a free consultation where we can assess your home's architecture, roof structure, and your specific needs to recommend the best options. We'll help you balance aesthetics, durability, energy efficiency, and budget.
               </p>
+            </div>
+          </div>
+
+          {/* Material Showcase Gallery */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Roofing Material Showcase</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/GAF_Timberline_HD_Slate_2_Shown_For_Color-1-scaled-1.jpg"
+                    alt="GAF Timberline HD shingles"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">GAF Shingles</h3>
+                  <p className="text-sm text-gray-600">Premium architectural shingle options</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/Camelot_Aged_Oak_Photo_1-scaled-1.jpg"
+                    alt="Architectural shingle roofing"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Architectural Shingles</h3>
+                  <p className="text-sm text-gray-600">Enhanced dimensional shingle styles</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/stone-coated-steel-roofing-py0b531a3pw0q3pck11fbqef8yt55ywsy8pkksoxzk.jpg"
+                    alt="Stone coated steel metal roofing"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Stone Coated Steel</h3>
+                  <p className="text-sm text-gray-600">Durable metal roofing with stone finish</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/GAF_Slateline_Antique_Slate_1440x1440.jpg"
+                    alt="GAF Slateline synthetic slate"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Synthetic Slate</h3>
+                  <p className="text-sm text-gray-600">Lightweight slate alternative</p>
+                </div>
+              </div>
             </div>
           </div>
 

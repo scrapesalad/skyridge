@@ -21,49 +21,49 @@ const services = [
   {
     title: 'Roof Replacement',
     description: 'Complete roof replacement services with quality materials and expert installation. Protect your home and boost curb appeal.',
-    image: '/images/skyridge/skyridge_image_001.webp',
+    image: '/images/skyridge/scrap/roofing-job.jpg',
     link: '/services/roof-replacement',
     features: ['Full roof replacement', 'Premium materials', 'Expert installation', 'Warranty included'],
   },
   {
     title: 'Roof Installation',
     description: 'New roof installation in Utah with quality materials and expert workmanship. Free estimates.',
-    image: '/images/skyridge/skyridge_image_010.webp',
+    image: '/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp',
     link: '/services/roof-installation',
     features: ['New roof installation', 'Material guidance', 'Expert workmanship', 'Warranty included'],
   },
   {
     title: 'Roof Repairs',
     description: 'Fast and reliable roof repair services to fix leaks, damage, and wear. Expert repairs to extend your roof\'s lifespan.',
-    image: '/images/skyridge/skyridge_image_002.webp',
+    image: '/images/skyridge/scrap/flashing-1.jpeg',
     link: '/services/roof-repairs',
     features: ['Leak detection & repair', 'Shingle replacement', 'Emergency repairs', 'Flashing repair'],
   },
   {
     title: 'Metal Roofing',
     description: 'Standing seam and exposed-fastener metal roofing options built for Utah weather. Durable, efficient, and low-maintenance.',
-    image: '/images/skyridge/skyridge_image_021.webp',
+    image: '/images/skyridge/scrap/metal-roofing-768x576.jpg',
     link: '/services/metal-roofing',
     features: ['Standing seam systems', 'Exposed-fastener panels', 'Flashing & ventilation details', 'Long service life'],
   },
   {
     title: 'Insurance Claims',
     description: 'Expert assistance with insurance claims to ensure you get the coverage you deserve. We simplify the claims process.',
-    image: '/images/skyridge/skyridge_image_003.webp',
+    image: '/images/skyridge/scrap/Roof-Inspection-Image-768x439.jpg',
     link: '/services/insurance-claims',
     features: ['Claim filing assistance', 'Damage assessment', 'Insurance coordination', 'Maximize coverage'],
   },
   {
     title: 'Commercial Roofing',
     description: 'Commercial roofing services for flat and low-slope systems: repairs, replacements, coatings, and maintenance programs.',
-    image: '/images/skyridge/skyridge_image_043.webp',
+    image: '/images/skyridge/scrap/commercial-roof-installation.jpg',
     link: '/services/commercial-roofing',
     features: ['Flat/low-slope systems', 'Leak diagnosis & repair', 'Coatings & restoration', 'Maintenance programs'],
   },
   {
     title: 'Additional Services',
     description: 'Solar installation, siding, gutters, and commercial roofing. Complete exterior solutions for your property.',
-    image: '/images/skyridge/skyridge_image_004.webp',
+    image: '/images/skyridge/scrap/roofing-center-02.jpg',
     link: '/services/additional-services',
     features: ['Solar installation', 'Siding services', 'Gutter systems', 'Commercial roofing'],
   },
@@ -89,7 +89,7 @@ export default function Page() {
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_014.webp"
+              src="/images/skyridge/scrap/roofing-job.jpg"
               alt="Our Services"
               fill
               className="object-cover"

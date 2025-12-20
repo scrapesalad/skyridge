@@ -76,7 +76,7 @@ export default function Page() {
         <section className="relative h-[600px] md:h-[700px] overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/images/skyridge/skyridge_image_021.webp"
+              src="/images/skyridge/scrap/metal-roofing-768x576.jpg"
               alt="Metal roofing installation in Utah"
               fill
               className="object-cover"
@@ -156,13 +156,76 @@ export default function Page() {
                 leaks and premature wear.
               </p>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/skyridge/skyridge_image_010.webp"
-                alt="Close-up of a finished roof detail"
+                src="/images/skyridge/scrap/metal-roofing-768x576.jpg"
+                alt="Metal roofing installation in Utah"
                 fill
                 className="object-cover"
               />
+            </div>
+          </div>
+
+          {/* Metal Roofing Images Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Metal Roofing Options & Benefits</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/stone-coated-steel-roofing-py0b531a3pw0q3pck11fbqef8yt55ywsy8pkksoxzk.jpg"
+                    alt="Stone coated steel metal roofing"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Stone Coated Steel</h3>
+                  <p className="text-sm text-gray-600">Durable and attractive metal roofing option</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/shutterstock_1819028381-1920w.webp"
+                    alt="Standing seam metal roof installation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Standing Seam</h3>
+                  <p className="text-sm text-gray-600">Premium metal roofing with concealed fasteners</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/finishing-ceramic-roof-768x512.webp"
+                    alt="Metal roof finishing details"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Expert Installation</h3>
+                  <p className="text-sm text-gray-600">Professional metal roof installation and finishing</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative h-48">
+                  <Image
+                    src="/images/skyridge/scrap/roofing-job.jpg"
+                    alt="Completed metal roofing project"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Quality Results</h3>
+                  <p className="text-sm text-gray-600">Beautiful, long-lasting metal roofs</p>
+                </div>
+              </div>
             </div>
           </div>
 
