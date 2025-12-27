@@ -28,8 +28,33 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  // All 49 images available
-  const allImages = Array.from({ length: 49 }, (_, i) => i + 1);
+  // Gallery images from scrap folder (24 professional roofing images)
+  const galleryImages = [
+    'roofing-job.jpg',
+    'roofing-center-02.jpg',
+    'West-Jordan-Roofing.jpg',
+    'metal-roofing-768x576.jpg',
+    'finishing-ceramic-roof-768x512.webp',
+    'Cincinnati-commercial-roof-restoration.jpg',
+    'commercial-roof-installation.jpg',
+    'Idaho-Roofing-Contractors-1.jpg',
+    'GAF_Timberline_HD_Slate_2_Shown_For_Color-1-scaled-1.jpg',
+    'GAF_Slateline_Antique_Slate_1440x1440.jpg',
+    'Camelot_Aged_Oak_Photo_1-scaled-1.jpg',
+    'CF-Shingle-Project-8-300x202.webp',
+    'landmark-series-shingles-certainteed.jpg',
+    'closed-roof-valley.jpg',
+    'flat-roof.jpg',
+    'Roof-Inspection-Image-768x439.jpg',
+    'replace-rotted-roof-decking-r9s0s1ll2umws3di4jscahu9s54iilxkq8ir4t3ads.jpg',
+    'RoofCricketConstruction4.webp',
+    'gutter-covers-maryland-1024x768-1.webp',
+    'IMG_5791-2-scaled-1.jpg',
+    'building-exterior.jpg',
+    'hero-image-vacation-homes.jpg',
+    'bungalow-holiday-apartments-on-cyprus.jpg',
+    'roofing-center-04-qg13nktj9cx8cworod4wf2skk8m3jzkgal4zrz09ao.jpg',
+  ];
   
   return (
     <>
@@ -514,11 +539,11 @@ export default function Page() {
 
             {/* Image Grid - 3 columns, 4 rows (12 images) */}
             <div className="grid grid-cols-3 gap-0 max-w-5xl mx-auto">
-              {allImages.slice(0, 12).map((num) => (
-                <div key={num} className="relative aspect-square overflow-hidden group cursor-pointer">
+              {galleryImages.slice(0, 12).map((imageName, index) => (
+                <div key={index} className="relative aspect-square overflow-hidden group cursor-pointer">
                   <Image
-                    src={`/images/skyridge/skyridge_image_${String(num).padStart(3, '0')}.webp`}
-                    alt={`Roofing project ${num}`}
+                    src={`/images/skyridge/scrap/${imageName}`}
+                    alt={`Professional roofing project ${index + 1}`}
                     fill
                     className="object-cover group-hover:scale-110 transition duration-300"
                     sizes="(max-width: 768px) 33vw, (max-width: 1024px) 33vw, 33vw"
@@ -529,7 +554,7 @@ export default function Page() {
             </div>
 
             {/* Show more images button/link - optional, if you want to show all images */}
-            {allImages.length > 12 && (
+            {galleryImages.length > 12 && (
               <div className="text-center mt-8">
                 <Link
                   href="/gallery"
