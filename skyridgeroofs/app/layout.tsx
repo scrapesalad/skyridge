@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import './globals.css';
 import { BUSINESS, SITE_URL } from '@/lib/site';
 import { QuoteSidebarProvider } from '@/contexts/QuoteSidebarContext';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -82,6 +83,7 @@ export default function RootLayout({
         <QuoteSidebarProvider>
           {children}
         </QuoteSidebarProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
